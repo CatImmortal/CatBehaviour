@@ -1,10 +1,11 @@
 ﻿using System;
 
-namespace CatBehaviour
+namespace CatBehaviour.Runtime
 {
     /// <summary>
     /// 并行节点（同时运行所有节点，根据设置的成功/失败条件决定此节点如何判断成功/失败）
     /// </summary>
+    [NodeInfo(Name = "并行节点")]
     public class ParallelNode : BaseCompositeNode
     {
         /// <summary>

@@ -1,8 +1,9 @@
-﻿namespace CatBehaviour
+﻿namespace CatBehaviour.Runtime
 {
     /// <summary>
     /// 失败节点（无论子节点运行结果是什么，此节点都运行失败）
     /// </summary>
+    [NodeInfo(Name = "失败节点")]
     public class FailureNode : BaseDecoratorNode
     {
         /// <inheritdoc />

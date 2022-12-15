@@ -1,4 +1,4 @@
-﻿namespace CatBehaviour
+﻿namespace CatBehaviour.Runtime
 {
     /// <summary>
     /// 装饰节点基类
@@ -8,7 +8,7 @@
         /// <summary>
         /// 子节点
         /// </summary>
-        protected BaseNode Child;
+        public BaseNode Child;
         
         /// <inheritdoc />
         public override void AddChild(BaseNode node)

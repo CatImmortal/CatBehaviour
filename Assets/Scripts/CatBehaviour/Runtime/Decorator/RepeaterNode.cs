@@ -1,10 +1,11 @@
 ﻿using System;
 
-namespace CatBehaviour
+namespace CatBehaviour.Runtime
 {
     /// <summary>
     /// 重复节点
     /// </summary>
+    [NodeInfo(Name = "重复节点")]
     public class RepeaterNode : BaseDecoratorNode
     {
         /// <summary>

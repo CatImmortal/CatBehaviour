@@ -1,4 +1,4 @@
-﻿namespace CatBehaviour
+﻿namespace CatBehaviour.Runtime
 {
     public class BlackBoard
     {

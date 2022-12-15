@@ -1,8 +1,9 @@
-﻿namespace CatBehaviour
+﻿namespace CatBehaviour.Runtime
 {
     /// <summary>
     /// 选择节点（依次执行子节点，直到有子节点运行成功，则此节点运行成功，否则失败）
     /// </summary>
+    [NodeInfo(Name = "选择节点")]
     public class SelectorNode : BaseCompositeNode
     {
         /// <summary>

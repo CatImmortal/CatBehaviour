@@ -60,3 +60,5 @@ crashlytics-build.properties
 
 Packages
 UserSettings
+UIElementsSchema
+.idea

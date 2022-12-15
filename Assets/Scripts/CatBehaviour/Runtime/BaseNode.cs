@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
-namespace CatBehaviour
+namespace CatBehaviour.Runtime
 {
     /// <summary>
     /// 节点基类
@@ -25,6 +26,12 @@ namespace CatBehaviour
             Running,
         }
 
+
+        /// <summary>
+        /// 节点位置
+        /// </summary>
+        public Vector2 Position;
+        
         /// <summary>
         /// 当前节点状态
         /// </summary>
@@ -34,7 +41,7 @@ namespace CatBehaviour
         /// 父节点
         /// </summary>
         public BaseNode ParenNode { get; set; }
-        
+
         /// <summary>
         /// 添加子节点
         /// </summary>
@@ -98,7 +105,5 @@ namespace CatBehaviour
         /// 子节点运行结束时
         /// </summary>
         protected abstract void OnChildFinished(BaseNode child,bool success);
-        
-        
     }
 }

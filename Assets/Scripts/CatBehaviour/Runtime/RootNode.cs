@@ -1,8 +1,9 @@
-﻿namespace CatBehaviour
+﻿namespace CatBehaviour.Runtime
 {
     /// <summary>
     /// 根节点
     /// </summary>
+    [NodeInfo(Name = "根节点")]
     public class RootNode : BaseDecoratorNode
     {
         /// <inheritdoc />

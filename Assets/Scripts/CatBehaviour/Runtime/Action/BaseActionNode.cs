@@ -1,4 +1,4 @@
-﻿namespace CatBehaviour
+﻿namespace CatBehaviour.Runtime
 {
     /// <summary>
     /// 动作节点基类

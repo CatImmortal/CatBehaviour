@@ -1,8 +1,9 @@
-﻿namespace CatBehaviour
+﻿namespace CatBehaviour.Runtime
 {
     /// <summary>
     /// 延时节点
     /// </summary>
+    [NodeInfo(Name = "延时节点")]
     public class DelayNode : BaseActionNode
     {
         /// <summary>

@@ -1,11 +1,12 @@
 ﻿using System;
 using UnityEngine;
 
-namespace CatBehaviour
+namespace CatBehaviour.Runtime
 {
     /// <summary>
     /// 日志节点
     /// </summary>
+    [NodeInfo(Name = "日志节点")]
     public class LogNode : BaseActionNode
     {
         /// <summary>

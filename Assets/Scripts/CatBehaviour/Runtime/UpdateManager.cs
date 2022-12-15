@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CatBehaviour
+namespace CatBehaviour.Runtime
 {
     /// <summary>
     /// 定时器管理器

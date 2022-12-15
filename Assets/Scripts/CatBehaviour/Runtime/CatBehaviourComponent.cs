@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace CatBehaviour
+namespace CatBehaviour.Runtime
 {
     public class CatBehaviourComponent : MonoBehaviour
     {
