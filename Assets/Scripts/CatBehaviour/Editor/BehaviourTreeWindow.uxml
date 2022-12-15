@@ -5,6 +5,7 @@
         </ui:VisualElement>
         <ui:VisualElement name="right" style="width: 80%;">
             <uie:Toolbar />
+            <CatBehaviour.Editor.BehaviourTreeGraphView focusable="true" name="treeview" style="flex-grow: 1; flex-shrink: 0;" />
         </ui:VisualElement>
     </CatBehaviour.Editor.SplitView>
 </ui:UXML>

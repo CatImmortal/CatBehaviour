@@ -12,6 +12,8 @@ namespace CatBehaviour.Editor
     /// </summary>
     public class BehaviourTreeWindow : EditorWindow
     {
+        private BehaviourTree bt;
+        
         /// <summary>
         /// 打开窗口
         /// </summary>
@@ -26,24 +28,13 @@ namespace CatBehaviour.Editor
         /// </summary>
         private static void Open(BehaviourTree bt)
         {
-            var window = CreateWindow<BehaviourTreeWindow>("行为树节点图窗口");
-    
-            var graphView = new BehaviourTreeGraphView(window)
-            {
-                style = { flexGrow = 1 }
-            };
-                
-            window.rootVisualElement.Add(graphView);
-            window.ShowPopup();
-                
-            graphView.Init(bt);
-                
-            window.rootVisualElement.Add(new Button(graphView.Save) { text = "保存" });
+            var window = GetWindow<BehaviourTreeWindow>("行为树节点图窗口");
+            window.bt = bt;
         }
+        
         
         public void CreateGUI()
         {
-
             VisualElement root = rootVisualElement;
             
             var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Scripts/CatBehaviour/Editor/BehaviourTreeWindow.uxml");
@@ -51,8 +42,10 @@ namespace CatBehaviour.Editor
             root.Add(labelFromUXML);
 
             var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Scripts/CatBehaviour/Editor/BehaviourTreeWindow.uss");
-            
             root.styleSheets.Add(styleSheet);
+            
+            var graphView = rootVisualElement.Q<BehaviourTreeGraphView>("treeview");
+            graphView.Init(this,bt);
         }
     }
 }

@@ -19,16 +19,6 @@ namespace CatBehaviour.Editor
         public BehaviourTreeGraphView()
         {
             Insert(0, new GridBackground());  //格子背景
-        }
-        
-        /// <summary>
-        /// 行为树节点 -> 节点图节点
-        /// </summary>
-        private Dictionary<BaseNode, BehaviourTreeNode> nodeDict = new Dictionary<BaseNode, BehaviourTreeNode>();
-
-        public BehaviourTreeGraphView(BehaviourTreeWindow window)
-        {
-            this.window = window;
             
             SetupZoom(ContentZoomer.DefaultMinScale, ContentZoomer.DefaultMaxScale);
          
@@ -46,12 +36,20 @@ namespace CatBehaviour.Editor
                 SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), searchWindowProvider);
             };
         }
+        
+        /// <summary>
+        /// 行为树节点 -> 节点图节点
+        /// </summary>
+        private Dictionary<BaseNode, BehaviourTreeNode> nodeDict = new Dictionary<BaseNode, BehaviourTreeNode>();
+
 
         /// <summary>
         /// 初始化
         /// </summary>
-        public void Init(BehaviourTree bt)
+        public void Init(BehaviourTreeWindow window, BehaviourTree bt)
         {
+            this.window = window;
+            
             if (bt == null)
             {
                 bt = new BehaviourTree();
