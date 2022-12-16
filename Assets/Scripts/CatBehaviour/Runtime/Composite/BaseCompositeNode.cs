@@ -87,7 +87,7 @@ namespace CatBehaviour.Runtime
         {
             Children.Sort((a, b) =>
             {
-                return a.Position.y.CompareTo(b.Position.y);
+                return a.Position.x.CompareTo(b.Position.x);
             });
         }
     }

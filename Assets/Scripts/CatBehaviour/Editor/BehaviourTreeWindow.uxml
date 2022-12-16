@@ -1,8 +1,8 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <CatBehaviour.Editor.SplitView style="flex-direction: row; flex-grow: 1; flex-shrink: 0;">
         <ui:VisualElement name="left" style="width: 20%;">
-            <uie:Toolbar>
-                <ui:Label text="节点属性" display-tooltip-when-elided="true" />
+            <uie:Toolbar style="align-items: center; justify-content: center;">
+                <ui:Label text="节点属性" display-tooltip-when-elided="true" style="flex-grow: 0; left: auto;" />
             </uie:Toolbar>
             <ui:VisualElement name="leftContent" style="flex-grow: 1;" />
         </ui:VisualElement>

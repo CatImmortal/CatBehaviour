@@ -47,26 +47,30 @@ namespace CatBehaviour.Editor
             title = GetNodeName(nodeType);
             SetPosition(new Rect(runtimeNode.Position,GetPosition().size));
 
-            // //将端口方向改成垂直的
-            // var nodeBorder = contentContainer.Q<VisualElement>("node-border");
-            //
-            // var titleContainer = contentContainer.Q<VisualElement>("title");
-            // var topContainer = this.Q("input");
-            // var bottomContainer = this.Q("output");
-            //
-            // nodeBorder.RemoveAt(0);
-            // nodeBorder.RemoveAt(0);
-            //
-            // nodeBorder.Add(topContainer);
-            // nodeBorder.Add(titleContainer);
-            // nodeBorder.Add(bottomContainer);
+            //将端口方向改成垂直的
+            var titleButtonContainer = contentContainer.Q<VisualElement>("title-button-container");
+            titleButtonContainer.RemoveAt(0);  //删掉收起箭头 否则会有bug
             
+            var nodeBorder = contentContainer.Q<VisualElement>("node-border");
+            
+            var titleContainer = contentContainer.Q<VisualElement>("title");
+            var topContainer = this.Q("input");
+            var bottomContainer = this.Q("output");
+            
+            nodeBorder.RemoveAt(0);
+            nodeBorder.RemoveAt(0);
+            
+            nodeBorder.Add(topContainer);
+            nodeBorder.Add(titleContainer);
+            nodeBorder.Add(bottomContainer);
+
             //根据节点类型处理端口
             if (!(runtimeNode is RootNode))
             {
-                inputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(Port));
+                inputPort = Port.Create<Edge>(Orientation.Vertical, Direction.Input, Port.Capacity.Multi, typeof(Port));
                 inputPort.portName = "父节点";
                 inputPort.portColor = Color.cyan;
+                //inputPort.style.flexDirection = FlexDirection.Column;
                 inputContainer.Add(inputPort);
             }
 
@@ -87,9 +91,10 @@ namespace CatBehaviour.Editor
             {
                 throw new Exception($"行为树节点类型无效，不是3种基础节点类型的派生之一：{title}");
             }
-            outputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, outputCount, typeof(Port));
+            outputPort = Port.Create<Edge>(Orientation.Vertical, Direction.Output, outputCount, typeof(Port));
             outputPort.portName = "子节点";
             outputPort.portColor = Color.red;
+            //outputPort.style.flexDirection = FlexDirection.Column;
             outputContainer.Add(outputPort);
         }
     }
