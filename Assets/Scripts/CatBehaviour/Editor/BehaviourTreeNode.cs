@@ -3,6 +3,7 @@ using System.Reflection;
 using CatBehaviour.Runtime;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace CatBehaviour.Editor
 {
@@ -16,6 +17,8 @@ namespace CatBehaviour.Editor
         private Port inputPort;
         private Port outputPort;
 
+
+        
         /// <summary>
         /// 获取节点在节点图的名字
         /// </summary>
@@ -37,13 +40,27 @@ namespace CatBehaviour.Editor
         
         public void Init(BaseNode runtimeNode)
         {
-            this.RuntimeNode = runtimeNode;
+            RuntimeNode = runtimeNode;
 
             //设置节点名和位置
             Type nodeType = runtimeNode.GetType();
             title = GetNodeName(nodeType);
             SetPosition(new Rect(runtimeNode.Position,GetPosition().size));
 
+            // //将端口方向改成垂直的
+            // var nodeBorder = contentContainer.Q<VisualElement>("node-border");
+            //
+            // var titleContainer = contentContainer.Q<VisualElement>("title");
+            // var topContainer = this.Q("input");
+            // var bottomContainer = this.Q("output");
+            //
+            // nodeBorder.RemoveAt(0);
+            // nodeBorder.RemoveAt(0);
+            //
+            // nodeBorder.Add(topContainer);
+            // nodeBorder.Add(titleContainer);
+            // nodeBorder.Add(bottomContainer);
+            
             //根据节点类型处理端口
             if (!(runtimeNode is RootNode))
             {

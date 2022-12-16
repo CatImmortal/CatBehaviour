@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CatBehaviour.Runtime
@@ -26,26 +27,76 @@ namespace CatBehaviour.Runtime
             Running,
         }
 
-
+        /// <summary>
+        /// 节点Id，从1开始
+        /// </summary>
+        public int Id { get; set; }
+        
         /// <summary>
         /// 节点位置
         /// </summary>
-        public Vector2 Position;
+        public Vector2 Position { get; set; }
         
         /// <summary>
         /// 当前节点状态
         /// </summary>
-        public State CurState { get; protected set; } = State.Free;
+        [NonSerialized]
+        public State CurState = State.Free;
+
+        /// <summary>
+        /// 持有此节点的行为树
+        /// </summary>
+        [NonSerialized]
+        public BehaviourTree Owner;
         
+        /// <summary>
+        /// 父节点ID
+        /// </summary>
+        public int ParentNodeId { get; set; }
+
         /// <summary>
         /// 父节点
         /// </summary>
-        public BaseNode ParenNode { get; set; }
+        [NonSerialized] 
+        public BaseNode ParentNode;
 
         /// <summary>
         /// 添加子节点
         /// </summary>
         public abstract void AddChild(BaseNode node);
+
+        /// <summary>
+        /// 删除子节点
+        /// </summary>
+        public abstract void RemoveChild(BaseNode node);
+
+        /// <summary>
+        /// 清空子节点
+        /// </summary>
+        public abstract void ClearChild();
+
+        /// <summary>
+        /// 收集子节点到AllNodes
+        /// </summary>
+        public abstract void CollectChildToAllNodes(Action<BaseNode> action);
+
+        /// <summary>
+        /// 排序子节点
+        /// </summary>
+        public virtual void SortChild()
+        {
+            
+        }
+        
+        /// <summary>
+        /// 记录对子节点的Id索引
+        /// </summary>
+        public abstract void RecordChildId();
+        
+        /// <summary>
+        /// 重建对子节点的引用
+        /// </summary>
+        public abstract void RebuildChildReference();
 
         /// <summary>
         /// 开始运行节点
@@ -80,7 +131,7 @@ namespace CatBehaviour.Runtime
         protected virtual void Finish(bool success)
         {
             CurState = State.Free;
-            ParenNode?.ChildFinished(this, success);
+            ParentNode?.ChildFinished(this, success);
         }
 
         /// <summary>

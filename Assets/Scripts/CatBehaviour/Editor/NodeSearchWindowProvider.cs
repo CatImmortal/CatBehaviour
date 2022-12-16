@@ -83,9 +83,8 @@ namespace CatBehaviour.Editor
             node.Init(runtimeNode);
             
             //将节点创建在鼠标的位置里
-            VisualElement windowRoot = window.rootVisualElement;
-            Vector2 windowMousePosition = windowRoot.ChangeCoordinatesTo(windowRoot.parent, context.screenMousePosition - window.position.position);
-            Vector2 graphMousePosition = windowRoot.WorldToLocal(windowMousePosition);
+            Vector2 windowMousePosition = graphView.ChangeCoordinatesTo(graphView.parent, context.screenMousePosition - window.position.position);
+            Vector2 graphMousePosition = graphView.WorldToLocal(windowMousePosition);
             node.SetPosition(new Rect(graphMousePosition,node.GetPosition().size));
             
             graphView.AddElement(node);

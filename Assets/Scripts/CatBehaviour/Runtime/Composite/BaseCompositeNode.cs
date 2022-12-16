@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CatBehaviour.Runtime
 {
@@ -8,15 +9,86 @@ namespace CatBehaviour.Runtime
     public abstract class BaseCompositeNode : BaseNode
     {
         /// <summary>
+        /// 子节点ID列表
+        /// </summary>
+        public List<int> ChildIdList { get; set; } = new List<int>();
+        
+        /// <summary>
         /// 子节点列表
         /// </summary>
-        public List<BaseNode> Children = new List<BaseNode>();
+        [NonSerialized] 
+        public List<BaseNode> Children  = new List<BaseNode>();
 
         /// <inheritdoc />
         public override void AddChild(BaseNode node)
         {
-            node.ParenNode = this;
+            if (node == null)
+            {
+                return;
+            }
+            
+            node.ParentNode = this;
             Children.Add(node);
+        }
+
+        /// <inheritdoc />
+        public override void RemoveChild(BaseNode node)
+        {
+            if (node == null)
+            {
+                return;
+            }
+            
+            node.ParentNode = null;
+            Children.Remove(node);
+        }
+        
+        /// <inheritdoc />
+        public override void ClearChild()
+        {
+            foreach (var child in Children)
+            {
+                child.ParentNode = null;
+            }
+            Children.Clear();
+        }
+        
+        /// <inheritdoc />
+        public override void CollectChildToAllNodes(Action<BaseNode> action)
+        {
+            foreach (var child in Children)
+            {
+                action?.Invoke(child);
+            }
+        }
+        
+        /// <inheritdoc />
+        public override void RecordChildId()
+        {
+            ChildIdList.Clear();
+            foreach (var child in Children)
+            {
+                ChildIdList.Add(child.Id);
+            }
+        }
+
+        /// <inheritdoc />
+        public override void RebuildChildReference()
+        {
+            foreach (int childId in ChildIdList)
+            {
+                BaseNode child = Owner.GetNode(childId);
+                Children.Add(child);
+            }
+        }
+
+        /// <inheritdoc />
+        public override void SortChild()
+        {
+            Children.Sort((a, b) =>
+            {
+                return a.Position.y.CompareTo(b.Position.y);
+            });
         }
     }
 }

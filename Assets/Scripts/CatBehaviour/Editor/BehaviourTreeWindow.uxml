@@ -1,11 +1,18 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <CatBehaviour.Editor.SplitView>
+    <CatBehaviour.Editor.SplitView style="flex-direction: row; flex-grow: 1; flex-shrink: 0;">
         <ui:VisualElement name="left" style="width: 20%;">
-            <uie:Toolbar />
+            <uie:Toolbar>
+                <ui:Label text="节点属性" display-tooltip-when-elided="true" />
+            </uie:Toolbar>
+            <ui:VisualElement name="leftContent" style="flex-grow: 1;" />
         </ui:VisualElement>
         <ui:VisualElement name="right" style="width: 80%;">
-            <uie:Toolbar />
-            <CatBehaviour.Editor.BehaviourTreeGraphView focusable="true" name="treeview" style="flex-grow: 1; flex-shrink: 0;" />
+            <uie:Toolbar style="flex-direction: row-reverse;">
+                <ui:Button text="保存" display-tooltip-when-elided="true" name="btnSave" />
+            </uie:Toolbar>
+            <ui:VisualElement name="rightContent" style="flex-grow: 1;">
+                <CatBehaviour.Editor.BehaviourTreeGraphView focusable="true" name="graphView" style="flex-grow: 1;" />
+            </ui:VisualElement>
         </ui:VisualElement>
     </CatBehaviour.Editor.SplitView>
 </ui:UXML>
