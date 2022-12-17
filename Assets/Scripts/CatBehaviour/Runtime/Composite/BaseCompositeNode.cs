@@ -28,6 +28,7 @@ namespace CatBehaviour.Runtime
             }
             
             node.ParentNode = this;
+            node.Owner = Owner;
             Children.Add(node);
         }
 
@@ -46,6 +47,7 @@ namespace CatBehaviour.Runtime
         /// <inheritdoc />
         public override void ClearChild()
         {
+            ChildIdList.Clear();
             foreach (var child in Children)
             {
                 child.ParentNode = null;
@@ -54,7 +56,7 @@ namespace CatBehaviour.Runtime
         }
         
         /// <inheritdoc />
-        public override void CollectChildToAllNodes(Action<BaseNode> action)
+        public override void ForeachChild(Action<BaseNode> action)
         {
             foreach (var child in Children)
             {

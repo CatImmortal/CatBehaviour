@@ -28,7 +28,7 @@ namespace CatBehaviour.Runtime
         }
 
         /// <inheritdoc />
-        public sealed override void CollectChildToAllNodes(Action<BaseNode> action)
+        public sealed override void ForeachChild(Action<BaseNode> action)
         {
                
         }

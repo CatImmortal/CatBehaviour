@@ -67,7 +67,7 @@ namespace CatBehaviour.Editor
             //根据节点类型处理端口
             if (!(runtimeNode is RootNode))
             {
-                inputPort = Port.Create<Edge>(Orientation.Vertical, Direction.Input, Port.Capacity.Multi, typeof(Port));
+                inputPort = Port.Create<Edge>(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(Port));
                 inputPort.portName = "父节点";
                 inputPort.portColor = Color.cyan;
                 //inputPort.style.flexDirection = FlexDirection.Column;
@@ -96,6 +96,11 @@ namespace CatBehaviour.Editor
             outputPort.portColor = Color.red;
             //outputPort.style.flexDirection = FlexDirection.Column;
             outputContainer.Add(outputPort);
+        }
+
+        public override string ToString()
+        {
+            return RuntimeNode.ToString();
         }
     }
 }

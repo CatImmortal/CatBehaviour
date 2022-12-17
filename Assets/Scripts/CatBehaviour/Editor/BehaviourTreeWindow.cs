@@ -19,7 +19,23 @@ namespace CatBehaviour.Editor
         [MenuItem("CatBehaviour/打开行为树窗口")]
         public static void Open()
         {
-            Open(null);
+            //设置序列化器
+            var types = TypeCache.GetTypesDerivedFrom<IStringSerializer>();
+            if (types.Count > 0)
+            {
+                var stringSerializer = (IStringSerializer)Activator.CreateInstance(types[0]);
+                BehaviourTree.StringSerializer = stringSerializer;
+            }
+            
+            var json = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/BT_Test.json");
+            BehaviourTree bt = null;
+            if (json)
+            {
+               bt = BehaviourTree.Deserialize(json.text);
+            }
+           
+            
+            Open(bt);
         }
 
         public static void Open(BehaviourTree bt)
@@ -30,14 +46,6 @@ namespace CatBehaviour.Editor
 
         public void CreateGUI()
         {
-            //设置序列化器
-            var types = TypeCache.GetTypesDerivedFrom<IStringSerializer>();
-            if (types.Count > 0)
-            {
-                var stringSerializer = (IStringSerializer)Activator.CreateInstance(types[0]);
-                BehaviourTree.StringSerializer = stringSerializer;
-            }
-
             VisualElement root = rootVisualElement;
 
             var visualTree =
@@ -56,11 +64,16 @@ namespace CatBehaviour.Editor
         {
             bt = source;
 
-            //若传入的行为树为空则创建
+            //若传入的行为树为空则创建个默认的
             if (bt == null)
             {
                 bt = new BehaviourTree();
-                bt.RootNode.Position = new Vector2(position.position.x + 100, position.position.y + 100);
+                bt.RootNode = new RootNode
+                {
+                    Position = new Vector2(position.position.x + 100, position.position.y + 100),
+                    Owner = bt
+                };
+                bt.AllNodes.Add(bt.RootNode);
             }
 
             graphView = rootVisualElement.Q<BehaviourTreeGraphView>("graphView");
@@ -72,31 +85,47 @@ namespace CatBehaviour.Editor
         /// </summary>
         private void Save()
         {
+            bt.AllNodes.Clear();
+            
             foreach (Node element in graphView.nodes)
             {
-                //遍历所有节点图中的行为树节点 刷新位置信息 重建RuntimeNode间的父子关系
-                if (element is BehaviourTreeNode node)
+                BehaviourTreeNode node = (BehaviourTreeNode) element;
+                
+                //添加到allNodes里
+                bt.AllNodes.Add(node.RuntimeNode);
+                node.RuntimeNode.Id = bt.AllNodes.Count;
+                    
+                //刷新位置
+                node.RuntimeNode.Position = node.GetPosition().position;
+
+                //清空父子关系
+                node.RuntimeNode.ParentNodeId = 0;
+                node.RuntimeNode.ParentNode = null;
+                node.RuntimeNode.ClearChild();
+            }
+
+            foreach (Node element in graphView.nodes)
+            {
+                //刷新父子关系
+                
+                BehaviourTreeNode node = (BehaviourTreeNode) element;
+                if (node.inputContainer.childCount == 0)
                 {
-                    node.RuntimeNode.Position = node.GetPosition().position;
-
-                    node.RuntimeNode.ParentNode = null;
-                    node.RuntimeNode.ClearChild();
-                    Debug.Log($"当前节点：{node.RuntimeNode.GetType().Name}");
-
-                    //向父节点的连接
-                    if (node.inputContainer.childCount > 0)
-                    {
-                        Port inputPort = (Port)node.inputContainer[0];
-                        Edge inputEdge = inputPort.connections.FirstOrDefault();
-                        if (inputEdge != null)
-                        {
-                            var parent = (BehaviourTreeNode)inputEdge.output.node;
-                            Debug.Log($"父节点：{parent.RuntimeNode.GetType().Name}");
-
-                            parent.RuntimeNode.AddChild(node.RuntimeNode);
-                        }
-                    }
+                    continue;
                 }
+                
+                Port inputPort = (Port)node.inputContainer[0];
+                Edge inputEdge = inputPort.connections.FirstOrDefault();
+                if (inputEdge == null)
+                {
+                    continue;
+                }
+                
+                //向父节点添加自身为其子节点
+                var parent = (BehaviourTreeNode)inputEdge.output.node;
+                parent.RuntimeNode.AddChild(node.RuntimeNode);
+                
+              
             }
             
             string json = bt.Serialize();

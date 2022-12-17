@@ -17,11 +17,6 @@ namespace CatBehaviour.Editor
         private BehaviourTree bt;
         private BehaviourTreeWindow window;
 
-        /// <summary>
-        /// 行为树节点 -> 节点图节点
-        /// </summary>
-        private Dictionary<BaseNode, BehaviourTreeNode> nodeDict = new Dictionary<BaseNode, BehaviourTreeNode>();
-        
         public BehaviourTreeGraphView()
         {
             Insert(0, new GridBackground());  //格子背景
@@ -34,7 +29,7 @@ namespace CatBehaviour.Editor
             this.AddManipulator(new SelectionDragger());  //节点可拖动
             this.AddManipulator(new ContentDragger());  //节点图可移动
             this.AddManipulator(new RectangleSelector());  //可框选多个节点
-
+            
             //graphViewChanged += OnGraphViewChanged;
         }
 
@@ -137,49 +132,63 @@ namespace CatBehaviour.Editor
         /// </summary>
         private void BuildGraphView()
         {
-            CreateGraphNode(bt.RootNode);
+            Dictionary<BaseNode, BehaviourTreeNode> nodeDict = new Dictionary<BaseNode, BehaviourTreeNode>();
+            
+            //创建节点
+            CreateGraphNode(nodeDict);
+            
+            //根据父子关系连线
+            BuildConnect(nodeDict);
         }
-
+        
         /// <summary>
         /// 创建节点图节点
         /// </summary>
-        private void CreateGraphNode(BaseNode node)
+        private void CreateGraphNode(Dictionary<BaseNode, BehaviourTreeNode> nodeDict)
         {
-            if (node == null)
+            foreach (BaseNode node in bt.AllNodes)
             {
-                return;
+                BehaviourTreeNode graphNode = new BehaviourTreeNode();
+                graphNode.Init(node);
+                AddElement(graphNode);
+                nodeDict.Add(node,graphNode);
             }
-            
-            BehaviourTreeNode graphNode = new BehaviourTreeNode();
-            graphNode.Init(node);
-            nodeDict.Add(node,graphNode);
-
-            AddElement(graphNode);
-            
-            if (node is BaseActionNode)
-            {
-                //动作节点 无子节点 直接返回
-                return;
-            }
-
-            if (node is BaseCompositeNode compositeNode)
-            {
-                //复合节点
-                foreach (BaseNode child in compositeNode.Children)
-                {
-                    CreateGraphNode(child);
-                }
-                return;
-            }
-
-            if (node is BaseDecoratorNode decoratorNode)
-            {
-                //装饰节点
-                CreateGraphNode(decoratorNode.Child);
-            }
-            
-            
         }
+
+                
+        /// <summary>
+        /// 构建节点连接
+        /// </summary>
+        private void BuildConnect(Dictionary<BaseNode, BehaviourTreeNode> nodeDict)
+        {
+            foreach (BaseNode node in bt.AllNodes)
+            {
+                BehaviourTreeNode graphNode = nodeDict[node];
+                if (graphNode.outputContainer.childCount == 0)
+                {
+                    //没有子节点 跳过
+                    continue;
+                }
+                
+                Port selfOutput = (Port)graphNode.outputContainer[0];
+                
+                //与当前节点的子节点进行连线
+                node.ForeachChild((child =>
+                {
+                    if (child == null)
+                    {
+                        return;
+                    }
+                
+                    BehaviourTreeNode graphChildNode = nodeDict[child];
+                
+                    Port childInput = (Port)graphChildNode.inputContainer[0];
+                    Edge edge = selfOutput.ConnectTo(childInput);
+                    AddElement(edge);
+                }));
+            }
+        }
+
         
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
         {

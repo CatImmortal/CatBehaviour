@@ -37,7 +37,8 @@ namespace CatBehaviour.Runtime
             {
                 return;
             }
-            
+
+            ChildId = 0;
             node.ParentNode = null;
             Child = null;
         }
@@ -49,7 +50,7 @@ namespace CatBehaviour.Runtime
         }
         
         /// <inheritdoc />
-        public override void CollectChildToAllNodes(Action<BaseNode> action)
+        public override void ForeachChild(Action<BaseNode> action)
         {
             action?.Invoke(Child);
         }

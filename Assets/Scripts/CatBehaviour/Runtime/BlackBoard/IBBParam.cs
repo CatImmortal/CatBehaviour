@@ -1,6 +1,6 @@
 ﻿namespace CatBehaviour.Runtime
 {
-    public class BlackBoard
+    public class IBBParam
     {
         
     }

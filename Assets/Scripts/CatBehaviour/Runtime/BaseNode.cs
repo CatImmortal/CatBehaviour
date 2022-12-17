@@ -48,6 +48,11 @@ namespace CatBehaviour.Runtime
         /// </summary>
         [NonSerialized]
         public BehaviourTree Owner;
+
+        /// <summary>
+        /// 黑板
+        /// </summary>
+        public BlackBoard BlackBoard => Owner.BlackBoard;
         
         /// <summary>
         /// 父节点ID
@@ -59,7 +64,7 @@ namespace CatBehaviour.Runtime
         /// </summary>
         [NonSerialized] 
         public BaseNode ParentNode;
-
+        
         /// <summary>
         /// 添加子节点
         /// </summary>
@@ -76,9 +81,9 @@ namespace CatBehaviour.Runtime
         public abstract void ClearChild();
 
         /// <summary>
-        /// 收集子节点到AllNodes
+        /// 遍历子节点
         /// </summary>
-        public abstract void CollectChildToAllNodes(Action<BaseNode> action);
+        public abstract void ForeachChild(Action<BaseNode> action);
 
         /// <summary>
         /// 排序子节点
@@ -156,5 +161,10 @@ namespace CatBehaviour.Runtime
         /// 子节点运行结束时
         /// </summary>
         protected abstract void OnChildFinished(BaseNode child,bool success);
+
+        public override string ToString()
+        {
+            return GetType().Name;
+        }
     }
 }

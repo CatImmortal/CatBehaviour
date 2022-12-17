@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace CatJson
 {
@@ -107,7 +108,10 @@ namespace CatJson
                     
                     rs = parser.Lexer.GetNextTokenByType(TokenType.String); //RealType Value
                     realType = TypeUtil.GetRealType(type, rs.ToString());  //获取真实类型
-
+                    if (realType == null)
+                    {
+                        Debug.LogError($"{type.Name}的多态真实类型获取失败");
+                    }
                     return true;
                 }
                
