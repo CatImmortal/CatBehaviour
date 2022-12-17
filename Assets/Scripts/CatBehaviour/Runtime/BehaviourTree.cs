@@ -106,11 +106,7 @@ namespace CatBehaviour.Runtime
             RootNodeId = RootNode.Id;
             foreach (BaseNode node in AllNodes)
             {
-                if (node.ParentNode != null)
-                {
-                    node.ParentNodeId = node.ParentNode.Id;
-                }
-                node.RecordChildId();
+                node.RebuildId();
             }
         }
 
@@ -150,13 +146,7 @@ namespace CatBehaviour.Runtime
             foreach (BaseNode node in AllNodes)
             {
                 node.Owner = this;
-                
-                if (node.ParentNodeId > 0)
-                {
-                    node.ParentNode = GetNode(node.ParentNodeId);
-                }
-                
-                node.RebuildChildReference();
+                node.RebuildReference();
             }
         }
         

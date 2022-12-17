@@ -42,13 +42,7 @@ namespace CatBehaviour.Runtime
             node.ParentNode = null;
             Child = null;
         }
-        
-        /// <inheritdoc />
-        public override void ClearChild()
-        {
-            RemoveChild(Child);
-        }
-        
+
         /// <inheritdoc />
         public override void ForeachChild(Action<BaseNode> action)
         {
@@ -56,8 +50,16 @@ namespace CatBehaviour.Runtime
         }
         
         /// <inheritdoc />
-        public override void RecordChildId()
+        public override void ClearIdAndReference()
         {
+            RemoveChild(Child);
+        }
+        
+        /// <inheritdoc />
+        public override void RebuildId()
+        {
+            base.RebuildId();
+            
             if (Child != null)
             {
                 ChildId = Child.Id;
@@ -65,9 +67,10 @@ namespace CatBehaviour.Runtime
         }
 
         /// <inheritdoc />
-        public override void RebuildChildReference()
+        public override void RebuildReference()
         {
-            Child = Owner.GetNode(ChildId);
+            BaseNode child = Owner.GetNode(ChildId);
+            AddChild(child);
         }
     }
 }

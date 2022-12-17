@@ -99,9 +99,7 @@ namespace CatBehaviour.Editor
                 node.RuntimeNode.Position = node.GetPosition().position;
 
                 //清空父子关系
-                node.RuntimeNode.ParentNodeId = 0;
-                node.RuntimeNode.ParentNode = null;
-                node.RuntimeNode.ClearChild();
+                node.RuntimeNode.ClearIdAndReference();
             }
 
             foreach (Node element in graphView.nodes)

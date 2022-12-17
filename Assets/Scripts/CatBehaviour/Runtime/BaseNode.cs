@@ -76,11 +76,6 @@ namespace CatBehaviour.Runtime
         public abstract void RemoveChild(BaseNode node);
 
         /// <summary>
-        /// 清空子节点
-        /// </summary>
-        public abstract void ClearChild();
-
-        /// <summary>
         /// 遍历子节点
         /// </summary>
         public abstract void ForeachChild(Action<BaseNode> action);
@@ -92,16 +87,31 @@ namespace CatBehaviour.Runtime
         {
             
         }
+
+        /// <summary>
+        /// 清空对父子节点的Id索引和引用
+        /// </summary>
+        public virtual void ClearIdAndReference()
+        {
+            ParentNodeId = 0;
+            ParentNode = null;
+        }
         
         /// <summary>
-        /// 记录对子节点的Id索引
+        /// 重建对父子节点的Id索引
         /// </summary>
-        public abstract void RecordChildId();
-        
+        public virtual void RebuildId()
+        {
+            if (ParentNode != null)
+            {
+                ParentNodeId = ParentNode.Id;
+            }
+        }
+
         /// <summary>
-        /// 重建对子节点的引用
+        /// 重建对父子节点的引用
         /// </summary>
-        public abstract void RebuildChildReference();
+        public abstract void RebuildReference();
 
         /// <summary>
         /// 开始运行节点

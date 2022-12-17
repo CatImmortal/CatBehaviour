@@ -22,27 +22,27 @@ namespace CatBehaviour.Runtime
         }
 
         /// <inheritdoc />
-        public sealed override void ClearChild()
-        {
-            
-        }
-
-        /// <inheritdoc />
         public sealed override void ForeachChild(Action<BaseNode> action)
         {
                
         }
-
+        
         /// <inheritdoc />
-        public sealed override void RecordChildId()
+        public sealed override void ClearIdAndReference()
         {
-            
+            base.ClearIdAndReference();
         }
 
         /// <inheritdoc />
-        public sealed override void RebuildChildReference()
+        public sealed override void RebuildId()
         {
-            
+            base.RebuildId();
+        }
+
+        /// <inheritdoc />
+        public sealed override void RebuildReference()
+        {
+
         }
 
         /// <inheritdoc />
