@@ -14,6 +14,7 @@ namespace CatBehaviour.Editor
     public class BehaviourTreeWindow : EditorWindow
     {
         private BehaviourTree bt;
+        private InspectorView inspector;
         private BehaviourTreeGraphView graphView;
 
         [MenuItem("CatBehaviour/打开行为树窗口")]
@@ -55,6 +56,8 @@ namespace CatBehaviour.Editor
 
             var btnSave = root.Q<Button>("btnSave");
             btnSave.clicked += Save;
+
+            inspector = root.Q<InspectorView>("inspector");
         }
 
         /// <summary>
@@ -63,7 +66,7 @@ namespace CatBehaviour.Editor
         private void Init(BehaviourTree source)
         {
             bt = source;
-
+            
             //若传入的行为树为空则创建个默认的
             if (bt == null)
             {
@@ -130,6 +133,14 @@ namespace CatBehaviour.Editor
 
             File.WriteAllText("Assets/BT_Test.json", json);
             AssetDatabase.Refresh();
+        }
+
+        /// <summary>
+        /// 节点被点击时的回调
+        /// </summary>
+        public void OnNodeClick(BehaviourTreeNode node)
+        {
+            inspector.DrawInspector(node);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace CatBehaviour.Runtime
 {
@@ -176,5 +177,25 @@ namespace CatBehaviour.Runtime
         {
             return GetType().Name;
         }
+
+#if UNITY_EDITOR
+        
+        /// <summary>
+        /// 基于UIElements绘制节点属性面板
+        /// </summary>
+        public virtual void CreateGUI(VisualElement contentContainer)
+        {
+
+        }
+
+        /// <summary>
+        /// 基于IMGUI绘制节点属性面板
+        /// </summary>
+        public virtual void OnGUI()
+        {
+            
+        }
+        
+#endif
     }
 }

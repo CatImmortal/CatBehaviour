@@ -1,4 +1,11 @@
-﻿namespace CatBehaviour.Runtime
+﻿using UnityEngine.UIElements;
+
+#if UNITY_EDITOR
+using UnityEditor.UIElements;
+using UnityEngine;
+#endif
+
+namespace CatBehaviour.Runtime
 {
     /// <summary>
     /// 延时节点
@@ -35,5 +42,25 @@
                 Finish(true);
             }
         }
+
+#if UNITY_EDITOR
+        
+        /// <inheritdoc />
+        public override void CreateGUI(VisualElement contentContainer)
+        {
+            Debug.Log(this);
+            FloatField floatField = new FloatField("延时时间")
+            {
+                value = DelayTime
+            };
+            contentContainer.Add(floatField);
+
+            floatField.RegisterValueChangedCallback((evt =>
+            {
+                DelayTime = evt.newValue;
+            }));
+        }
+
+#endif
     }
 }

@@ -40,13 +40,13 @@ namespace CatBehaviour.Editor
             
             entries.Add(new SearchTreeGroupEntry(new GUIContent("行为树节点"),0));
             
-            entries.Add(new SearchTreeGroupEntry(new GUIContent("复合"),1));
+            entries.Add(new SearchTreeGroupEntry(new GUIContent("复合节点"),1));
             AddNodeOptions<BaseCompositeNode>(entries);
             
-            entries.Add(new SearchTreeGroupEntry(new GUIContent("装饰"),1));
+            entries.Add(new SearchTreeGroupEntry(new GUIContent("装饰节点"),1));
             AddNodeOptions<BaseDecoratorNode>(entries);
             
-            entries.Add(new SearchTreeGroupEntry(new GUIContent("动作"),1));
+            entries.Add(new SearchTreeGroupEntry(new GUIContent("动作节点"),1));
             AddNodeOptions<BaseActionNode>(entries);
 
 
@@ -86,7 +86,7 @@ namespace CatBehaviour.Editor
             //创建node
             BaseNode runtimeNode = Activator.CreateInstance(type) as BaseNode;
             BehaviourTreeNode node = new BehaviourTreeNode();
-            node.Init(runtimeNode);
+            node.Init(runtimeNode,window);
             
             //将节点创建在鼠标的位置里
             Vector2 windowMousePosition = graphView.ChangeCoordinatesTo(graphView.parent, context.screenMousePosition - window.position.position);

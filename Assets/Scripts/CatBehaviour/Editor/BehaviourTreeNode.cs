@@ -38,7 +38,10 @@ namespace CatBehaviour.Editor
             return name;
         }
         
-        public void Init(BaseNode runtimeNode)
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        public void Init(BaseNode runtimeNode,BehaviourTreeWindow window)
         {
             RuntimeNode = runtimeNode;
 
@@ -64,6 +67,15 @@ namespace CatBehaviour.Editor
             nodeBorder.Add(titleContainer);
             nodeBorder.Add(bottomContainer);
 
+            //注册点击事件
+            RegisterCallback<MouseDownEvent>((evt =>
+            {
+                if (evt.button == 0)
+                {
+                    window.OnNodeClick(this);
+                }
+            }));
+            
             //根据节点类型处理端口
             if (!(runtimeNode is RootNode))
             {
@@ -96,6 +108,8 @@ namespace CatBehaviour.Editor
             outputPort.portColor = Color.red;
             outputPort.style.flexDirection = FlexDirection.ColumnReverse;
             outputContainer.Add(outputPort);
+            
+
         }
 
         public override string ToString()

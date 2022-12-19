@@ -16,7 +16,8 @@ namespace CatBehaviour.Editor
         
         private BehaviourTree bt;
         private BehaviourTreeWindow window;
-
+        public Blackboard Blackboard;
+        
         public BehaviourTreeGraphView()
         {
             Insert(0, new GridBackground());  //格子背景
@@ -31,81 +32,11 @@ namespace CatBehaviour.Editor
             this.AddManipulator(new RectangleSelector());  //可框选多个节点
             
             //graphViewChanged += OnGraphViewChanged;
+            
+
         }
 
-        /// <summary>
-        /// 节点图发生变化时的回调
-        /// </summary>
-        private GraphViewChange OnGraphViewChanged(GraphViewChange graphViewChange)
-        {
-            // if (bt == null)
-            // {
-            //     return graphViewChange;
-            // }
-            //
-            // void RemoveNode(BaseNode node)
-            // {
-            //     //删除节点 解除此节点相关的父子关系
-            //     node.ParenNode.RemoveChild(node);
-            //     
-            //     if (node is BaseDecoratorNode decoratorNode)
-            //     {
-            //         decoratorNode.RemoveChild(decoratorNode.Child);
-            //     }else if (node is BaseCompositeNode compositeNode)
-            //     {
-            //         for (int i =   - 1; i >= 0; i--)
-            //         {
-            //             
-            //         }
-            //     }
-            // }
-            //
-            // //节点或线被删除了
-            // if (graphViewChange.elementsToRemove != null)
-            // {
-            //     for (int i = graphViewChange.elementsToRemove.Count - 1; i >= 0; i--)
-            //     {
-            //         var element = graphViewChange.elementsToRemove[i];
-            //
-            //         if (element is BehaviourTreeNode node)
-            //         {
-            //             if (node.RuntimeNode is RootNode)
-            //             {
-            //                 //根节点不允许删除
-            //                 graphViewChange.elementsToRemove.RemoveAt(i);
-            //             }
-            //             else
-            //             {
-            //                 //删除节点
-            //                 node.RuntimeNode.ParenNode.RemoveChild(node.RuntimeNode);
-            //                 
-            //             }
-            //         }else if (element is Edge edge)
-            //         {
-            //             //解除父子节点关系
-            //             node = (BehaviourTreeNode)edge.output.node;
-            //             node.RuntimeNode.ParenNode.RemoveChild(node.RuntimeNode);
-            //         }
-            //         
-            //     }
-            // }
-            //
-            // //节点和节点连线了
-            // if (graphViewChange.edgesToCreate != null)
-            // {
-            //     foreach (Edge edge in graphViewChange.edgesToCreate)
-            //     {
-            //         var parentNode = (BehaviourTreeNode)edge.output.node;
-            //         var childNode = (BehaviourTreeNode)edge.input.node;
-            //         parentNode.RuntimeNode.AddChild(childNode.RuntimeNode);
-            //     }
-            // }
 
-
-
-            return graphViewChange;
-        }
-        
         /// <summary>
         /// 初始化
         /// </summary>
@@ -124,9 +55,44 @@ namespace CatBehaviour.Editor
                 SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), searchWindowProvider);
             };
             
+            CreateMiniMap();
+            CreateBlackBoard();
             BuildGraphView();
         }
 
+        /// <summary>
+        /// 创建小地图
+        /// </summary>
+        private void CreateMiniMap()
+        {
+            // var miniMap = new MiniMap ();
+            // var cords = contentViewContainer.WorldToLocal(new Vector2(window.position.width - 10, 30));
+            // miniMap.SetPosition(new Rect(cords.x, cords.y, 200, 140));
+            // Add(miniMap);
+        }
+        
+        /// <summary>
+        /// 创建黑板
+        /// </summary>
+        private void CreateBlackBoard()
+        {
+            // Blackboard = new Blackboard(this);
+            // Blackboard.Add(new BlackboardSection(){title = "黑板变量"});
+            // Blackboard.SetPosition(new Rect(10,30,200,300)); 
+            // Add(Blackboard);
+            //
+            // Blackboard.addItemRequested = blackboard =>
+            // {
+            //
+            // };
+            //
+            // Blackboard.editTextRequested = (blackboard, element, newValue) =>
+            // {
+            //
+            // };
+
+        }
+        
         /// <summary>
         /// 构建行为树节点图
         /// </summary>
@@ -149,7 +115,7 @@ namespace CatBehaviour.Editor
             foreach (BaseNode node in bt.AllNodes)
             {
                 BehaviourTreeNode graphNode = new BehaviourTreeNode();
-                graphNode.Init(node);
+                graphNode.Init(node,window);
                 AddElement(graphNode);
                 nodeDict.Add(node,graphNode);
             }
