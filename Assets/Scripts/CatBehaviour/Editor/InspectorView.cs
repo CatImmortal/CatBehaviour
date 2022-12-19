@@ -24,6 +24,7 @@ namespace CatBehaviour.Editor
             
             IMGUIContainer imguiContainer = new IMGUIContainer(){};
             imguiContainer.onGUIHandler = node.RuntimeNode.OnGUI;
+            Add(imguiContainer);
         }
     }
 }

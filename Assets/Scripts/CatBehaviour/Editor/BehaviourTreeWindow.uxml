@@ -1,15 +1,16 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <CatBehaviour.Editor.SplitView style="flex-direction: row; flex-grow: 1; flex-shrink: 0;">
-        <ui:VisualElement name="left" style="width: 80px; flex-grow: 1;">
-            <uie:Toolbar style="align-items: center; justify-content: center;">
-                <ui:Label text="节点属性" display-tooltip-when-elided="true" style="flex-grow: 0; left: auto;" />
+    <CatBehaviour.Editor.SplitView style="flex-direction: row; flex-grow: 1; flex-shrink: 0; opacity: 1;">
+        <ui:VisualElement name="left" style="width: 30%;">
+            <uie:Toolbar style="justify-content: center;">
+                <ui:Label text="节点属性" display-tooltip-when-elided="true" />
             </uie:Toolbar>
             <ui:VisualElement name="leftContent" style="flex-grow: 1;">
                 <CatBehaviour.Editor.InspectorView name="inspector" style="flex-grow: 1;" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="right" style="width: 80%;">
-            <uie:Toolbar style="flex-direction: row-reverse;">
+        <ui:VisualElement name="right" style="width: 70%;">
+            <uie:Toolbar style="justify-content: space-between;">
+                <ui:Label text="文件名：" display-tooltip-when-elided="true" name="labelAssetPath" />
                 <ui:Button text="保存" display-tooltip-when-elided="true" name="btnSave" />
             </uie:Toolbar>
             <ui:VisualElement name="rightContent" style="flex-grow: 1;">

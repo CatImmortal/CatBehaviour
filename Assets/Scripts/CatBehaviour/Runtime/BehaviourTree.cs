@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 
 namespace CatBehaviour.Runtime
@@ -14,6 +15,11 @@ namespace CatBehaviour.Runtime
         /// 字符串序列化器
         /// </summary>
         public static IStringSerializer StringSerializer { get; set; }
+        
+        /// <summary>
+        /// 二进制序列化器
+        /// </summary>
+        public static IBinarySerializer BinarySerializer { get; set; }
 
         /// <summary>
         /// 根节点ID
@@ -69,26 +75,6 @@ namespace CatBehaviour.Runtime
         public static void OnUpdate(float deltaTime)
         {
             UpdateManager.OnUpdate(deltaTime);
-        }
-        
-        /// <summary>
-        /// 序列化为字符串
-        /// </summary>
-        public string Serialize()
-        {
-            PreProcessSerialize();
-            string str = StringSerializer.Serialize(this);
-            return str;
-        }
-        
-        /// <summary>
-        /// 从字符串反序列化
-        /// </summary>
-        public static BehaviourTree Deserialize(string str)
-        {
-            var bt = StringSerializer.Deserialize(str);
-            bt.PostProcessDeserialize();
-            return bt;
         }
 
         /// <summary>
@@ -151,6 +137,56 @@ namespace CatBehaviour.Runtime
         }
         
        
+        /// <summary>
+        /// 序列化为字符串
+        /// </summary>
+        public string SerializeToString()
+        {
+            if (StringSerializer == null)
+            {
+                Debug.LogError("试图将行为树序列化为字符串，但未设置对应的序列化器");
+                return null;
+            }
+            
+            PreProcessSerialize();
+            string str = StringSerializer.Serialize(this);
+            return str;
+        }
+        
+        /// <summary>
+        /// 从字符串反序列化
+        /// </summary>
+        public static BehaviourTree Deserialize(string str)
+        {
+            var bt = StringSerializer.Deserialize(str);
+            bt.PostProcessDeserialize();
+            return bt;
+        }
+
+        /// <summary>
+        /// 序列化为二进制
+        /// </summary>
+        public byte[] SerializeToBinary()
+        {
+            if (BinarySerializer == null)
+            {
+                Debug.LogError("试图将行为树序列化为二进制，但未设置对应的序列化器");
+                return null;
+            }   
+            PreProcessSerialize();
+            byte[] bytes = BinarySerializer.Serialize(this);
+            return bytes;
+        }
+
+        /// <summary>
+        /// 从二进制反序列化
+        /// </summary>
+        public static BehaviourTree Deserialize(byte[] bytes)
+        {
+            var bt = BinarySerializer.Deserialize(bytes);
+            bt.PostProcessDeserialize();
+            return bt;
+        }
     }
 
 }

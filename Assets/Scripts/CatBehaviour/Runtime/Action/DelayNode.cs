@@ -1,8 +1,9 @@
 ﻿using UnityEngine.UIElements;
+using UnityEngine;
 
 #if UNITY_EDITOR
+using UnityEditor;
 using UnityEditor.UIElements;
-using UnityEngine;
 #endif
 
 namespace CatBehaviour.Runtime
@@ -46,21 +47,11 @@ namespace CatBehaviour.Runtime
 #if UNITY_EDITOR
         
         /// <inheritdoc />
-        public override void CreateGUI(VisualElement contentContainer)
+        public override void OnGUI()
         {
-            Debug.Log(this);
-            FloatField floatField = new FloatField("延时时间")
-            {
-                value = DelayTime
-            };
-            contentContainer.Add(floatField);
-
-            floatField.RegisterValueChangedCallback((evt =>
-            {
-                DelayTime = evt.newValue;
-            }));
+            DelayTime = EditorGUILayout.FloatField("延时时间", DelayTime);
         }
-
+        
 #endif
     }
 }
