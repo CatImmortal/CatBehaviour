@@ -68,9 +68,9 @@ namespace CatBehaviour.Editor
             if (!(runtimeNode is RootNode))
             {
                 inputPort = Port.Create<Edge>(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(Port));
-                inputPort.portName = "父节点";
+                inputPort.portName = "    ";
                 inputPort.portColor = Color.cyan;
-                //inputPort.style.flexDirection = FlexDirection.Column;
+                inputPort.style.flexDirection = FlexDirection.Column;
                 inputContainer.Add(inputPort);
             }
 
@@ -92,9 +92,9 @@ namespace CatBehaviour.Editor
                 throw new Exception($"行为树节点类型无效，不是3种基础节点类型的派生之一：{title}");
             }
             outputPort = Port.Create<Edge>(Orientation.Vertical, Direction.Output, outputCount, typeof(Port));
-            outputPort.portName = "子节点";
+            outputPort.portName = "    ";
             outputPort.portColor = Color.red;
-            //outputPort.style.flexDirection = FlexDirection.Column;
+            outputPort.style.flexDirection = FlexDirection.ColumnReverse;
             outputContainer.Add(outputPort);
         }
 

@@ -15,6 +15,8 @@ namespace CatBehaviour.Editor
     {
         private BehaviourTreeWindow window;
         private BehaviourTreeGraphView graphView;
+
+        private Texture2D emptyIcon;
         
         /// <summary>
         /// 初始化
@@ -23,6 +25,10 @@ namespace CatBehaviour.Editor
         {
             this.window = window;
             this.graphView = graphView;
+
+            emptyIcon = new Texture2D(1, 1);
+            emptyIcon.SetPixel(0,0,new Color(0,0,0,0));
+            emptyIcon.Apply();
         }
         
         /// <summary>
@@ -34,13 +40,13 @@ namespace CatBehaviour.Editor
             
             entries.Add(new SearchTreeGroupEntry(new GUIContent("行为树节点"),0));
             
-            entries.Add(new SearchTreeGroupEntry(new GUIContent("复合节点"),1));
+            entries.Add(new SearchTreeGroupEntry(new GUIContent("复合"),1));
             AddNodeOptions<BaseCompositeNode>(entries);
             
-            entries.Add(new SearchTreeGroupEntry(new GUIContent("装饰节点"),1));
+            entries.Add(new SearchTreeGroupEntry(new GUIContent("装饰"),1));
             AddNodeOptions<BaseDecoratorNode>(entries);
             
-            entries.Add(new SearchTreeGroupEntry(new GUIContent("动作节点"),1));
+            entries.Add(new SearchTreeGroupEntry(new GUIContent("动作"),1));
             AddNodeOptions<BaseActionNode>(entries);
 
 
@@ -68,7 +74,7 @@ namespace CatBehaviour.Editor
                     continue;
                 }
                 
-                entries.Add(new SearchTreeEntry(new GUIContent(BehaviourTreeNode.GetNodeName(type))) { level = 2, userData = type });
+                entries.Add(new SearchTreeEntry(new GUIContent(BehaviourTreeNode.GetNodeName(type),emptyIcon)) { level = 2, userData = type });
             }
         }
 

@@ -143,7 +143,7 @@ namespace CatBehaviour.Editor
         
         /// <summary>
         /// 创建节点图节点
-        /// </summary>
+        /// </summary >
         private void CreateGraphNode(Dictionary<BaseNode, BehaviourTreeNode> nodeDict)
         {
             foreach (BaseNode node in bt.AllNodes)
