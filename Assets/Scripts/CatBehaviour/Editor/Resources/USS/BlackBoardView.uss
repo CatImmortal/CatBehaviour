@@ -1,0 +1,69 @@
+BlackBoardPropertyView {
+	padding-left: 13px;
+}
+
+BlackBoardView #contentContainer {
+	padding-bottom: 12px;
+	padding-top: 2px;
+}
+
+BlackBoardView #titleLabel {
+	padding-left: 6px;
+}
+
+BlackBoardView #header Button {
+	margin-right: 6px;
+}
+
+BlackBoardParamKeyView #contentItem > Label {
+	padding-right: 0;
+	margin-right: 0;
+}
+
+BlackBoardParamKeyView .pill #contents > #top > #icon {
+	width: 4px;
+	height: 4px;
+	border-radius: 2px;
+	margin-top: 0px;
+	margin-left: 2px;
+}
+
+BlackBoardParamKeyView Image {
+	background-color: #ffffff;
+}
+
+.parameter-Bool {
+	background-color: #30FFFF;
+}
+
+.parameter-Float {
+	background-color: #2080FF;
+}
+
+.parameter-Int {
+	background-color: #325dff;
+}
+
+.parameter-Object {
+	background-color: #80FF00;
+}
+
+.parameter-String {
+	background-color: #80FF80;
+}
+
+.parameter-GameObject {
+	background-color: #FF0000;
+}
+
+.parameter-Color {
+	background-color: #FF00FF;
+}
+
+.parameter-AnimationCurve{
+	background-color: #FF0080;
+}
+
+.parameter-Gradient{
+	background-color: #FF8000;
+}

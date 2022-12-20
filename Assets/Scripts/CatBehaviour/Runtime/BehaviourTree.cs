@@ -43,7 +43,7 @@ namespace CatBehaviour.Runtime
         /// 黑板
         /// </summary>
         public BlackBoard BlackBoard { get; set; } = new BlackBoard();
-        
+
         /// <summary>
         /// 开始运行行为树
         /// </summary>

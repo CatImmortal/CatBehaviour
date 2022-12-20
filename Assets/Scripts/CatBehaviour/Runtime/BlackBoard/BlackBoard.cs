@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace CatBehaviour.Runtime
 {
@@ -10,31 +11,36 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 参数字典
         /// </summary>
-        private Dictionary<string, IBBParam> paramDict = new Dictionary<string, IBBParam>();
+        public Dictionary<string, BBParam> ParamDict = new Dictionary<string, BBParam>();
 
+        /// <summary>
+        /// 位置与大小
+        /// </summary>
+        public Rect Position = new Rect(10, 30, 350, 300);
+        
         /// <summary>
         /// 获取参数
         /// </summary>
         public BBParam<T> GetParam<T>(string key)
         {
-            paramDict.TryGetValue(key, out var param);
+            ParamDict.TryGetValue(key, out var param);
             return (BBParam<T>)param;
-        }
-
-        /// <summary>
-        /// 设置参数
-        /// </summary>
-        public void SetParam<T>(string key, BBParam<T> param)
-        {
-            paramDict[key] = param;
         }
         
         /// <summary>
         /// 设置参数
         /// </summary>
-        public void SetParam<T>(string key, T param)
+        public void SetParam(string key, BBParam param)
         {
-            paramDict[key] = new BBParam<T>(){Param = param};
+            ParamDict[key] = param;
+        }
+
+        /// <summary>
+        /// 移除参数
+        /// </summary>
+        public void RemoveParam(string key)
+        {
+            ParamDict.Remove(key);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CatBehaviour.Runtime;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
@@ -14,16 +15,22 @@ namespace CatBehaviour.Editor
     {
         public new class UxmlFactory : UxmlFactory<BehaviourTreeGraphView, UxmlTraits> { }
         
-        private BehaviourTree bt;
+        public BehaviourTree BT;
         private BehaviourTreeWindow window;
-        public Blackboard Blackboard;
+        public BlackBoardView BlackboardView;
+
+        /// <summary>
+        /// 黑板变化事件
+        /// </summary>
+        public event Action OnBlackBoardChanged;
         
         public BehaviourTreeGraphView()
         {
             Insert(0, new GridBackground());  //格子背景
             
             //添加背景网格样式
-            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Scripts/CatBehaviour/Editor/BehaviourTreeWindow.uss");
+            //var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Scripts/CatBehaviour/Editor/BehaviourTreeWindow.uss");
+            var styleSheet = Resources.Load<StyleSheet>("USS/BehaviourTreeWindow");
             styleSheets.Add(styleSheet);
 
             SetupZoom(ContentZoomer.DefaultMinScale, ContentZoomer.DefaultMaxScale);  //可缩放
@@ -43,7 +50,7 @@ namespace CatBehaviour.Editor
         public void Init(BehaviourTreeWindow window, BehaviourTree bt)
         {
             this.window = window;
-            this.bt = bt;
+            BT = bt;
             
             //节点创建时的搜索窗口
             var searchWindowProvider = ScriptableObject.CreateInstance<NodeSearchWindowProvider>();
@@ -54,7 +61,7 @@ namespace CatBehaviour.Editor
                 //打开搜索窗口
                 SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), searchWindowProvider);
             };
-            
+
             CreateMiniMap();
             CreateBlackBoard();
             BuildGraphView();
@@ -76,21 +83,12 @@ namespace CatBehaviour.Editor
         /// </summary>
         private void CreateBlackBoard()
         {
-            // Blackboard = new Blackboard(this);
-            // Blackboard.Add(new BlackboardSection(){title = "黑板变量"});
-            // Blackboard.SetPosition(new Rect(10,30,200,300)); 
-            // Add(Blackboard);
-            //
-            // Blackboard.addItemRequested = blackboard =>
-            // {
-            //
-            // };
-            //
-            // Blackboard.editTextRequested = (blackboard, element, newValue) =>
-            // {
-            //
-            // };
+            BlackBoardView blackBoardView = new BlackBoardView();
+            blackBoardView.Init(this);
+            blackBoardView.SetPosition(BT.BlackBoard.Position);
+            Add(blackBoardView);
 
+            BlackboardView = blackBoardView;
         }
         
         /// <summary>
@@ -112,7 +110,7 @@ namespace CatBehaviour.Editor
         /// </summary >
         private void CreateGraphNode(Dictionary<BaseNode, BehaviourTreeNode> nodeDict)
         {
-            foreach (BaseNode node in bt.AllNodes)
+            foreach (BaseNode node in BT.AllNodes)
             {
                 BehaviourTreeNode graphNode = new BehaviourTreeNode();
                 graphNode.Init(node,window);
@@ -127,7 +125,7 @@ namespace CatBehaviour.Editor
         /// </summary>
         private void BuildConnect(Dictionary<BaseNode, BehaviourTreeNode> nodeDict)
         {
-            foreach (BaseNode node in bt.AllNodes)
+            foreach (BaseNode node in BT.AllNodes)
             {
                 BehaviourTreeNode graphNode = nodeDict[node];
                 if (graphNode.outputContainer.childCount == 0)
@@ -173,6 +171,44 @@ namespace CatBehaviour.Editor
             }
             return compatiblePorts;
         
+        }
+
+        /// <summary>
+        /// 添加黑板参数
+        /// </summary>
+        public void AddBlackBoardParam(string key,Type type,object value = null)
+        {
+            BBParam bbParam = (BBParam)Activator.CreateInstance(type);
+            bbParam.ValueObj = value;
+            
+            BT.BlackBoard.SetParam(key,bbParam);
+
+            OnBlackBoardChanged?.Invoke();
+        }
+
+        /// <summary>
+        /// 移除黑板参数
+        /// </summary>
+        public void RemoveBlackBoardParam(string key)
+        {
+            BT.BlackBoard.RemoveParam(key);
+            OnBlackBoardChanged?.Invoke();
+        }
+
+        /// <summary>
+        /// 重命名黑板参数
+        /// </summary>
+        public void RenameBlackBoardParam(string oldKey, string newKey, BBParam param)
+        {
+            if (BT.BlackBoard.ParamDict.ContainsKey(newKey))
+            {
+                Debug.Log("重命名黑板key失败，已存在同名key");
+                return;
+            }
+            
+            BT.BlackBoard.RemoveParam(oldKey);
+            BT.BlackBoard.SetParam(newKey,param);
+            //OnBlackBoardChaged?.Invoke();
         }
     }
 }

@@ -53,12 +53,14 @@ namespace CatBehaviour.Editor
         {
             VisualElement root = rootVisualElement;
 
-            var visualTree =
-                AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(
-                    "Assets/Scripts/CatBehaviour/Editor/BehaviourTreeWindow.uxml");
+            // var visualTree =
+            //     AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(
+            //         "Assets/Scripts/CatBehaviour/Editor/BehaviourTreeWindow.uxml");
+            var visualTree = Resources.Load<VisualTreeAsset>("UXML/BehaviourTreeWindow");
             visualTree.CloneTree(root);
 
-            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Scripts/CatBehaviour/Editor/BehaviourTreeWindow.uss");
+            //var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Scripts/CatBehaviour/Editor/BehaviourTreeWindow.uss");
+            var styleSheet = Resources.Load<StyleSheet>("USS/BehaviourTreeWindow");
             root.styleSheets.Add(styleSheet);
 
             labelAssetPath = rootVisualElement.Q<Label>("labelAssetPath");
@@ -138,8 +140,8 @@ namespace CatBehaviour.Editor
                 }
             }
             
+            //收集节点
             bt.AllNodes.Clear();
-            
             foreach (Node element in graphView.nodes)
             {
                 BehaviourTreeNode node = (BehaviourTreeNode) element;
@@ -154,7 +156,6 @@ namespace CatBehaviour.Editor
                 //清空父子关系
                 node.RuntimeNode.ClearIdAndReference();
             }
-
             foreach (Node element in graphView.nodes)
             {
                 //刷新父子关系
@@ -179,6 +180,9 @@ namespace CatBehaviour.Editor
               
             }
 
+            //记录黑板位置
+            bt.BlackBoard.Position = graphView.BlackboardView.GetPosition();
+            
             var btSO = CreateInstance<BehaviourTreeSO>();
             btSO.BT = bt;
 
