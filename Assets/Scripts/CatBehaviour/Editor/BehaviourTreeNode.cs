@@ -13,10 +13,9 @@ namespace CatBehaviour.Editor
     public class BehaviourTreeNode : Node
     {
         public BaseNode RuntimeNode;
-        
         private Port inputPort;
         private Port outputPort;
-
+        
 
         
         /// <summary>
@@ -44,29 +43,7 @@ namespace CatBehaviour.Editor
         public void Init(BaseNode runtimeNode,BehaviourTreeWindow window)
         {
             RuntimeNode = runtimeNode;
-
-            //设置节点名和位置
-            Type nodeType = runtimeNode.GetType();
-            title = GetNodeName(nodeType);
-            SetPosition(new Rect(runtimeNode.Position,GetPosition().size));
-
-            //将端口方向改成垂直的
-            var titleButtonContainer = contentContainer.Q<VisualElement>("title-button-container");
-            titleButtonContainer.RemoveAt(0);  //删掉收起箭头 否则会有bug
             
-            var nodeBorder = contentContainer.Q<VisualElement>("node-border");
-            
-            var titleContainer = contentContainer.Q<VisualElement>("title");
-            var topContainer = this.Q("input");
-            var bottomContainer = this.Q("output");
-            
-            nodeBorder.RemoveAt(0);
-            nodeBorder.RemoveAt(0);
-            
-            nodeBorder.Add(topContainer);
-            nodeBorder.Add(titleContainer);
-            nodeBorder.Add(bottomContainer);
-
             //注册点击事件
             RegisterCallback<MouseDownEvent>((evt =>
             {
@@ -75,27 +52,68 @@ namespace CatBehaviour.Editor
                     window.OnNodeClick(this);
                 }
             }));
+
+            SetNameAndPos();
+            SetVertical();
+            AddPort();
+
+        }
+
+        /// <summary>
+        /// 设置节点名和位置
+        /// </summary>
+        private void SetNameAndPos()
+        {
+            Type nodeType = RuntimeNode.GetType();
+            title = GetNodeName(nodeType);
+            SetPosition(new Rect(RuntimeNode.Position,GetPosition().size));
+        }
+
+        /// <summary>
+        /// 将端口方向改成垂直的
+        /// </summary>
+        private void SetVertical()
+        {
+            var titleButtonContainer = contentContainer.Q<VisualElement>("title-button-container");
+            titleButtonContainer.RemoveAt(0);  //删掉收起箭头 否则会有bug
+
+            var titleContainer = contentContainer.Q<VisualElement>("title");
+            var topContainer = this.Q("input");
+            var bottomContainer = this.Q("output");
             
-            //根据节点类型处理端口
-            if (!(runtimeNode is RootNode))
+            var nodeBorder = contentContainer.Q<VisualElement>("node-border");
+            nodeBorder.RemoveAt(0);
+            nodeBorder.RemoveAt(0);
+            
+            nodeBorder.Add(topContainer);
+            nodeBorder.Add(titleContainer);
+            nodeBorder.Add(bottomContainer);
+        }
+        
+        /// <summary>
+        /// 根据节点类型添加端口
+        /// </summary>
+        private void AddPort()
+        {
+            if (!(RuntimeNode is RootNode))
             {
                 inputPort = Port.Create<Edge>(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(Port));
-                inputPort.portName = "父节点";
+                inputPort.portName = "";
                 inputPort.portColor = Color.cyan;
-                //inputPort.style.flexDirection = FlexDirection.Column;
+                inputPort.style.flexDirection = FlexDirection.Column;
                 inputContainer.Add(inputPort);
             }
 
-            if (runtimeNode is BaseActionNode)
+            if (RuntimeNode is BaseActionNode)
             {
                 return;
             }
             Port.Capacity outputCount;
-            if (runtimeNode is BaseCompositeNode)
+            if (RuntimeNode is BaseCompositeNode)
             {
                 outputCount = Port.Capacity.Multi;
                 
-            }else if (runtimeNode is BaseDecoratorNode)
+            }else if (RuntimeNode is BaseDecoratorNode)
             {
                 outputCount = Port.Capacity.Single;
             }
@@ -104,14 +122,24 @@ namespace CatBehaviour.Editor
                 throw new Exception($"行为树节点类型无效，不是3种基础节点类型的派生之一：{title}");
             }
             outputPort = Port.Create<Edge>(Orientation.Vertical, Direction.Output, outputCount, typeof(Port));
-            outputPort.portName = "子节点";
+            outputPort.portName = "";
             outputPort.portColor = Color.red;
-            //outputPort.style.flexDirection = FlexDirection.ColumnReverse;
+            outputPort.style.flexDirection = FlexDirection.ColumnReverse;
             outputContainer.Add(outputPort);
-            
 
         }
 
+        // /// <summary>
+        // /// 绘制节点属性
+        // /// </summary>
+        // private void DrawProperty()
+        // {
+        //     RuntimeNode.CreateGUI(nodeBorder);
+        //     IMGUIContainer imguiContainer = new IMGUIContainer(){};
+        //     imguiContainer.onGUIHandler = RuntimeNode.OnGUI;
+        //     nodeBorder.Add(imguiContainer);
+        // }
+        
         public override string ToString()
         {
             return RuntimeNode.ToString();

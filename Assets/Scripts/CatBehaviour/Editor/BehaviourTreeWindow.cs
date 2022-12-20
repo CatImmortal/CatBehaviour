@@ -70,8 +70,8 @@ namespace CatBehaviour.Editor
 
             labelAssetPath = rootVisualElement.Q<Label>("labelAssetPath");
             
-            var btnSave = root.Q<Button>("btnSave");
-            btnSave.clicked += Save;
+            // var btnSave = root.Q<Button>("btnSave");
+            // btnSave.clicked += Save;
 
             inspector = root.Q<InspectorView>("inspector");
         }
@@ -102,7 +102,7 @@ namespace CatBehaviour.Editor
             }
             else
             {
-                labelAssetPath.text = $"文件名:newFile";
+               labelAssetPath.text = $"文件名:newFile";
             }
 
             //若反序列化得到的行为树为空则创建个默认的
