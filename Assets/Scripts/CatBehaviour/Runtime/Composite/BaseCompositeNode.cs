@@ -11,7 +11,7 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 子节点ID列表
         /// </summary>
-        public List<int> ChildIdList { get; set; } = new List<int>();
+        public List<int> ChildIdList = new List<int>();
         
         /// <summary>
         /// 子节点列表

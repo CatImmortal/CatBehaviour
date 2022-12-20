@@ -21,6 +21,7 @@ namespace CatBehaviour.Editor
         private InspectorView inspector;
         private BehaviourTreeGraphView graphView;
 
+
         [MenuItem("CatBehaviour/打开行为树窗口")]
         public static void Open()
         {
@@ -44,14 +45,6 @@ namespace CatBehaviour.Editor
         /// </summary>
         private static void Open(string assetPath)
         {
-            //设置序列化器
-            var types = TypeCache.GetTypesDerivedFrom<IStringSerializer>();
-            if (types.Count > 0)
-            {
-                var stringSerializer = (IStringSerializer)Activator.CreateInstance(types[0]);
-                BehaviourTree.StringSerializer = stringSerializer;
-            }
-            
             BehaviourTreeWindow window = CreateWindow<BehaviourTreeWindow>("行为树窗口");
             window.Init(assetPath);
         }
@@ -70,8 +63,8 @@ namespace CatBehaviour.Editor
 
             labelAssetPath = rootVisualElement.Q<Label>("labelAssetPath");
             
-            // var btnSave = root.Q<Button>("btnSave");
-            // btnSave.clicked += Save;
+            var btnSave = root.Q<Button>("btnSave");
+            btnSave.clicked += Save;
 
             inspector = root.Q<InspectorView>("inspector");
         }
@@ -91,13 +84,7 @@ namespace CatBehaviour.Editor
                 var btSO = AssetDatabase.LoadAssetAtPath<BehaviourTreeSO>(assetPath);
                 if (btSO != null)
                 {
-                    if (!string.IsNullOrEmpty(btSO.StringData))
-                    {
-                        bt = BehaviourTree.Deserialize(btSO.StringData);
-                    }else if (btSO.BinaryData != null && btSO.BinaryData.Length > 0)
-                    {
-                        
-                    }
+                    bt = btSO.BT;
                 }
             }
             else
@@ -142,8 +129,6 @@ namespace CatBehaviour.Editor
                     Debug.Log("取消保存");
                     return;
                 }
-                
-                
             }
             else
             {
@@ -151,8 +136,6 @@ namespace CatBehaviour.Editor
                 {
                     return;
                 }
-
-                
             }
             
             bt.AllNodes.Clear();
@@ -195,14 +178,9 @@ namespace CatBehaviour.Editor
                 
               
             }
-            
-            string json = bt.SerializeToString();
-            if (json == null)
-            {
-                return;
-            }
+
             var btSO = CreateInstance<BehaviourTreeSO>();
-            btSO.StringData = json;
+            btSO.BT = bt;
 
             AssetDatabase.DeleteAsset(assetPath);
             AssetDatabase.CreateAsset(btSO,assetPath);

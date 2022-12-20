@@ -9,6 +9,7 @@ namespace CatBehaviour.Runtime
     /// <summary>
     /// 行为树
     /// </summary>
+    [Serializable]
     public class BehaviourTree
     {
         /// <summary>
@@ -24,7 +25,7 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 根节点ID
         /// </summary>
-        public int RootNodeId { get; set; }
+        public int RootNodeId;
 
         /// <summary>
         /// 根节点
@@ -35,7 +36,8 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 所有节点的列表
         /// </summary>
-        public List<BaseNode> AllNodes { get; set; } = new List<BaseNode>();
+        [SerializeReference]
+        public List<BaseNode> AllNodes = new List<BaseNode>();
 
         /// <summary>
         /// 黑板
@@ -80,7 +82,7 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 序列化前的预处理
         /// </summary>
-        private void PreProcessSerialize()
+        public void PreProcessSerialize()
         {
             //排序子节点
             foreach (BaseNode node in AllNodes)
@@ -89,42 +91,22 @@ namespace CatBehaviour.Runtime
             }
             
             //建立父子节点间的ID索引
-            RootNodeId = RootNode.Id;
+            if (RootNode != null)
+            {
+                RootNodeId = RootNode.Id;
+            }
+           
             foreach (BaseNode node in AllNodes)
             {
                 node.RebuildId();
             }
-        }
-
-        /// <summary>
-        /// 收集从根节点出发，能达到的所有节点
-        /// </summary>
-        private void CollectAllNodes()
-        {
-            AllNodes.Clear();
-            CollectAllNodes(RootNode);
-        }
-        
-        /// <summary>
-        /// 收集从根节点出发，能达到的所有节点
-        /// </summary>
-        private void CollectAllNodes(BaseNode node)
-        {
-            if (node == null)
-            {
-                return;
-            }
-
-            AllNodes.Add(node);
-            node.Id = AllNodes.Count;
-
-            node.ForeachChild(CollectAllNodes);
+            
         }
 
         /// <summary>
         /// 反序列化后处理
         /// </summary>
-        private void PostProcessDeserialize()
+        public void PostProcessDeserialize()
         {
             //从Id恢复父子节点的引用
             RootNode = (RootNode)GetNode(RootNodeId);
@@ -187,6 +169,31 @@ namespace CatBehaviour.Runtime
             bt.PostProcessDeserialize();
             return bt;
         }
+        
+        // /// <summary>
+        // /// 收集从根节点出发，能达到的所有节点
+        // /// </summary>
+        // private void CollectAllNodes()
+        // {
+        //     AllNodes.Clear();
+        //     CollectAllNodes(RootNode);
+        // }
+        //
+        // /// <summary>
+        // /// 收集从根节点出发，能达到的所有节点
+        // /// </summary>
+        // private void CollectAllNodes(BaseNode node)
+        // {
+        //     if (node == null)
+        //     {
+        //         return;
+        //     }
+        //
+        //     AllNodes.Add(node);
+        //     node.Id = AllNodes.Count;
+        //
+        //     node.ForeachChild(CollectAllNodes);
+        // }
     }
 
 }

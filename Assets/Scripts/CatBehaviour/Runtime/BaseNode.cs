@@ -8,6 +8,7 @@ namespace CatBehaviour.Runtime
     /// <summary>
     /// 节点基类
     /// </summary>
+    [Serializable]
     public abstract class BaseNode
     {
         /// <summary>
@@ -31,12 +32,12 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 节点Id，从1开始
         /// </summary>
-        public int Id { get; set; }
-        
+        public int Id;
+
         /// <summary>
         /// 节点位置
         /// </summary>
-        public Vector2 Position { get; set; }
+        public Vector2 Position;
         
         /// <summary>
         /// 当前节点状态
@@ -54,16 +55,16 @@ namespace CatBehaviour.Runtime
         /// 黑板
         /// </summary>
         public BlackBoard BlackBoard => Owner.BlackBoard;
-        
+
         /// <summary>
         /// 父节点ID
         /// </summary>
-        public int ParentNodeId { get; set; }
+        public int ParentNodeId;
 
         /// <summary>
         /// 父节点
         /// </summary>
-        [NonSerialized] 
+        [NonSerialized]
         public BaseNode ParentNode;
         
         /// <summary>

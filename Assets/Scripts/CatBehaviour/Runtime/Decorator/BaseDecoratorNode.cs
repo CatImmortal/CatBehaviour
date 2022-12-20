@@ -10,7 +10,7 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 子节点ID
         /// </summary>
-        public int ChildId { get; set; }
+        public int ChildId;
 
         /// <summary>
         /// 子节点

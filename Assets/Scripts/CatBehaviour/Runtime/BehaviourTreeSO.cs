@@ -1,20 +1,22 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace CatBehaviour.Runtime
 {
     /// <summary>
     /// 行为树SO
     /// </summary>
-    public class BehaviourTreeSO : ScriptableObject
+    public class BehaviourTreeSO : ScriptableObject,ISerializationCallbackReceiver
     {
-        /// <summary>
-        /// 行为树序列化后的字符串数据
-        /// </summary>
-        public string StringData;
-        
-        /// <summary>
-        /// 行为树序列化后的二进制数据
-        /// </summary>
-        public byte[] BinaryData;
+        public BehaviourTree BT;
+        public void OnBeforeSerialize()
+        {
+            BT.PreProcessSerialize();
+        }
+
+        public void OnAfterDeserialize()
+        {
+            BT.PostProcessDeserialize();
+        }
     }
 }
