@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -13,6 +14,10 @@ namespace CatBehaviour.Runtime
     [NodeInfo(Name = "日志节点")]
     public class LogNode : BaseActionNode
     {
+        /// <inheritdoc />
+        protected override FieldInfo[] FieldInfos =>
+            typeof(LogNode).GetFields(BindingFlags.Public | BindingFlags.Instance);
+        
         /// <summary>
         /// 日志级别
         /// </summary>

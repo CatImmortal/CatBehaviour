@@ -66,6 +66,11 @@ namespace CatBehaviour.Runtime
         /// </summary>
         [NonSerialized]
         public BaseNode ParentNode;
+
+        /// <summary>
+        /// 字段列表
+        /// </summary>
+        protected virtual FieldInfo[] FieldInfos => Array.Empty<FieldInfo>();
         
         /// <summary>
         /// 添加子节点
@@ -120,9 +125,8 @@ namespace CatBehaviour.Runtime
         /// </summary>
         public void RebuildBBParamReference()
         {
-            var fields = GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
             var bbParamType = typeof(BBParam);
-            foreach (var fieldInfo in fields)
+            foreach (var fieldInfo in FieldInfos)
             {
                 if (bbParamType.IsAssignableFrom(fieldInfo.FieldType) )
                 {

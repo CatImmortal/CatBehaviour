@@ -1,4 +1,5 @@
-﻿using UnityEngine.UIElements;
+﻿using System.Reflection;
+using UnityEngine.UIElements;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -14,6 +15,10 @@ namespace CatBehaviour.Runtime
     [NodeInfo(Name = "延时节点")]
     public class DelayNode : BaseActionNode
     {
+        /// <inheritdoc />
+        protected override FieldInfo[] FieldInfos =>
+            typeof(DelayNode).GetFields(BindingFlags.Public | BindingFlags.Instance);
+
         /// <summary>
         /// 延时的时间
         /// </summary>
