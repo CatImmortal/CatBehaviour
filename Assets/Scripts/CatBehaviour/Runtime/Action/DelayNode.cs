@@ -56,10 +56,7 @@ namespace CatBehaviour.Runtime
         public override void OnGUI()
         {
             EditorGUILayout.LabelField("延时时间");
-            using (new EditorGUILayout.HorizontalScope())
-            {
-                DelayTime.OnGUI(true);
-            }
+            DelayTime.OnGUI(true);
         }
 #endif
     }
