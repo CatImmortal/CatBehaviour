@@ -42,13 +42,35 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 黑板
         /// </summary>
-        public BlackBoard BlackBoard { get; set; } = new BlackBoard();
+        public BlackBoard BlackBoard = new BlackBoard();
 
+        /// <summary>
+        /// 是否已初始化
+        /// </summary>
+        private bool isInit = false;
+
+        /// <summary>
+        /// 初始化行为树
+        /// </summary>
+        private void Init()
+        {
+            foreach (BaseNode node in AllNodes)
+            {
+                node.RebuildBBParamReference();
+            }
+        }
+        
         /// <summary>
         /// 开始运行行为树
         /// </summary>
         public void Start()
         {
+            if (!isInit)
+            {
+                Init();
+                isInit = true;
+            }
+            
             RootNode.Start();
         }
 
@@ -108,13 +130,12 @@ namespace CatBehaviour.Runtime
         /// </summary>
         public void PostProcessDeserialize()
         {
-            //从Id恢复父子节点的引用
             RootNode = (RootNode)GetNode(RootNodeId);
             
             foreach (BaseNode node in AllNodes)
             {
                 node.Owner = this;
-                node.RebuildReference();
+                node.RebuildNodeReference();  //重建对父子节点的引用
             }
         }
         

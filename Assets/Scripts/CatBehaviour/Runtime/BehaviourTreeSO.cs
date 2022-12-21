@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace CatBehaviour.Runtime
@@ -23,7 +24,7 @@ namespace CatBehaviour.Runtime
         /// 黑板位置与大小
         /// </summary>
         public Rect BlackBoardRect;
-        
+
         public void OnBeforeSerialize()
         {
             if (BT == null)
@@ -40,6 +41,7 @@ namespace CatBehaviour.Runtime
             BlackBoardRect = BT.BlackBoard.Position;
         }
 
+        
         public void OnAfterDeserialize()
         {
             if (BT == null)
@@ -47,15 +49,23 @@ namespace CatBehaviour.Runtime
                 return;
             }
             
+            BT.BlackBoard.ParamDict.Clear();
             for (int i = 0; i < BBParams.Count; i++)
             {
                 BBParam bbParam = BBParams[i];
                 BT.BlackBoard.SetParam(bbParam.Key,bbParam);
             }
-            BBParams.Clear();
             BT.BlackBoard.Position = BlackBoardRect;
 
             BT.PostProcessDeserialize();
+        }
+
+        /// <summary>
+        /// 复制行为树
+        /// </summary>
+        public BehaviourTree CloneBehaviourTree()
+        {
+            return Instantiate(this).BT;
         }
     }
 }

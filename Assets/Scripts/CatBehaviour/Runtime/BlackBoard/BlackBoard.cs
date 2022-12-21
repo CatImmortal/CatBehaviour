@@ -23,8 +23,22 @@ namespace CatBehaviour.Runtime
         /// </summary>
         public BBParam<T> GetParam<T>(string key)
         {
-            ParamDict.TryGetValue(key, out var param);
+            var param = GetParam(key);
+            if (param == null)
+            {
+                return null;
+            }
+
             return (BBParam<T>)param;
+        }
+
+        /// <summary>
+        /// 获取参数
+        /// </summary>
+        public BBParam GetParam(string key)
+        {
+            ParamDict.TryGetValue(key, out var param);
+            return param;
         }
         
         /// <summary>

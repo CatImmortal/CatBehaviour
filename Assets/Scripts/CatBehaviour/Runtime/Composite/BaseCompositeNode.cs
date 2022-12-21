@@ -77,8 +77,9 @@ namespace CatBehaviour.Runtime
         }
 
         /// <inheritdoc />
-        public override void RebuildReference()
+        public override void RebuildNodeReference()
         {
+            Children.Clear();
             foreach (int childId in ChildIdList)
             {
                 BaseNode child = Owner.GetNode(childId);

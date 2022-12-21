@@ -67,7 +67,7 @@ namespace CatBehaviour.Runtime
         }
 
         /// <inheritdoc />
-        public override void RebuildReference()
+        public override void RebuildNodeReference()
         {
             BaseNode child = Owner.GetNode(ChildId);
             AddChild(child);

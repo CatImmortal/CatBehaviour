@@ -40,7 +40,7 @@ namespace CatBehaviour.Runtime
         }
 
         /// <inheritdoc />
-        public sealed override void RebuildReference()
+        public sealed override void RebuildNodeReference()
         {
 
         }

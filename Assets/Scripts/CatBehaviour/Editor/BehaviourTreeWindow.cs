@@ -128,6 +128,9 @@ namespace CatBehaviour.Editor
                     Debug.Log("取消保存");
                     return;
                 }
+                btSO = CreateInstance<BehaviourTreeSO>();
+                btSO.BT = bt;
+                AssetDatabase.CreateAsset(btSO,assetPath);
             }
             else
             {
@@ -135,6 +138,7 @@ namespace CatBehaviour.Editor
                 {
                     return;
                 }
+                EditorUtility.SetDirty(btSO);
             }
             
             //收集节点
@@ -180,11 +184,6 @@ namespace CatBehaviour.Editor
             //记录黑板位置
             bt.BlackBoard.Position = graphView.BlackboardView.GetPosition();
             
-            btSO = CreateInstance<BehaviourTreeSO>();
-            btSO.BT = bt;
-
-            AssetDatabase.DeleteAsset(assetPath);
-            AssetDatabase.CreateAsset(btSO,assetPath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             

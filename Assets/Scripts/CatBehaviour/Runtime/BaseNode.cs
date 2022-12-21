@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -112,8 +113,40 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 重建对父子节点的引用
         /// </summary>
-        public abstract void RebuildReference();
+        public abstract void RebuildNodeReference();
 
+        /// <summary>
+        /// 重建对黑板参数的引用
+        /// </summary>
+        public void RebuildBBParamReference()
+        {
+            var fields = GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            var bbParamType = typeof(BBParam);
+            foreach (var fieldInfo in fields)
+            {
+                if (bbParamType.IsAssignableFrom(fieldInfo.FieldType) )
+                {
+                    var bbParam = (BBParam)fieldInfo.GetValue(this);
+
+                    if (string.IsNullOrEmpty(bbParam.Key))
+                    {
+                        //节点里的黑板参数key为空 跳过
+                        continue;
+                    }
+
+                    BBParam newBBParam = BlackBoard.GetParam(bbParam.Key);
+                    if (newBBParam == null)
+                    {
+                        Debug.LogError($"{GetType().Name}的黑板参数key:{bbParam.Key}不存于黑板中，请检查");
+                        continue;
+                    }
+                    
+                    //替换节点中对黑板参数的引用为黑板中的黑板参数
+                    fieldInfo.SetValue(this,newBBParam);
+                }
+            }
+        }
+        
         /// <summary>
         /// 开始运行节点
         /// </summary>
