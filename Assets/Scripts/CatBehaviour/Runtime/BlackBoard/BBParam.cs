@@ -24,11 +24,13 @@ namespace CatBehaviour.Runtime
         public abstract object ValueObj { get; set; }
 
 #if UNITY_EDITOR
+
+        private int selectedKeyIndex = -1;
         
         /// <summary>
         /// 基于UIElements绘制黑板值
         /// </summary>
-        public virtual void CreateGUI(VisualElement contentContainer,bool isInspector)
+        public virtual void CreateGUI(VisualElement contentContainer,bool isInspector,BehaviourTree bt)
         {
 
         }
@@ -36,9 +38,51 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 基于IMGUI绘制黑板值
         /// </summary>
-        public virtual void OnGUI(bool isInspector)
+        public virtual void OnGUI(bool isInspector,BehaviourTree bt)
         {
-        
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                if (isInspector)
+                {
+                    var keys = bt.BlackBoard.GetKeys(GetType());
+
+                    //设置索引初始值
+                    if (selectedKeyIndex == -1)
+                    {
+                        selectedKeyIndex = 0;
+                        for (int i = 0; i < keys.Length; i++)
+                        {
+                            if (Key == keys[i])
+                            {
+                                selectedKeyIndex = i;
+                            }
+                        }
+                    }
+                    
+                    int newIndex = EditorGUILayout.Popup("黑板Key" ,selectedKeyIndex, keys);
+                    if (newIndex == 0 || newIndex >= keys.Length)
+                    {
+                        //可能所有黑板参数都被删除了
+                        selectedKeyIndex = 0;
+                        Key = null;
+                    }
+                    else
+                    {
+                        var newKey = keys[newIndex];
+                        selectedKeyIndex = newIndex;
+                        Key = newKey;
+                    }
+                }
+                OnGUI();
+            }
+        }
+
+        /// <summary>
+        /// 基于IMGUI绘制黑板值
+        /// </summary>
+        protected virtual void OnGUI()
+        {
+            
         }
 
 #endif
@@ -72,16 +116,9 @@ namespace CatBehaviour.Runtime
     public class BBParamBool : BBParam<bool>
     {
 #if UNITY_EDITOR
-        public override void OnGUI(bool isInspector)
+        protected override void OnGUI()
         {
-            using (new EditorGUILayout.HorizontalScope())
-            {
-                if (isInspector)
-                {
-                    Key = EditorGUILayout.TextField("黑板Key",Key);
-                }
-                Value = EditorGUILayout.Toggle("Value",Value);
-            }
+            Value = EditorGUILayout.Toggle("Value",Value);
         }
 #endif
     }
@@ -90,16 +127,9 @@ namespace CatBehaviour.Runtime
     public class BBParamInt : BBParam<int>
     {
 #if UNITY_EDITOR
-        public override void OnGUI(bool isInspector)
+        protected override void OnGUI()
         {
-            using (new EditorGUILayout.HorizontalScope())
-            {
-                if (isInspector)
-                {
-                    Key = EditorGUILayout.TextField("黑板Key",Key);
-                }
-                Value = EditorGUILayout.IntField("Value",Value);
-            }
+            Value = EditorGUILayout.IntField("Value",Value);
         }
 #endif
     }
@@ -108,16 +138,9 @@ namespace CatBehaviour.Runtime
     public class BBParamFloat : BBParam<float>
     {
 #if UNITY_EDITOR
-        public override void OnGUI(bool isInspector)
+        protected override void OnGUI()
         {
-            using (new EditorGUILayout.HorizontalScope())
-            {
-                if (isInspector)
-                {
-                    Key = EditorGUILayout.TextField("黑板Key",Key);
-                }
-                Value = EditorGUILayout.FloatField("Value",Value);
-            }
+            Value = EditorGUILayout.FloatField("Value",Value);
         }
 #endif
     }
@@ -126,16 +149,9 @@ namespace CatBehaviour.Runtime
     public class BBParamString : BBParam<string>
     {
 #if UNITY_EDITOR
-        public override void OnGUI(bool isInspector)
+        protected override void OnGUI()
         {
-            using (new EditorGUILayout.HorizontalScope())
-            {
-                if (isInspector)
-                {
-                    Key = EditorGUILayout.TextField("黑板Key",Key);
-                }
-                Value = EditorGUILayout.TextField("Value",Value);
-            }
+            Value = EditorGUILayout.TextField("Value",Value);
         }
 #endif
     }

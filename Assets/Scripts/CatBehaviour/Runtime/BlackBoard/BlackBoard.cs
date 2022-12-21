@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CatBehaviour.Runtime
@@ -17,6 +18,13 @@ namespace CatBehaviour.Runtime
         /// 位置与大小
         /// </summary>
         public Rect Position = new Rect(10, 30, 350, 300);
+
+#if UNITY_EDITOR
+        /// <summary>
+        /// 黑板参数类型 -> key列表
+        /// </summary>
+        private Dictionary<Type, List<string>> keyListDict = new Dictionary<Type, List<string>>();
+#endif
         
         /// <summary>
         /// 获取参数
@@ -48,6 +56,16 @@ namespace CatBehaviour.Runtime
         {
             param.Key = key;
             ParamDict[key] = param;
+
+#if UNITY_EDITOR
+            Type type = param.GetType();
+            if (!keyListDict.TryGetValue(type,out var keyList))
+            {
+                keyList = new List<string> { "Null" };
+                keyListDict.Add(type,keyList);
+            }
+            keyList.Add(key);
+#endif
         }
 
         /// <summary>
@@ -55,7 +73,30 @@ namespace CatBehaviour.Runtime
         /// </summary>
         public void RemoveParam(string key)
         {
+#if UNITY_EDITOR
+            if (ParamDict.TryGetValue(key, out var param))
+            {
+                Type type = param.GetType();
+                if (keyListDict.TryGetValue(type,out var keyList))
+                {
+                   keyList.Remove(key);
+                }
+            }
+#endif
             ParamDict.Remove(key);
+        }
+
+        /// <summary>
+        /// 根据黑板参数类型获取黑板key数组
+        /// </summary>
+        public string[] GetKeys(Type type)
+        {
+            if (!keyListDict.TryGetValue(type,out var keyList))
+            {
+                keyList = new List<string>() { "Null" };
+            }
+
+            return keyList.ToArray();
         }
     }
 }

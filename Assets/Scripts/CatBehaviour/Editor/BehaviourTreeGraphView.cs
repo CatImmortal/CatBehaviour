@@ -198,17 +198,19 @@ namespace CatBehaviour.Editor
         /// <summary>
         /// 重命名黑板参数
         /// </summary>
-        public void RenameBlackBoardParam(string oldKey, string newKey, BBParam param)
+        public bool RenameBlackBoardParam(string oldKey, string newKey, BBParam param)
         {
             if (BT.BlackBoard.ParamDict.ContainsKey(newKey))
             {
-                Debug.Log("重命名黑板key失败，已存在同名key");
-                return;
+                //Debug.Log($"重命名黑板key失败，已存在同名key:{newKey}");
+                return false;
             }
-            
+            //Debug.Log($"重命名黑板key成功，{oldKey} -> {newKey}");
             BT.BlackBoard.RemoveParam(oldKey);
             BT.BlackBoard.SetParam(newKey,param);
             //OnBlackBoardChaged?.Invoke();
+
+            return true;
         }
     }
 }

@@ -29,9 +29,12 @@ namespace CatBehaviour.Editor
                 //重命名了黑板key
                 string oldKey = e.previousValue;
                 string newKey = e.newValue;
-                text = e.newValue;
-                graphView.RenameBlackBoardParam(oldKey,newKey,param);
+                if (graphView.RenameBlackBoardParam(oldKey,newKey,param))
+                {
+                    text = e.newValue;
+                }
             });
+            
         }
 
         /// <summary>

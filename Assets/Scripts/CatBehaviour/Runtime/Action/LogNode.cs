@@ -72,7 +72,7 @@ namespace CatBehaviour.Runtime
             EditorGUILayout.Space();
             
             EditorGUILayout.LabelField("日志");
-            Log.OnGUI(true);
+            Log.OnGUI(true,Owner);
         }
 #endif
     }
