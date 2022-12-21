@@ -1,6 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace CatBehaviour.Runtime
 {
     /// <summary>
@@ -27,7 +31,7 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 日志内容
         /// </summary>
-        public string Log;
+        public BBParamString Log = new BBParamString();
         
         protected override void OnStart()
         {
@@ -53,5 +57,21 @@ namespace CatBehaviour.Runtime
         {
 
         }
+        
+#if UNITY_EDITOR
+        
+        /// <inheritdoc />
+        public override void OnGUI()
+        {
+            Level = (LogLevel)EditorGUILayout.EnumPopup("日志级别", Level);
+            EditorGUILayout.Space();
+            
+            EditorGUILayout.LabelField("日志");
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                Log.OnGUI(true);
+            }
+        }
+#endif
     }
 }

@@ -47,22 +47,6 @@ namespace CatBehaviour.Runtime
 
 #if UNITY_EDITOR
         
-        // /// <inheritdoc />
-        // public override void CreateGUI(VisualElement contentContainer)
-        // {
-        //     Debug.Log(this);
-        //     FloatField floatField = new FloatField("延时时间")
-        //     {
-        //         value = DelayTime
-        //     };
-        //     contentContainer.Add(floatField);
-        //
-        //     floatField.RegisterValueChangedCallback((evt =>
-        //     {
-        //         DelayTime = evt.newValue;
-        //     }));
-        // }
-
         /// <inheritdoc />
         public override void OnGUI()
         {

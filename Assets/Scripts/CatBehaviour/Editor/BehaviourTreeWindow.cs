@@ -15,7 +15,7 @@ namespace CatBehaviour.Editor
     public class BehaviourTreeWindow : EditorWindow
     {
         private string assetPath;
-        private BehaviourTreeSO btSO;
+        private BehaviourTreeSO originBTSO;
         private BehaviourTree bt;
         
         private Label labelAssetPath;
@@ -75,15 +75,15 @@ namespace CatBehaviour.Editor
         {
             this.assetPath = assetPath;
             
-           
             if (!string.IsNullOrEmpty(assetPath))
             {
                 labelAssetPath.text = $"文件名:{assetPath}";
                 
-                btSO = AssetDatabase.LoadAssetAtPath<BehaviourTreeSO>(assetPath);
-                if (btSO != null)
+                originBTSO = AssetDatabase.LoadAssetAtPath<BehaviourTreeSO>(assetPath);
+                if (originBTSO != null)
                 {
-                    bt = btSO.BT;
+                    //深拷贝一份用于编辑
+                    bt = originBTSO.CloneBehaviourTree();
                 }
             }
             else
@@ -120,17 +120,18 @@ namespace CatBehaviour.Editor
         /// </summary>
         private void Save()
         {
-            if (string.IsNullOrEmpty(assetPath))
+            if (originBTSO == null)
             {
-                assetPath = EditorUtility.SaveFilePanelInProject("选择保存位置", "BehaviourTree","asset", "aaa");
+                var assetPath = EditorUtility.SaveFilePanelInProject("选择保存位置", "BehaviourTree","asset", "aaa");
                 if (string.IsNullOrEmpty(assetPath))
                 {
                     Debug.Log("取消保存");
                     return;
                 }
-                btSO = CreateInstance<BehaviourTreeSO>();
-                btSO.BT = bt;
-                AssetDatabase.CreateAsset(btSO,assetPath);
+
+                this.assetPath = assetPath;
+                originBTSO = CreateInstance<BehaviourTreeSO>();
+                AssetDatabase.CreateAsset(originBTSO,assetPath);
             }
             else
             {
@@ -138,7 +139,6 @@ namespace CatBehaviour.Editor
                 {
                     return;
                 }
-                EditorUtility.SetDirty(btSO);
             }
             
             //收集节点
@@ -160,7 +160,6 @@ namespace CatBehaviour.Editor
             foreach (Node element in graphView.nodes)
             {
                 //刷新父子关系
-                
                 BehaviourTreeNode node = (BehaviourTreeNode) element;
                 if (node.inputContainer.childCount == 0)
                 {
@@ -177,13 +176,16 @@ namespace CatBehaviour.Editor
                 //向父节点添加自身为其子节点
                 var parent = (BehaviourTreeNode)inputEdge.output.node;
                 parent.RuntimeNode.AddChild(node.RuntimeNode);
-                
-              
             }
 
             //记录黑板位置
             bt.BlackBoard.Position = graphView.BlackboardView.GetPosition();
             
+            //将编辑好的行为树赋值给原始SO
+            originBTSO.BT = bt;
+
+            //保存原始SO
+            EditorUtility.SetDirty(originBTSO);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             
