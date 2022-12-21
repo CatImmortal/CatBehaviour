@@ -8,10 +8,19 @@ namespace CatBehaviour.Runtime
     /// </summary>
     public class BehaviourTreeSO : ScriptableObject,ISerializationCallbackReceiver
     {
+        /// <summary>
+        /// 行为树
+        /// </summary>
         public BehaviourTree BT;
         
+        /// <summary>
+        /// 黑板参数key列表
+        /// </summary>
         public List<string> BBParamKeys = new List<string>();
 
+        /// <summary>
+        /// 黑板参数列表
+        /// </summary>
         [SerializeReference]
         public List<BBParam> BBParams = new List<BBParam>();
 
@@ -26,7 +35,6 @@ namespace CatBehaviour.Runtime
             {
                 return;
             }
-            
             BT.PreProcessSerialize();
 
             BBParamKeys.Clear();
@@ -36,7 +44,6 @@ namespace CatBehaviour.Runtime
                 BBParamKeys.Add(pair.Key);
                 BBParams.Add(pair.Value);
             }
-
             BlackBoardRect = BT.BlackBoard.Position;
         }
 
@@ -55,7 +62,6 @@ namespace CatBehaviour.Runtime
             }
             BBParamKeys.Clear();
             BBParams.Clear();
-
             BT.BlackBoard.Position = BlackBoardRect;
 
             BT.PostProcessDeserialize();

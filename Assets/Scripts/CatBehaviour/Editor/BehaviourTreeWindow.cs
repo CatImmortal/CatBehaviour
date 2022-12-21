@@ -15,6 +15,7 @@ namespace CatBehaviour.Editor
     public class BehaviourTreeWindow : EditorWindow
     {
         private string assetPath;
+        private BehaviourTreeSO btSO;
         private BehaviourTree bt;
         
         private Label labelAssetPath;
@@ -52,14 +53,10 @@ namespace CatBehaviour.Editor
         public void CreateGUI()
         {
             VisualElement root = rootVisualElement;
-
-            // var visualTree =
-            //     AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(
-            //         "Assets/Scripts/CatBehaviour/Editor/BehaviourTreeWindow.uxml");
+            
             var visualTree = Resources.Load<VisualTreeAsset>("UXML/BehaviourTreeWindow");
             visualTree.CloneTree(root);
-
-            //var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Scripts/CatBehaviour/Editor/BehaviourTreeWindow.uss");
+            
             var styleSheet = Resources.Load<StyleSheet>("USS/BehaviourTreeWindow");
             root.styleSheets.Add(styleSheet);
 
@@ -83,7 +80,7 @@ namespace CatBehaviour.Editor
             {
                 labelAssetPath.text = $"文件名:{assetPath}";
                 
-                var btSO = AssetDatabase.LoadAssetAtPath<BehaviourTreeSO>(assetPath);
+                btSO = AssetDatabase.LoadAssetAtPath<BehaviourTreeSO>(assetPath);
                 if (btSO != null)
                 {
                     bt = btSO.BT;
@@ -183,7 +180,7 @@ namespace CatBehaviour.Editor
             //记录黑板位置
             bt.BlackBoard.Position = graphView.BlackboardView.GetPosition();
             
-            var btSO = CreateInstance<BehaviourTreeSO>();
+            btSO = CreateInstance<BehaviourTreeSO>();
             btSO.BT = bt;
 
             AssetDatabase.DeleteAsset(assetPath);

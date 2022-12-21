@@ -1,4 +1,5 @@
-﻿using UnityEngine.UIElements;
+﻿using CatBehaviour.Runtime;
+using UnityEngine.UIElements;
 
 namespace CatBehaviour.Editor
 {

@@ -7,6 +7,9 @@ using UnityEditor;
 
 namespace CatBehaviour.Runtime
 {
+    /// <summary>
+    /// 黑板参数
+    /// </summary>
     [Serializable]
     public abstract class BBParam
     {
@@ -18,7 +21,7 @@ namespace CatBehaviour.Runtime
 #if UNITY_EDITOR
         
         /// <summary>
-        /// 基于UIElements绘制节点属性面板
+        /// 基于UIElements绘制黑板值
         /// </summary>
         public virtual void CreateGUI(VisualElement contentContainer)
         {
@@ -26,7 +29,7 @@ namespace CatBehaviour.Runtime
         }
 
         /// <summary>
-        /// 基于IMGUI绘制节点属性面板
+        /// 基于IMGUI绘制黑板值
         /// </summary>
         public virtual void OnGUI()
         {
@@ -62,7 +65,7 @@ namespace CatBehaviour.Runtime
 
         
     }
-
+    
     public class BBParamBool : BBParam<bool>
     {
 #if UNITY_EDITOR

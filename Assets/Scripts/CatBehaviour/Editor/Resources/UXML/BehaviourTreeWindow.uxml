@@ -4,9 +4,11 @@
             <uie:Toolbar style="justify-content: center;">
                 <ui:Label text="节点属性" display-tooltip-when-elided="true" />
             </uie:Toolbar>
-            <ui:VisualElement name="leftContent" style="flex-grow: 1;">
-                <CatBehaviour.Editor.InspectorView name="inspector" style="flex-grow: 1;" />
-            </ui:VisualElement>
+            <ui:ScrollView mode="VerticalAndHorizontal" style="flex-grow: 1;">
+                <ui:VisualElement name="leftContent" style="flex-grow: 1;">
+                    <CatBehaviour.Editor.InspectorView name="inspector" style="flex-grow: 1;" />
+                </ui:VisualElement>
+            </ui:ScrollView>
         </ui:VisualElement>
         <ui:VisualElement name="right" style="width: 70%;">
             <uie:Toolbar style="justify-content: space-between;">
