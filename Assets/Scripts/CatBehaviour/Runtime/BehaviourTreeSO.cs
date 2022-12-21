@@ -12,11 +12,6 @@ namespace CatBehaviour.Runtime
         /// 行为树
         /// </summary>
         public BehaviourTree BT;
-        
-        /// <summary>
-        /// 黑板参数key列表
-        /// </summary>
-        public List<string> BBParamKeys = new List<string>();
 
         /// <summary>
         /// 黑板参数列表
@@ -36,12 +31,10 @@ namespace CatBehaviour.Runtime
                 return;
             }
             BT.PreProcessSerialize();
-
-            BBParamKeys.Clear();
+            
             BBParams.Clear();
             foreach (KeyValuePair<string,BBParam> pair in BT.BlackBoard.ParamDict)
             {
-                BBParamKeys.Add(pair.Key);
                 BBParams.Add(pair.Value);
             }
             BlackBoardRect = BT.BlackBoard.Position;
@@ -54,13 +47,11 @@ namespace CatBehaviour.Runtime
                 return;
             }
             
-            for (int i = 0; i < BBParamKeys.Count; i++)
+            for (int i = 0; i < BBParams.Count; i++)
             {
-                string key = BBParamKeys[i];
-                BBParam value = BBParams[i];
-                BT.BlackBoard.SetParam(key,value);
+                BBParam bbParam = BBParams[i];
+                BT.BlackBoard.SetParam(bbParam.Key,bbParam);
             }
-            BBParamKeys.Clear();
             BBParams.Clear();
             BT.BlackBoard.Position = BlackBoardRect;
 

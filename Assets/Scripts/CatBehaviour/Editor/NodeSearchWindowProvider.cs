@@ -81,7 +81,7 @@ namespace CatBehaviour.Editor
         public bool OnSelectEntry(SearchTreeEntry searchTreeEntry, SearchWindowContext context)
         {
             //取出类型信息
-            Type type = ( Type)searchTreeEntry.userData;
+            Type type = (Type)searchTreeEntry.userData;
             
             //创建node
             BaseNode runtimeNode = Activator.CreateInstance(type) as BaseNode;

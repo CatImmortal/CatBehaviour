@@ -17,7 +17,7 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 延时的时间
         /// </summary>
-        public float DelayTime;
+        public BBParamFloat DelayTime = new BBParamFloat();
 
         private float timer;
         
@@ -37,7 +37,7 @@ namespace CatBehaviour.Runtime
         private void OnUpdate(float deltaTime)
         {
             timer += deltaTime;
-            if (timer >= DelayTime)
+            if (timer >= DelayTime.Value)
             {
                 UpdateManager.RemoveUpdateTimer(OnUpdate);
                 Finish(true);
@@ -65,7 +65,11 @@ namespace CatBehaviour.Runtime
         /// <inheritdoc />
         public override void OnGUI()
         {
-            DelayTime = EditorGUILayout.FloatField("延时时间", DelayTime);
+            EditorGUILayout.LabelField("延时时间");
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                DelayTime.OnGUI(true);
+            }
         }
 #endif
     }

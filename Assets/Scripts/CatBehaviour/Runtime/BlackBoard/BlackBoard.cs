@@ -32,6 +32,7 @@ namespace CatBehaviour.Runtime
         /// </summary>
         public void SetParam(string key, BBParam param)
         {
+            param.Key = key;
             ParamDict[key] = param;
         }
 

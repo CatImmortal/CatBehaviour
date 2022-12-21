@@ -14,10 +14,13 @@ namespace CatBehaviour.Editor
         public void DrawValue(BBParam bbParam)
         {
             Clear();
-            bbParam.CreateGUI(contentContainer);
+            bbParam.CreateGUI(contentContainer,false);
             
             IMGUIContainer imguiContainer = new IMGUIContainer(){};
-            imguiContainer.onGUIHandler =  bbParam.OnGUI;
+            imguiContainer.onGUIHandler =  (() =>
+            {
+                bbParam.OnGUI(false);
+            });
             Add(imguiContainer);
         }
     }
