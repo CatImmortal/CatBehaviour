@@ -15,46 +15,46 @@ MonoBehaviour:
   BT:
     RootNodeId: 2
     AllNodes:
-    - rid: 6460882539826381156
-    - rid: 6460882539826381157
-    - rid: 6460882539826381158
-    - rid: 6460882539826381159
+    - rid: 6460882539826381179
+    - rid: 6460882539826381180
+    - rid: 6460882539826381181
+    - rid: 6460882539826381182
     Rect:
       serializedVersion: 2
-      x: 391
-      y: 197
+      x: 220
+      y: 75
       width: 1
       height: 1
-    InspectorWidth: 444
+    InspectorWidth: 421
   BBParams:
-  - rid: 6460882539826381160
-  - rid: 6460882539826381161
-  - rid: 6460882539826381162
-  - rid: 6460882539826381163
+  - rid: 6460882539826381183
+  - rid: 6460882539826381184
+  - rid: 6460882539826381185
+  - rid: 6460882539826381186
   BlackBoardRect:
     serializedVersion: 2
     x: 15
     y: 16
-    width: 350
-    height: 300
+    width: 244
+    height: 249
   references:
     version: 2
     RefIds:
-    - rid: 6460882539826381156
+    - rid: 6460882539826381179
       type: {class: SequenceNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 1
         Position: {x: 307, y: 185}
         ParentNodeId: 2
         ChildIdList: 0300000004000000
-    - rid: 6460882539826381157
+    - rid: 6460882539826381180
       type: {class: RootNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 2
         Position: {x: 307, y: 76}
         ParentNodeId: 0
         ChildId: 1
-    - rid: 6460882539826381158
+    - rid: 6460882539826381181
       type: {class: DelayNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 3
@@ -63,7 +63,7 @@ MonoBehaviour:
         DelayTime:
           Key: DelayTime
           Value: 1
-    - rid: 6460882539826381159
+    - rid: 6460882539826381182
       type: {class: LogNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 4
@@ -73,22 +73,22 @@ MonoBehaviour:
         Log:
           Key: Log
           Value: 
-    - rid: 6460882539826381160
+    - rid: 6460882539826381183
       type: {class: BBParamFloat, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Key: DelayTime
         Value: 0
-    - rid: 6460882539826381161
+    - rid: 6460882539826381184
       type: {class: BBParamString, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Key: Log
         Value: Hello
-    - rid: 6460882539826381162
+    - rid: 6460882539826381185
       type: {class: BBParamFloat, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Key: New Float
         Value: 0
-    - rid: 6460882539826381163
+    - rid: 6460882539826381186
       type: {class: BBParamFloat, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Key: New Float 0

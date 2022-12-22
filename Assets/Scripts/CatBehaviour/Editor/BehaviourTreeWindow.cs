@@ -103,7 +103,7 @@ namespace CatBehaviour.Editor
                 bt = new BehaviourTree();
                 bt.RootNode = new RootNode
                 {
-                    Position = new Vector2(graphView.contentContainer.layout.position.x + 300, graphView.contentContainer.layout.position.y + 300),
+                    Position = new Vector2(graphView.contentContainer.layout.position.x + 500, graphView.contentContainer.layout.position.y + 300),
                     Owner = bt
                 };
                 bt.AllNodes.Add(bt.RootNode);
@@ -116,7 +116,7 @@ namespace CatBehaviour.Editor
             }
             else
             {
-                splitView.fixedPaneInitialDimension = 450;
+                splitView.fixedPaneInitialDimension = 420;
             }
 
             graphView.Init(this, bt);
