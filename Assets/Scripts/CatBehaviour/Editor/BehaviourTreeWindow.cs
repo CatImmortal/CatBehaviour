@@ -103,7 +103,7 @@ namespace CatBehaviour.Editor
                 bt = new BehaviourTree();
                 bt.RootNode = new RootNode
                 {
-                    Position = new Vector2(graphView.contentContainer.layout.position.x + 500, graphView.contentContainer.layout.position.y + 300),
+                    Position = new Vector2(graphView.contentContainer.layout.position.x + 500, graphView.contentContainer.layout.position.y + 100),
                     Owner = bt
                 };
                 bt.AllNodes.Add(bt.RootNode);

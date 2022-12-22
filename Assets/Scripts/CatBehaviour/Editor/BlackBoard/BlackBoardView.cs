@@ -109,18 +109,23 @@ namespace CatBehaviour.Editor
         {
             content.Clear();
 
-            foreach (var pair in graphView.BT.BlackBoard.ParamDict)
+            var keyList = graphView.BT.BlackBoard.ParamDict.Keys.ToList();
+            keyList.Sort();
+
+            foreach (string key in keyList)
             {
-                Type type = pair.Value.GetType();
+                BBParam value = graphView.BT.BlackBoard.ParamDict[key];
+                Type type = value.GetType();
                 string typeName = GetBBParamTypeName(type);
-                var keyView = new BlackboardParamKeyView(graphView, pair.Value, pair.Key, typeName);
+                var keyView = new BlackboardParamKeyView(graphView, value, key, typeName);
                 var valueView = new BlackboardParamValueView();
-                valueView.DrawValue(pair.Value);
+                valueView.DrawValue(value);
                 var row = new BlackboardRow(keyView,valueView);
                 row.expanded = true;
 
                 content.Add(row);
             }
+            
         }
     }
 }

@@ -65,6 +65,7 @@ namespace CatBehaviour.Runtime
                 keyListDict.Add(type,keyList);
             }
             keyList.Add(key);
+            keyList.Sort(KeyListSortFunc);
 #endif
         }
 
@@ -80,12 +81,32 @@ namespace CatBehaviour.Runtime
                 if (keyListDict.TryGetValue(type,out var keyList))
                 {
                    keyList.Remove(key);
+                   keyList.Sort(KeyListSortFunc);
                 }
             }
 #endif
             ParamDict.Remove(key);
         }
 
+#if UNITY_EDITOR
+        /// <summary>
+        /// Key列表排序方法
+        /// </summary>
+        private int KeyListSortFunc(string x,string y)
+        {
+            //Null 固定排首位
+            if (x == "Null")
+            {
+                return -1;
+            }
+            if (y == "Null")
+            {
+                return 1;
+            }
+
+            return x.CompareTo(y);
+        }
+        
         /// <summary>
         /// 根据黑板参数类型获取黑板key数组
         /// </summary>
@@ -95,8 +116,10 @@ namespace CatBehaviour.Runtime
             {
                 keyList = new List<string>() { "Null" };
             }
-
+    
             return keyList.ToArray();
         }
+#endif
+        
     }
 }

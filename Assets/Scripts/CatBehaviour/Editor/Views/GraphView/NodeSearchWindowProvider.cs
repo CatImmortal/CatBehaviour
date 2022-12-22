@@ -84,11 +84,13 @@ namespace CatBehaviour.Editor
             Type type = (Type)searchTreeEntry.userData;
             
             //创建node
-            BaseNode runtimeNode = Activator.CreateInstance(type) as BaseNode;
+            BaseNode runtimeNode = (BaseNode)Activator.CreateInstance(type);
+            runtimeNode.Owner = graphView.BT;
             BehaviourTreeNode node = new BehaviourTreeNode();
             node.Init(runtimeNode,window);
             
             //将节点创建在鼠标的位置里
+            //TODO:这里要加上节点图的位置和缩放的偏移量进去才对
             Vector2 windowMousePosition = graphView.ChangeCoordinatesTo(graphView.parent, context.screenMousePosition - window.position.position);
             Vector2 graphMousePosition = graphView.WorldToLocal(windowMousePosition);
             node.SetPosition(new Rect(graphMousePosition,node.GetPosition().size));

@@ -25,7 +25,7 @@ namespace CatBehaviour.Runtime
 
 #if UNITY_EDITOR
 
-        private int selectedKeyIndex = -1;
+        private int selectedKeyIndex = 0;
         
         /// <summary>
         /// 基于UIElements绘制黑板值
@@ -46,31 +46,37 @@ namespace CatBehaviour.Runtime
                 {
                     var keys = bt.BlackBoard.GetKeys(GetType());
 
-                    //设置索引初始值
-                    if (selectedKeyIndex == -1)
+                    //修正索引 防止因为删除了前面的key导致顺序变化 最终索引到了错误的key
+                    for (int i = 0; i < keys.Length; i++)
                     {
-                        selectedKeyIndex = 0;
-                        for (int i = 0; i < keys.Length; i++)
+                        if (Key == keys[i] && selectedKeyIndex != i)
                         {
-                            if (Key == keys[i])
-                            {
-                                selectedKeyIndex = i;
-                            }
+                            selectedKeyIndex = i;
+                            break;
                         }
                     }
                     
                     int newIndex = EditorGUILayout.Popup("黑板Key" ,selectedKeyIndex, keys);
                     if (newIndex == 0 || newIndex >= keys.Length)
                     {
-                        //可能所有黑板参数都被删除了
                         selectedKeyIndex = 0;
                         Key = null;
                     }
                     else
                     {
-                        var newKey = keys[newIndex];
-                        selectedKeyIndex = newIndex;
-                        Key = newKey;
+                        if (selectedKeyIndex > 0 && Key != keys[selectedKeyIndex])
+                        {
+                            //当前索引到的key和保存的key不一致 重置为null
+                            //这时可能是之前的key被删了，或者被重命名了
+                            selectedKeyIndex = 0;
+                            Key = null;
+                        }
+                        else
+                        {
+                            var newKey = keys[newIndex];
+                            selectedKeyIndex = newIndex;
+                            Key = newKey;
+                        }
                     }
                 }
                 OnGUI();
