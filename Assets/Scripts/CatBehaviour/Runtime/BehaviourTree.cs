@@ -45,6 +45,16 @@ namespace CatBehaviour.Runtime
         public BlackBoard BlackBoard = new BlackBoard();
 
         /// <summary>
+        /// 位置与缩放
+        /// </summary>
+        public Rect Rect = new Rect();
+        
+        /// <summary>
+        /// 节点属性面板宽度
+        /// </summary>
+        public float InspectorWidth;
+        
+        /// <summary>
         /// 是否已初始化
         /// </summary>
         private bool isInit = false;

@@ -25,7 +25,7 @@ namespace CatBehaviour.Editor
             base.Init(graphView);
             base.title = "黑板";
             Scrollable = true;  //可滚动
-            
+            SetPosition(new Rect(10, 30, 350, 300));
             header.Add(new Button(OnAddClicked)
             {
                 text = "+"

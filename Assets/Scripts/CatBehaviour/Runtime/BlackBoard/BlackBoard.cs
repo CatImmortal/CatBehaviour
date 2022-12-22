@@ -17,7 +17,7 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 位置与大小
         /// </summary>
-        public Rect Position = new Rect(10, 30, 350, 300);
+        public Rect Position;
 
 #if UNITY_EDITOR
         /// <summary>

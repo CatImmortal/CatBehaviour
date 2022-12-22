@@ -39,8 +39,6 @@ namespace CatBehaviour.Editor
             this.AddManipulator(new RectangleSelector());  //可框选多个节点
             
             //graphViewChanged += OnGraphViewChanged;
-            
-
         }
 
 
@@ -61,6 +59,13 @@ namespace CatBehaviour.Editor
                 //打开搜索窗口
                 SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), searchWindowProvider);
             };
+            
+            //还原位置与大小
+            if (bt.Rect != default)
+            {
+                viewTransform.position = bt.Rect.position;
+                viewTransform.scale = new Vector3(bt.Rect.size.x,bt.Rect.size.y,1);
+            }
 
             CreateMiniMap();
             CreateBlackBoard();
@@ -85,7 +90,11 @@ namespace CatBehaviour.Editor
         {
             BlackBoardView blackBoardView = new BlackBoardView();
             blackBoardView.Init(this);
-            blackBoardView.SetPosition(BT.BlackBoard.Position);
+            if (BT.BlackBoard.Position != default)
+            {
+                blackBoardView.SetPosition(BT.BlackBoard.Position);
+            }
+            
             Add(blackBoardView);
 
             BlackboardView = blackBoardView;

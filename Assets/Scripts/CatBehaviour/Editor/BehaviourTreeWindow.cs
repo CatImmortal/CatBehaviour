@@ -12,6 +12,9 @@ using UnityEditor.UIElements;
 
 namespace CatBehaviour.Editor
 {
+    /// <summary>
+    /// 行为树茶壶功能卡
+    /// </summary>
     public class BehaviourTreeWindow : EditorWindow
     {
         private string assetPath;
@@ -19,6 +22,7 @@ namespace CatBehaviour.Editor
         private BehaviourTree bt;
         
         private Label labelAssetPath;
+        private SplitView splitView;
         private InspectorView inspector;
         private BehaviourTreeGraphView graphView;
 
@@ -65,7 +69,9 @@ namespace CatBehaviour.Editor
             var btnSave = root.Q<Button>("btnSave");
             btnSave.clicked += Save;
 
+            splitView = root.Q<SplitView>();
             inspector = root.Q<InspectorView>("inspector");
+            graphView = rootVisualElement.Q<BehaviourTreeGraphView>("graphView");
         }
 
         /// <summary>
@@ -97,13 +103,22 @@ namespace CatBehaviour.Editor
                 bt = new BehaviourTree();
                 bt.RootNode = new RootNode
                 {
-                    Position = new Vector2(position.position.x + 100, position.position.y + 100),
+                    Position = new Vector2(graphView.contentContainer.layout.position.x + 300, graphView.contentContainer.layout.position.y + 300),
                     Owner = bt
                 };
                 bt.AllNodes.Add(bt.RootNode);
             }
 
-            graphView = rootVisualElement.Q<BehaviourTreeGraphView>("graphView");
+            //设置节点属性面板的宽度
+            if (bt.InspectorWidth != 0)
+            {
+                splitView.fixedPaneInitialDimension = bt.InspectorWidth;
+            }
+            else
+            {
+                splitView.fixedPaneInitialDimension = 450;
+            }
+
             graphView.Init(this, bt);
         }
 
@@ -178,9 +193,15 @@ namespace CatBehaviour.Editor
                 parent.RuntimeNode.AddChild(node.RuntimeNode);
             }
 
+            //记录属性面板宽度
+            bt.InspectorWidth = splitView.Q<VisualElement>("left").layout.width;
+            
+            //记录节点图位置
+            bt.Rect = new Rect(graphView.viewTransform.position, graphView.viewTransform.scale);
+            
             //记录黑板位置
             bt.BlackBoard.Position = graphView.BlackboardView.GetPosition();
-            
+
             //将编辑好的行为树赋值给原始SO
             originBTSO.BT = bt;
 

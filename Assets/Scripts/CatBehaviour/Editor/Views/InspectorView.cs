@@ -10,11 +10,6 @@ namespace CatBehaviour.Editor
     {
         public new class UxmlFactory : UxmlFactory<InspectorView, UxmlTraits> { }
 
-        public InspectorView()
-        {
-
-        }
-        
         /// <summary>
         /// 绘制节点检查器面板
         /// </summary>

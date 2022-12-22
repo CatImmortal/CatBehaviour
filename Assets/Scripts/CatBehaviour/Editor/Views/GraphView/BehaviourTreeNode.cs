@@ -48,7 +48,7 @@ namespace CatBehaviour.Editor
             RegisterCallback<MouseDownEvent>((evt =>
             {
                 if (evt.button == 0)
-                {
+                { 
                     window.OnNodeClick(this);
                 }
             }));
