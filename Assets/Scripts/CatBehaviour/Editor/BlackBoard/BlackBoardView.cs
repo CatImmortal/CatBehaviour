@@ -9,6 +9,9 @@ using UnityEngine.UIElements;
 
 namespace CatBehaviour.Editor
 {
+    /// <summary>
+    /// 黑板界面
+    /// </summary>
     public class BlackBoardView : PinnedElementView
     {
         private const string exposedParameterViewStyle = "USS/BlackBoardView";

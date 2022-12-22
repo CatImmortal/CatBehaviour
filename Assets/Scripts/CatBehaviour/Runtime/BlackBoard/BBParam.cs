@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 #if UNITY_EDITOR
@@ -98,7 +99,7 @@ namespace CatBehaviour.Runtime
         {
             string name = type.Name;
             name = name.Replace("BBParam", "");
-            return ObjectNames.NicifyVariableName(name);
+            return name;
         }
 #endif
     }
@@ -170,4 +171,38 @@ namespace CatBehaviour.Runtime
         }
 #endif
     }
+    
+    [Serializable]
+    public class BBParamVector2 : BBParam<Vector2>
+    {
+#if UNITY_EDITOR
+        protected override void OnGUI()
+        {
+            EditorGUILayout.Vector2Field("Value", Value);
+        }
+#endif
+    }
+    
+    [Serializable]
+    public class BBParamVector3 : BBParam<Vector3>
+    {
+#if UNITY_EDITOR
+        protected override void OnGUI()
+        {
+            EditorGUILayout.Vector3Field("Value", Value);
+        }
+#endif
+    }
+    
+    [Serializable]
+    public class BBParamVector4 : BBParam<Vector4>
+    {
+#if UNITY_EDITOR
+        protected override void OnGUI()
+        {
+            EditorGUILayout.Vector4Field("Value", Value);
+        }
+#endif
+    }
+
 }
