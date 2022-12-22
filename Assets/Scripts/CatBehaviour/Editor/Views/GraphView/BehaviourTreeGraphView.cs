@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using CatBehaviour.Runtime;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
@@ -26,6 +29,11 @@ namespace CatBehaviour.Editor
         
         public BehaviourTreeGraphView()
         {
+            //TODO:用这三个回调实现节点的复制粘贴功能
+            serializeGraphElements = SerializeGraphElementsCallback;
+            canPasteSerializedData = CanPasteSerializedDataCallback;
+            unserializeAndPaste = UnserializeAndPasteCallback;
+            
             Insert(0, new GridBackground());  //格子背景
             
             //添加背景网格样式
@@ -40,6 +48,95 @@ namespace CatBehaviour.Editor
             
             //graphViewChanged += OnGraphViewChanged;
         }
+
+        /// <summary>
+        /// 点击复制时，序列化节点的回调
+        /// </summary>
+        private string SerializeGraphElementsCallback(IEnumerable<GraphElement> elements)
+        {
+            CopyPasteData data = new CopyPasteData();
+            List<BaseNode> allNodes = new List<BaseNode>();
+            string result = null;
+            foreach (GraphElement element in elements)
+            {
+                if (element is BehaviourTreeNode node)
+                {
+                    //清空ID和父子关系
+                    node.RuntimeNode.ClearId();
+                    node.RuntimeNode.ClearNodeReference();
+
+                    //记录位置
+                    node.RuntimeNode.Position = node.GetPosition().position;
+                    
+                    //添加到allNodes里 建立ID
+                    allNodes.Add(node.RuntimeNode);
+                    node.RuntimeNode.Id = allNodes.Count;
+                }
+            }
+            
+            //根据节点图的连线刷新父子关系
+            foreach (GraphElement element in elements)
+            {
+                if (element is BehaviourTreeNode node)
+                {
+                    if (node.inputContainer.childCount == 0)
+                    {
+                        continue;
+                    }
+                
+                    Port inputPort = (Port)node.inputContainer[0];
+                    Edge inputEdge = inputPort.connections.FirstOrDefault();
+                    if (inputEdge == null)
+                    {
+                        continue;
+                    }
+                
+                    //向父节点添加自身为其子节点
+                    var parent = (BehaviourTreeNode)inputEdge.output.node;
+                    parent.RuntimeNode.AddChild(node.RuntimeNode);
+                }
+            }
+            
+            //记录父子节点ID
+            foreach (BaseNode node in allNodes)
+            {
+                node.RebuildId();
+                data.CopiedNodes.Add(JsonSerializer.Serialize(node));
+            }
+            
+            ClearSelection();
+            
+            result = JsonUtility.ToJson(data, true);
+            Debug.Log(result);
+            return result;
+        }
+        
+        /// <summary>
+        /// 检测是否可点击粘贴的回调
+        /// </summary>
+        private bool CanPasteSerializedDataCallback(string data)
+        {
+            try
+            {
+                return false;
+
+            } catch {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 点击粘贴时，反序列化节点的回调
+        /// </summary>
+        /// <param name="operationName"></param>
+        /// <param name="data"></param>
+        private void UnserializeAndPasteCallback(string operationName, string data)
+        {
+            
+        }
+
+
+
 
 
         /// <summary>

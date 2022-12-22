@@ -48,13 +48,13 @@ namespace CatBehaviour.Runtime
         {
             action?.Invoke(Child);
         }
-        
-        /// <inheritdoc />
-        public override void ClearIdAndReference()
+
+        public override void ClearId()
         {
-            RemoveChild(Child);
+            base.ClearId();
+            ChildId = 0;
         }
-        
+
         /// <inheritdoc />
         public override void RebuildId()
         {
@@ -66,6 +66,12 @@ namespace CatBehaviour.Runtime
             }
         }
 
+        /// <inheritdoc />
+        public override void ClearNodeReference()
+        {
+            Child = null;
+        }
+        
         /// <inheritdoc />
         public override void RebuildNodeReference()
         {

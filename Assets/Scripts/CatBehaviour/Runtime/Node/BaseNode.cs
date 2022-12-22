@@ -99,13 +99,15 @@ namespace CatBehaviour.Runtime
             
         }
 
+
+
         /// <summary>
-        /// 清空对父子节点的Id索引和引用
+        /// 清空Id信息
         /// </summary>
-        public virtual void ClearIdAndReference()
+        public virtual void ClearId()
         {
+            Id = 0;
             ParentNodeId = 0;
-            ParentNode = null;
         }
         
         /// <summary>
@@ -119,6 +121,14 @@ namespace CatBehaviour.Runtime
             }
         }
 
+        /// <summary>
+        /// 清空对父子节点的Id索引和引用
+        /// </summary>
+        public virtual void ClearNodeReference()
+        {
+            ParentNode = null;
+        }
+        
         /// <summary>
         /// 重建对父子节点的引用
         /// </summary>

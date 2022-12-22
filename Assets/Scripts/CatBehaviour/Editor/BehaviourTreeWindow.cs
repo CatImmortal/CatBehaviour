@@ -157,24 +157,27 @@ namespace CatBehaviour.Editor
             }
             
             //收集节点
+            
             bt.AllNodes.Clear();
+            
+            //清空ID和父子关系
             foreach (Node element in graphView.nodes)
             {
                 BehaviourTreeNode node = (BehaviourTreeNode) element;
+                node.RuntimeNode.ClearId();
+                node.RuntimeNode.ClearNodeReference();
                 
-                //添加到allNodes里
+                //记录位置
+                node.RuntimeNode.Position = node.GetPosition().position;
+                
+                //添加到allNodes里 建立ID
                 bt.AllNodes.Add(node.RuntimeNode);
                 node.RuntimeNode.Id = bt.AllNodes.Count;
-                    
-                //刷新位置
-                node.RuntimeNode.Position = node.GetPosition().position;
-
-                //清空父子关系
-                node.RuntimeNode.ClearIdAndReference();
             }
+            
+            //根据节点图连线重建父子关系
             foreach (Node element in graphView.nodes)
             {
-                //刷新父子关系
                 BehaviourTreeNode node = (BehaviourTreeNode) element;
                 if (node.inputContainer.childCount == 0)
                 {
@@ -187,8 +190,6 @@ namespace CatBehaviour.Editor
                 {
                     continue;
                 }
-                
-                //向父节点添加自身为其子节点
                 var parent = (BehaviourTreeNode)inputEdge.output.node;
                 parent.RuntimeNode.AddChild(node.RuntimeNode);
             }

@@ -122,17 +122,15 @@ namespace CatBehaviour.Runtime
                 node.SortChild();
             }
             
-            //建立父子节点间的ID索引
+            //重建父子Id
             if (RootNode != null)
             {
                 RootNodeId = RootNode.Id;
             }
-           
             foreach (BaseNode node in AllNodes)
             {
                 node.RebuildId();
             }
-            
         }
 
         /// <summary>
