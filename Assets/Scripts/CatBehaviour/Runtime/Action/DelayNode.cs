@@ -22,6 +22,7 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 延时的时间
         /// </summary>
+        [BBParamInfo(Name = "延时时间")]
         public BBParamFloat DelayTime = new BBParamFloat();
 
         private float timer;
@@ -49,15 +50,6 @@ namespace CatBehaviour.Runtime
                 Finish(true);
             }
         }
-
-#if UNITY_EDITOR
         
-        /// <inheritdoc />
-        public override void OnGUI()
-        {
-            EditorGUILayout.LabelField("延时时间");
-            DelayTime.OnGUI(true,Owner);
-        }
-#endif
     }
 }

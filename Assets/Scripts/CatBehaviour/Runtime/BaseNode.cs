@@ -3,6 +3,10 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace CatBehaviour.Runtime
 {
     /// <summary>
@@ -230,7 +234,28 @@ namespace CatBehaviour.Runtime
         /// </summary>
         public virtual void OnGUI()
         {
-            
+            Type type = typeof(BBParam);
+            foreach (FieldInfo fieldInfo in FieldInfos)
+            {
+                if (type.IsAssignableFrom(fieldInfo.FieldType))
+                {
+                    var nameAttr = fieldInfo.GetCustomAttribute<BBParamInfoAttribute>();
+                    string name = null;
+                    if (nameAttr != null)
+                    {
+                        name = nameAttr.Name;
+                    }
+
+                    if (name != null)
+                    {
+                        EditorGUILayout.LabelField($"{name}({BBParam.GetBBParamTypeName(fieldInfo.FieldType)})");
+                    }
+
+                    var bbParam = (BBParam)fieldInfo.GetValue(this);
+                    
+                    bbParam.OnGUI(true,Owner);
+                }
+            }
         }
         
 #endif

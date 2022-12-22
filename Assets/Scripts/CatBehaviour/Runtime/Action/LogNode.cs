@@ -36,6 +36,7 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 日志内容
         /// </summary>
+        [BBParamInfo(Name = "日志信息")]
         public BBParamString Log = new BBParamString();
         
         protected override void OnStart()
@@ -71,8 +72,7 @@ namespace CatBehaviour.Runtime
             Level = (LogLevel)EditorGUILayout.EnumPopup("日志级别", Level);
             EditorGUILayout.Space();
             
-            EditorGUILayout.LabelField("日志");
-            Log.OnGUI(true,Owner);
+            base.OnGUI();
         }
 #endif
     }

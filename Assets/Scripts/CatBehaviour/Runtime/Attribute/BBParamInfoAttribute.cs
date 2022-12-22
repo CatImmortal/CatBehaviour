@@ -3,11 +3,10 @@
 namespace CatBehaviour.Runtime
 {
     /// <summary>
-    /// 节点信息特性
+    /// 黑板参数信息特性
     /// </summary>
-    public class NodeInfoAttribute : Attribute
+    public class BBParamInfoAttribute : Attribute
     {
         public string Name;
-        public string Desc;
     }
 }

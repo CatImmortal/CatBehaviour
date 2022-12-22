@@ -91,6 +91,15 @@ namespace CatBehaviour.Runtime
             
         }
 
+        /// <summary>
+        /// 获取黑板参数的类型名
+        /// </summary>
+        public static string GetBBParamTypeName(Type type)
+        {
+            string name = type.Name;
+            name = name.Replace("BBParam", "");
+            return ObjectNames.NicifyVariableName(name);
+        }
 #endif
     }
     

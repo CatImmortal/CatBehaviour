@@ -44,7 +44,7 @@ namespace CatBehaviour.Editor
 
             foreach (Type type in GetBlackBoardParamTypes())
             {
-                string typeName = GetBBParamTypeName(type);
+                string typeName = BBParam.GetBBParamTypeName(type);
                 paramType.AddItem(new GUIContent(typeName),false,() =>
                 {
                     string uniqueKey = $"New {typeName}";
@@ -75,16 +75,7 @@ namespace CatBehaviour.Editor
             
             return types;
         }
-
-        /// <summary>
-        /// 获取黑板参数的类型名
-        /// </summary>
-        private string GetBBParamTypeName(Type type)
-        {
-            string name = type.Name;
-            name = name.Replace("BBParam", "");
-            return ObjectNames.NicifyVariableName(name);
-        }
+        
         
         /// <summary>
         /// 获取唯一的黑板Key
@@ -116,7 +107,7 @@ namespace CatBehaviour.Editor
             {
                 BBParam value = graphView.BT.BlackBoard.ParamDict[key];
                 Type type = value.GetType();
-                string typeName = GetBBParamTypeName(type);
+                string typeName = BBParam.GetBBParamTypeName(type);
                 var keyView = new BlackboardParamKeyView(graphView, value, key, typeName);
                 var valueView = new BlackboardParamValueView();
                 valueView.DrawValue(value);

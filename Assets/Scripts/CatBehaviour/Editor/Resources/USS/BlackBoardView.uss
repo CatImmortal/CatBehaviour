@@ -28,7 +28,7 @@ BlackBoardParamKeyView .pill #contents > #top > #icon {
 	margin-left: 2px;
 }
 
-BlackBoardParamKeyView Image {
+BlackboardParamKeyView Image {
 	background-color: #ffffff;
 }
 

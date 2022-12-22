@@ -10,18 +10,18 @@ namespace CatBehaviour.Editor
     public class BlackboardParamKeyView : BlackboardField
     {
         private BehaviourTreeGraphView graphView;
-        private BBParam param;
 
         private TextField keyField;
         
         public BlackboardParamKeyView(BehaviourTreeGraphView graphView,BBParam param,string key,string typeName) :base(null,key,typeName)
         {
             this.graphView = graphView;
-            this.param = param;
             this.AddManipulator(new ContextualMenuManipulator(BuildContextualMenu));  //增加右键菜单
-            this.Q("icon").AddToClassList("parameter-" + typeName);
-            this.Q("icon").visible = true;
-
+            var icon = this.Q("icon");
+            icon.AddToClassList("parameter-" + typeName);
+            icon.visible = true;
+            icon.style.width = 4;
+            icon.style.height = 4;
             keyField = this.Q<TextField>("textField");
             
             keyField.RegisterValueChangedCallback((e) =>
@@ -43,8 +43,8 @@ namespace CatBehaviour.Editor
         /// <param name="evt"></param>
         private void BuildContextualMenu(ContextualMenuPopulateEvent evt)
         {
-            evt.menu.AppendAction("Rename", (a) => OpenTextEditor(), DropdownMenuAction.AlwaysEnabled);
-            evt.menu.AppendAction("Delete", (a) => graphView.RemoveBlackBoardParam(text), DropdownMenuAction.AlwaysEnabled);
+            evt.menu.AppendAction("重命名", (a) => OpenTextEditor(), DropdownMenuAction.AlwaysEnabled);
+            evt.menu.AppendAction("删除", (a) => graphView.RemoveBlackBoardParam(text), DropdownMenuAction.AlwaysEnabled);
 
             evt.StopPropagation();
         }
