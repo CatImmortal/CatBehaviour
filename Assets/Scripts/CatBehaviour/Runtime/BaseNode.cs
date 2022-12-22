@@ -234,6 +234,15 @@ namespace CatBehaviour.Runtime
         /// </summary>
         public virtual void OnGUI()
         {
+            var infoAttr = GetType().GetCustomAttribute<NodeInfoAttribute>();
+            if (!string.IsNullOrEmpty(infoAttr.Desc))
+            {
+                //节点描述信息
+                EditorGUILayout.LabelField($"【{infoAttr.Desc}】");
+            }
+            
+            EditorGUILayout.Space();
+            
             Type type = typeof(BBParam);
             foreach (FieldInfo fieldInfo in FieldInfos)
             {
@@ -246,7 +255,7 @@ namespace CatBehaviour.Runtime
                         name = nameAttr.Name;
                     }
 
-                    if (name != null)
+                    if (!string.IsNullOrEmpty(name))
                     {
                         EditorGUILayout.LabelField($"{name}({BBParam.GetBBParamTypeName(fieldInfo.FieldType)})");
                     }
