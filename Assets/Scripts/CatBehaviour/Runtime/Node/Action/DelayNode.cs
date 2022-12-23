@@ -50,6 +50,16 @@ namespace CatBehaviour.Runtime
                 Finish(true);
             }
         }
+
+#if UNITY_EDITOR
+        public override void OnGUI()
+        {
+            base.OnGUI();
+            
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField($"当前计时：{timer.ToString(".00")}");
+        }
+#endif
         
     }
 }

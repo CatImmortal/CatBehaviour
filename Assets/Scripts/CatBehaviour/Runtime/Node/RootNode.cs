@@ -1,4 +1,7 @@
-﻿namespace CatBehaviour.Runtime
+﻿using System;
+using CatBehaviour.Editor;
+
+namespace CatBehaviour.Runtime
 {
     /// <summary>
     /// 根节点
@@ -6,6 +9,11 @@
     [NodeInfo(Name = "根节点")]
     public class RootNode : BaseDecoratorNode
     {
+        /// <summary>
+        /// 运行结束回调
+        /// </summary>
+        public Action OnFinish;
+        
         /// <inheritdoc />
         protected override void OnStart()
         {
@@ -21,7 +29,7 @@
         /// <inheritdoc />
         protected override void OnChildFinished(BaseNode child, bool success)
         {
-
+            OnFinish?.Invoke();
         }
     }
 }

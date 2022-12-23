@@ -10,6 +10,12 @@ public class Test : MonoBehaviour
     
     private void Start()
     {
-        BTSO.CloneBehaviourTree().Start();
+        var bt = BTSO.CloneBehaviourTree();
+        bt.OnFinish += () =>
+        {
+            Debug.Log("行为树运行结束");
+        };
+        bt.Start("TestBT");
+        
     }
 }

@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using CatBehaviour.Editor;
 using UnityEngine;
-
 
 namespace CatBehaviour.Runtime
 {
@@ -22,6 +22,38 @@ namespace CatBehaviour.Runtime
         /// </summary>
         public static IBinarySerializer BinarySerializer { get; set; }
 
+        /// <summary>
+        /// 行为树运行结束回调
+        /// </summary>
+        public event Action OnFinish
+        {
+            add
+            {
+                if (RootNode == null)
+                {
+                    return;
+                }
+
+                RootNode.OnFinish += value;
+            }
+
+            remove
+            {
+                if (RootNode == null)
+                {
+                    return;
+                }
+
+                RootNode.OnFinish -= value;
+            }
+        }
+        
+        /// <summary>
+        /// 行为树实例调试名
+        /// </summary>
+        [NonSerialized]
+        public string DebugName;
+        
         /// <summary>
         /// 根节点ID
         /// </summary>
@@ -64,22 +96,38 @@ namespace CatBehaviour.Runtime
         /// </summary>
         private void Init()
         {
+            //重建节点对黑板参数的引用
             foreach (BaseNode node in AllNodes)
             {
                 node.RebuildBBParamReference();
             }
+
+#if UNITY_EDITOR
+            OnFinish += () =>
+            {
+                BTDebugger.Remove(this);
+            };
+#endif
         }
-        
+
         /// <summary>
         /// 开始运行行为树
         /// </summary>
-        public void Start()
+        public void Start(string debugName = null)
         {
             if (!isInit)
             {
                 Init();
-                isInit = true;
             }
+            
+#if UNITY_EDITOR
+            DebugName = debugName;
+            if (string.IsNullOrEmpty(DebugName))
+            {
+                DebugName = DateTime.Now.ToString();
+            }
+            BTDebugger.Add(this);   
+#endif
             
             RootNode.Start();
         }
@@ -90,6 +138,10 @@ namespace CatBehaviour.Runtime
         public void Cancel()
         {
             RootNode.Cancel();
+            
+#if UNITY_EDITOR
+            BTDebugger.Remove(this);   
+#endif
         }
 
         /// <summary>
@@ -156,8 +208,7 @@ namespace CatBehaviour.Runtime
         {
             if (StringSerializer == null)
             {
-                Debug.LogError("试图将行为树序列化为字符串，但未设置对应的序列化器");
-                return null;
+                throw new Exception("试图将行为树序列化为字符串，但未设置对应的序列化器");
             }
             
             PreProcessSerialize();
@@ -182,8 +233,7 @@ namespace CatBehaviour.Runtime
         {
             if (BinarySerializer == null)
             {
-                Debug.LogError("试图将行为树序列化为二进制，但未设置对应的序列化器");
-                return null;
+                throw new Exception("试图将行为树序列化为二进制，但未设置对应的序列化器");
             }   
             PreProcessSerialize();
             byte[] bytes = BinarySerializer.Serialize(this);
@@ -200,30 +250,6 @@ namespace CatBehaviour.Runtime
             return bt;
         }
         
-        // /// <summary>
-        // /// 收集从根节点出发，能达到的所有节点
-        // /// </summary>
-        // private void CollectAllNodes()
-        // {
-        //     AllNodes.Clear();
-        //     CollectAllNodes(RootNode);
-        // }
-        //
-        // /// <summary>
-        // /// 收集从根节点出发，能达到的所有节点
-        // /// </summary>
-        // private void CollectAllNodes(BaseNode node)
-        // {
-        //     if (node == null)
-        //     {
-        //         return;
-        //     }
-        //
-        //     AllNodes.Add(node);
-        //     node.Id = AllNodes.Count;
-        //
-        //     node.ForeachChild(CollectAllNodes);
-        // }
     }
 
 }

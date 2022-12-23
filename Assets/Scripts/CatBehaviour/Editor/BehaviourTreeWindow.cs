@@ -30,7 +30,7 @@ namespace CatBehaviour.Editor
         [MenuItem("CatBehaviour/打开行为树窗口")]
         public static void Open()
         {
-            Open(null);
+            OpenFromAssetPath(null);
         }
         
         [OnOpenAsset(1)]
@@ -39,19 +39,28 @@ namespace CatBehaviour.Editor
             if (EditorUtility.InstanceIDToObject(id) is BehaviourTreeSO btSO)
             {
                 string assetPath = AssetDatabase.GetAssetPath(btSO);
-                Open(assetPath);
+                OpenFromAssetPath(assetPath);
                 return true;
             }
             return false;
         }
 
         /// <summary>
-        /// 打开行为树窗口
+        /// 通过行为树SO路径打开窗口
         /// </summary>
-        private static void Open(string assetPath)
+        private static void OpenFromAssetPath(string assetPath)
         {
             BehaviourTreeWindow window = CreateWindow<BehaviourTreeWindow>("行为树窗口");
-            window.Init(assetPath);
+            window.InitFromAssetPath(assetPath);
+        }
+
+        /// <summary>
+        /// 通过调试器打开窗口
+        /// </summary>
+        public static void OpenFromDebugger(BehaviourTree debugBT)
+        {
+            BehaviourTreeWindow window = CreateWindow<BehaviourTreeWindow>("行为树窗口");
+            window.InitFromDebugger(debugBT);
         }
 
         public void CreateGUI()
@@ -75,12 +84,12 @@ namespace CatBehaviour.Editor
         }
 
         /// <summary>
-        /// 初始化
+        /// 使用行为树SO路径初始化
         /// </summary>
-        private void Init(string assetPath)
+        private void InitFromAssetPath(string assetPath)
         {
             this.assetPath = assetPath;
-            
+            BehaviourTree bt = null;
             if (!string.IsNullOrEmpty(assetPath))
             {
                 labelAssetPath.text = $"文件名:{assetPath}";
@@ -97,7 +106,30 @@ namespace CatBehaviour.Editor
                labelAssetPath.text = $"文件名:newFile";
             }
 
-            //若反序列化得到的行为树为空则创建个默认的
+            Init(bt);
+        }
+
+        /// <summary>
+        /// 使用调试用行为树对象初始化
+        /// </summary>
+        private void InitFromDebugger(BehaviourTree debugBT)
+        {
+            labelAssetPath.text = $"行为树调试名:{debugBT.DebugName}";
+            
+            //调试状态下 删掉保存按钮
+            var btnSave = rootVisualElement.Q<Button>("btnSave");
+            btnSave.RemoveFromHierarchy();
+            
+            Init(debugBT);
+        }
+        
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        private void Init(BehaviourTree bt)
+        {
+            //若传入的行为树为空则创建个默认的
+            this.bt = bt;
             if (bt == null)
             {
                 bt = new BehaviourTree();
@@ -122,6 +154,8 @@ namespace CatBehaviour.Editor
             graphView.Init(this, bt);
         }
 
+        
+        
         /// <summary>
         /// 节点被点击时的回调
         /// </summary>
