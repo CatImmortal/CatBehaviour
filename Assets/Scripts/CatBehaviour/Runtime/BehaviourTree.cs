@@ -47,7 +47,7 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 位置与缩放
         /// </summary>
-        public Rect Rect = new Rect();
+        public Rect Rect;
         
         /// <summary>
         /// 节点属性面板宽度
@@ -57,7 +57,7 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 是否已初始化
         /// </summary>
-        private bool isInit = false;
+        private bool isInit;
 
         /// <summary>
         /// 初始化行为树
