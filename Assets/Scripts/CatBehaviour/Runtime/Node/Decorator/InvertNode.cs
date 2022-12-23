@@ -3,8 +3,8 @@
     /// <summary>
     /// 反转节点（对子节点运行结果取反）
     /// </summary>
-    [NodeInfo(Name = "反转节点",Desc = "对子节点运行结果取反")]
-    public class InverterNode : BaseDecoratorNode
+    [NodeInfo(Name = "反转节点",Desc = "对子节点运行结果取反",Icon = "Icon/Invert")]
+    public class InvertNode : BaseDecoratorNode
     {
         /// <inheritdoc />
         protected override void OnStart()

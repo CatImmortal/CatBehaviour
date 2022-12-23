@@ -5,8 +5,8 @@ namespace CatBehaviour.Runtime
     /// <summary>
     /// 重复节点
     /// </summary>
-    [NodeInfo(Name = "重复节点")]
-    public class RepeaterNode : BaseDecoratorNode
+    [NodeInfo(Name = "重复节点",Icon = "Icon/Repeat")]
+    public class RepeatNode : BaseDecoratorNode
     {
         /// <summary>
         /// 重复模式

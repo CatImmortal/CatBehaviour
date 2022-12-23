@@ -54,13 +54,24 @@ namespace CatBehaviour.Editor
                     window.OnNodeClick(this);
                 }
             }));
-
-            
             
             SetNameAndPos();
             SetVertical();
             AddPort();
 
+            var nodeInfo = RuntimeNode.GetType().GetCustomAttribute<NodeInfoAttribute>();
+            if (nodeInfo != null && !string.IsNullOrEmpty(nodeInfo.Icon))
+            {
+                var icon = Resources.Load<Texture>(nodeInfo.Icon);
+                if (icon != null)
+                {
+                    Image img = new Image();
+                    img.image = icon;
+                    var imgParent = this.Q<VisualElement>("title");
+                    imgParent.Insert(0,img);
+                }
+            }
+            
             if (window.IsDebugMode)
             {
                 //调试模式下 增加节点状态显示

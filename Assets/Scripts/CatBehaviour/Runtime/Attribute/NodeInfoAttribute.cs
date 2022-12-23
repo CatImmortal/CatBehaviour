@@ -9,5 +9,6 @@ namespace CatBehaviour.Runtime
     {
         public string Name;
         public string Desc;
+        public string Icon;
     }
 }

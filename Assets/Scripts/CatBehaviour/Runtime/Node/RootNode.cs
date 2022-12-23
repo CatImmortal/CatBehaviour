@@ -6,7 +6,7 @@ namespace CatBehaviour.Runtime
     /// <summary>
     /// 根节点
     /// </summary>
-    [NodeInfo(Name = "根节点")]
+    [NodeInfo(Name = "根节点",Icon = "Icon/Root")]
     public class RootNode : BaseDecoratorNode
     {
         /// <summary>

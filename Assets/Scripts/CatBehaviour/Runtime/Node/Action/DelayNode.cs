@@ -12,7 +12,7 @@ namespace CatBehaviour.Runtime
     /// <summary>
     /// 延时节点
     /// </summary>
-    [NodeInfo(Name = "延时节点")]
+    [NodeInfo(Name = "延时节点",Icon = "Icon/Delay")]
     public class DelayNode : BaseActionNode
     {
         /// <inheritdoc />
@@ -56,7 +56,7 @@ namespace CatBehaviour.Runtime
             base.OnGUI();
             
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField($"当前计时：{timer.ToString(".00")}");
+            EditorGUILayout.LabelField($"当前计时：{timer:f2}");
         }
 #endif
         
