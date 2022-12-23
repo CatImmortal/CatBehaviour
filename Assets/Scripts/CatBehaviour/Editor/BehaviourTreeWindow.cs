@@ -26,6 +26,10 @@ namespace CatBehaviour.Editor
         private InspectorView inspector;
         private BehaviourTreeGraphView graphView;
 
+        /// <summary>
+        /// 是否为调试模式
+        /// </summary>
+        public bool IsDebugMode { get; private set; }
 
         [MenuItem("CatBehaviour/打开行为树窗口")]
         public static void Open()
@@ -114,6 +118,8 @@ namespace CatBehaviour.Editor
         /// </summary>
         private void InitFromDebugger(BehaviourTree debugBT)
         {
+            IsDebugMode = true;
+            
             labelAssetPath.text = $"行为树调试名:{debugBT.DebugName}";
             
             //调试状态下 删掉保存按钮

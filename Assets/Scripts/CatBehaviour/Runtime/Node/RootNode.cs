@@ -29,6 +29,7 @@ namespace CatBehaviour.Runtime
         /// <inheritdoc />
         protected override void OnChildFinished(BaseNode child, bool success)
         {
+            Finish(true);
             OnFinish?.Invoke();
         }
     }

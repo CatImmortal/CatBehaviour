@@ -5,7 +5,7 @@ using CatBehaviour.Runtime;
 namespace CatBehaviour.Editor
 {
     /// <summary>
-    /// 复制粘贴辅助器
+    /// 节点的复制粘贴数据
     /// </summary>
     [Serializable]
     public class CopyPasteData

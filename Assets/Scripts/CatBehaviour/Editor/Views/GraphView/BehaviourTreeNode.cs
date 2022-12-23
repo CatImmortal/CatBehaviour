@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Reflection;
 using CatBehaviour.Runtime;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -15,8 +17,8 @@ namespace CatBehaviour.Editor
         public BaseNode RuntimeNode;
         private Port inputPort;
         private Port outputPort;
-        
 
+        private EnumField stateField;
         
         /// <summary>
         /// 获取节点在节点图的名字
@@ -53,11 +55,21 @@ namespace CatBehaviour.Editor
                 }
             }));
 
+            
+            
             SetNameAndPos();
             SetVertical();
             AddPort();
 
+            if (window.IsDebugMode)
+            {
+                //调试模式下 增加节点状态显示
+                AddStateField();
+                RefreshNodeState();
+            }
+            
         }
+        
 
         /// <summary>
         /// 设置节点名和位置
@@ -77,11 +89,11 @@ namespace CatBehaviour.Editor
             var titleButtonContainer = contentContainer.Q<VisualElement>("title-button-container");
             titleButtonContainer.RemoveAt(0);  //删掉收起箭头 否则会有bug
 
-            var titleContainer = contentContainer.Q<VisualElement>("title");
+            var titleContainer = this.Q<VisualElement>("title");
             var topContainer = this.Q("input");
             var bottomContainer = this.Q("output");
             
-            var nodeBorder = contentContainer.Q<VisualElement>("node-border");
+            var nodeBorder = this.Q<VisualElement>("node-border");
             nodeBorder.RemoveAt(0);
             nodeBorder.RemoveAt(0);
             
@@ -129,6 +141,20 @@ namespace CatBehaviour.Editor
 
         }
 
+        /// <summary>
+        /// 添加状态显示UI
+        /// </summary>
+        private void AddStateField()
+        {
+            var nodeBorder = contentContainer.Q<VisualElement>("node-border");
+            stateField = new EnumField(RuntimeNode.CurState);
+            nodeBorder.Insert(2,stateField);
+
+            IMGUIContainer imguiContainer = new IMGUIContainer();
+            imguiContainer.onGUIHandler += RefreshNodeState;
+            nodeBorder.Add(imguiContainer);
+        }
+        
         // /// <summary>
         // /// 绘制节点属性
         // /// </summary>
@@ -139,6 +165,27 @@ namespace CatBehaviour.Editor
         //     imguiContainer.onGUIHandler = RuntimeNode.OnGUI;
         //     nodeBorder.Add(imguiContainer);
         // }
+
+        /// <summary>
+        /// 刷新节点状态显示
+        /// </summary>
+        private void RefreshNodeState()
+        {
+            stateField.value = RuntimeNode.CurState;
+            
+            var element = stateField.ElementAt(0);
+            if (RuntimeNode.CurState == BaseNode.State.Running)
+            {
+               
+                var color = new Color(38/255f, 130/255f, 205/255f, 255f/255);
+                element.style.backgroundColor = color;
+            }
+            else
+            {
+                var color = new Color(81/255f, 81/255f, 81/255f, 255f/255);
+                element.style.backgroundColor = color;
+            }
+        }
         
         public override string ToString()
         {

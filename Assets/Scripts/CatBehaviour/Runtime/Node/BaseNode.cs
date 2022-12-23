@@ -21,8 +21,6 @@ namespace CatBehaviour.Runtime
         /// </summary>
         public enum State
         {
-            None,
-            
             /// <summary>
             /// 空闲
             /// </summary>
@@ -189,7 +187,8 @@ namespace CatBehaviour.Runtime
             {
                 return;
             }
-            
+
+            CurState = State.Free;
             OnCancel();
         }
         

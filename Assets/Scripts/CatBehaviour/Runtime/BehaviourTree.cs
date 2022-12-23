@@ -91,6 +91,11 @@ namespace CatBehaviour.Runtime
         /// </summary>
         private bool isInit;
 
+        public static void OnUpdate(float deltaTime)
+        {
+            UpdateManager.OnUpdate(deltaTime);
+        }
+        
         /// <summary>
         /// 初始化行为树
         /// </summary>
@@ -115,6 +120,11 @@ namespace CatBehaviour.Runtime
         /// </summary>
         public void Start(string debugName = null)
         {
+            if (RootNode.CurState == BaseNode.State.Running)
+            {
+                return;
+            }
+            
             if (!isInit)
             {
                 Init();
@@ -137,6 +147,11 @@ namespace CatBehaviour.Runtime
         /// </summary>
         public void Cancel()
         {
+            if (RootNode.CurState != BaseNode.State.Running)
+            {
+                return;
+            }
+            
             RootNode.Cancel();
             
 #if UNITY_EDITOR
@@ -156,12 +171,7 @@ namespace CatBehaviour.Runtime
             
             return AllNodes[nodeId - 1];
         }
-        
 
-        public static void OnUpdate(float deltaTime)
-        {
-            UpdateManager.OnUpdate(deltaTime);
-        }
 
         /// <summary>
         /// 序列化前的预处理

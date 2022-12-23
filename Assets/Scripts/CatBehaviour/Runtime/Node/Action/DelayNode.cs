@@ -31,7 +31,6 @@ namespace CatBehaviour.Runtime
         protected override void OnStart()
         {
             timer = 0;
-            Debug.Log($"delayTime:{DelayTime}");
             UpdateManager.AddUpdateTimer(OnUpdate);
         }
 
