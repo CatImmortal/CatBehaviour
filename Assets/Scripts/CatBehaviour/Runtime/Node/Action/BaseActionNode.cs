@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CatBehaviour.Runtime
 {
@@ -44,9 +45,9 @@ namespace CatBehaviour.Runtime
         {
             base.ClearNodeReference();
         }
-        
+
         /// <inheritdoc />
-        public sealed override void RebuildNodeReference()
+        public sealed override void RebuildNodeReference(List<BaseNode> allNodes)
         {
 
         }

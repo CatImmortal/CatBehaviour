@@ -15,15 +15,15 @@ MonoBehaviour:
   BT:
     RootNodeId: 1
     AllNodes:
-    - rid: 6460882565385682952
-    - rid: 6460882565385682953
-    - rid: 6460882565385682954
+    - rid: 6460882565385683008
+    - rid: 6460882565385683009
+    - rid: 6460882565385683010
     Rect:
       serializedVersion: 2
-      x: 0
-      y: 0
-      width: 1
-      height: 1
+      x: 120
+      y: -15
+      width: 0.8695652
+      height: 0.8695652
     InspectorWidth: 420
   BBParams: []
   BlackBoardRect:
@@ -35,14 +35,14 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 6460882565385682952
+    - rid: 6460882565385683008
       type: {class: RootNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 1
         Position: {x: 500, y: 100}
         ParentNodeId: 0
         ChildId: 2
-    - rid: 6460882565385682953
+    - rid: 6460882565385683009
       type: {class: ParallelNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 2
@@ -50,7 +50,7 @@ MonoBehaviour:
         ParentNodeId: 1
         ChildIdList: 03000000
         Condition: 0
-    - rid: 6460882565385682954
+    - rid: 6460882565385683010
       type: {class: DelayNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 3

@@ -142,8 +142,9 @@ namespace CatBehaviour.Runtime
             
             foreach (BaseNode node in AllNodes)
             {
+                //重建对父子节点和Owner的引用
                 node.Owner = this;
-                node.RebuildNodeReference();  //重建对父子节点的引用
+                node.RebuildNodeReference(AllNodes);  
             }
         }
         

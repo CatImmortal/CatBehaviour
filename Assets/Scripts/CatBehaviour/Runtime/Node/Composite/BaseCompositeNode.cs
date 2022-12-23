@@ -75,20 +75,17 @@ namespace CatBehaviour.Runtime
         /// <inheritdoc />
         public override void ClearNodeReference()
         {
-            foreach (var child in Children)
-            {
-                child.ParentNode = null;
-            }
+            base.ClearNodeReference();
             Children.Clear();
         }
-        
+
         /// <inheritdoc />
-        public override void RebuildNodeReference()
+        public override void RebuildNodeReference(List<BaseNode> allNodes)
         {
             Children.Clear();
             foreach (int childId in ChildIdList)
             {
-                BaseNode child = Owner.GetNode(childId);
+                BaseNode child = allNodes[childId - 1];
                 AddChild(child);
             }
         }

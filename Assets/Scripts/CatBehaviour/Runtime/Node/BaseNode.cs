@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -102,7 +103,7 @@ namespace CatBehaviour.Runtime
 
 
         /// <summary>
-        /// 清空Id信息
+        /// 清空对自身Id和父子节点Id的记录
         /// </summary>
         public virtual void ClearId()
         {
@@ -111,7 +112,7 @@ namespace CatBehaviour.Runtime
         }
         
         /// <summary>
-        /// 重建对父子节点的Id索引
+        /// 重建对父子节点的Id记录
         /// </summary>
         public virtual void RebuildId()
         {
@@ -122,18 +123,18 @@ namespace CatBehaviour.Runtime
         }
 
         /// <summary>
-        /// 清空对父子节点的Id索引和引用
+        /// 清空对父子节点的引用
         /// </summary>
         public virtual void ClearNodeReference()
         {
             ParentNode = null;
         }
-        
+
         /// <summary>
         /// 重建对父子节点的引用
         /// </summary>
-        public abstract void RebuildNodeReference();
-
+        public abstract void RebuildNodeReference(List<BaseNode> allNodes);
+        
         /// <summary>
         /// 重建对黑板参数的引用
         /// </summary>

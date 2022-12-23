@@ -29,7 +29,7 @@ namespace CatBehaviour.Editor
         
         public BehaviourTreeGraphView()
         {
-            //TODO:用这三个回调实现节点的复制粘贴功能
+            //这三个回调实现节点的复制粘贴功能
             serializeGraphElements = SerializeGraphElementsCallback;
             canPasteSerializedData = CanPasteSerializedDataCallback;
             unserializeAndPaste = UnserializeAndPasteCallback;
@@ -37,7 +37,6 @@ namespace CatBehaviour.Editor
             Insert(0, new GridBackground());  //格子背景
             
             //添加背景网格样式
-            //var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Scripts/CatBehaviour/Editor/BehaviourTreeWindow.uss");
             var styleSheet = Resources.Load<StyleSheet>("USS/BehaviourTreeWindow");
             styleSheets.Add(styleSheet);
 
@@ -57,43 +56,60 @@ namespace CatBehaviour.Editor
             CopyPasteData data = new CopyPasteData();
             List<BaseNode> allNodes = new List<BaseNode>();
             string result = null;
+
+            List<BehaviourTreeNode> graphNodes = new List<BehaviourTreeNode>();
+            HashSet<BehaviourTreeNode> graphNodeSet = new HashSet<BehaviourTreeNode>();
             foreach (GraphElement element in elements)
             {
-                if (element is BehaviourTreeNode node)
+                if (element is BehaviourTreeNode graphNode)
                 {
-                    //清空ID和父子关系
-                    node.RuntimeNode.ClearId();
-                    node.RuntimeNode.ClearNodeReference();
-
-                    //记录位置
-                    node.RuntimeNode.Position = node.GetPosition().position;
-                    
-                    //添加到allNodes里 建立ID
-                    allNodes.Add(node.RuntimeNode);
-                    node.RuntimeNode.Id = allNodes.Count;
+                    if (graphNode.RuntimeNode is RootNode)
+                    {
+                        //跳过根节点
+                        continue;
+                    }
+                    graphNodes.Add(graphNode);
+                    graphNodeSet.Add(graphNode);
                 }
             }
-            
-            //根据节点图的连线刷新父子关系
-            foreach (GraphElement element in elements)
+           
+                
+            foreach (var graphNode in graphNodes)
             {
-                if (element is BehaviourTreeNode node)
+                //清空ID和父子关系
+                graphNode.RuntimeNode.ClearId();
+                graphNode.RuntimeNode.ClearNodeReference();
+
+                //记录位置
+                graphNode.RuntimeNode.Position = graphNode.GetPosition().position;
+                graphNode.RuntimeNode.Position += new Vector2(100, 100);  //被复制的节点 位置要做一点偏移量
+                    
+                //添加到allNodes里 建立ID
+                allNodes.Add(graphNode.RuntimeNode);
+                graphNode.RuntimeNode.Id = allNodes.Count;
+            }
+
+            foreach (var graphNode in graphNodes)
+            {
+                if (graphNode.inputContainer.childCount == 0)
                 {
-                    if (node.inputContainer.childCount == 0)
-                    {
-                        continue;
-                    }
+                    continue;
+                }
                 
-                    Port inputPort = (Port)node.inputContainer[0];
-                    Edge inputEdge = inputPort.connections.FirstOrDefault();
-                    if (inputEdge == null)
-                    {
-                        continue;
-                    }
+                Port inputPort = (Port)graphNode.inputContainer[0];
+                Edge inputEdge = inputPort.connections.FirstOrDefault();
+                if (inputEdge == null)
+                {
+                    continue;
+                }
                 
-                    //向父节点添加自身为其子节点
-                    var parent = (BehaviourTreeNode)inputEdge.output.node;
-                    parent.RuntimeNode.AddChild(node.RuntimeNode);
+                //将自身添加的父节点的子节点里
+                var parent = (BehaviourTreeNode)inputEdge.output.node;
+                if (graphNodeSet.Contains(parent))
+                {
+                    //父节点要被包含在 被复制的节点集合 里，才添加
+                    //否则视为此节点不具有父节点 防止把没选中的节点也复制了
+                    parent.RuntimeNode.AddChild(graphNode.RuntimeNode);
                 }
             }
             
@@ -107,7 +123,7 @@ namespace CatBehaviour.Editor
             ClearSelection();
             
             result = JsonUtility.ToJson(data, true);
-            Debug.Log(result);
+            //Debug.Log(result);
             return result;
         }
         
@@ -118,8 +134,7 @@ namespace CatBehaviour.Editor
         {
             try
             {
-                return false;
-
+                return JsonUtility.FromJson(data, typeof(CopyPasteData)) != null;
             } catch {
                 return false;
             }
@@ -128,16 +143,39 @@ namespace CatBehaviour.Editor
         /// <summary>
         /// 点击粘贴时，反序列化节点的回调
         /// </summary>
-        /// <param name="operationName"></param>
-        /// <param name="data"></param>
         private void UnserializeAndPasteCallback(string operationName, string data)
         {
+            var copyPasteData = JsonUtility.FromJson<CopyPasteData>(data);
+
+            List<BaseNode> allNodes = new List<BaseNode>();
+            foreach (JsonElement jsonElement in copyPasteData.CopiedNodes)
+            {
+                BaseNode node = JsonSerializer.DeserializeNode(jsonElement);
+                node.Owner = BT;
+                allNodes.Add(node);
+            }
+            //恢复父子节点的引用
+            foreach (BaseNode node in allNodes)
+            {
+                node.RebuildNodeReference(allNodes);
+            }
             
+            Dictionary<BaseNode, BehaviourTreeNode> nodeDict = new Dictionary<BaseNode, BehaviourTreeNode>();
+            
+            //创建节点
+            CreateGraphNode(nodeDict,allNodes);
+            
+            //根据父子关系连线
+            BuildConnect(nodeDict,allNodes);
+
+            //选中粘贴后的节点
+            foreach (var value in nodeDict.Values)
+            {
+                AddToSelection(value);
+            }
         }
 
-
-
-
+        
 
         /// <summary>
         /// 初始化
@@ -205,18 +243,18 @@ namespace CatBehaviour.Editor
             Dictionary<BaseNode, BehaviourTreeNode> nodeDict = new Dictionary<BaseNode, BehaviourTreeNode>();
             
             //创建节点
-            CreateGraphNode(nodeDict);
+            CreateGraphNode(nodeDict,BT.AllNodes);
             
             //根据父子关系连线
-            BuildConnect(nodeDict);
+            BuildConnect(nodeDict,BT.AllNodes);
         }
         
         /// <summary>
         /// 创建节点图节点
         /// </summary >
-        private void CreateGraphNode(Dictionary<BaseNode, BehaviourTreeNode> nodeDict)
+        private void CreateGraphNode(Dictionary<BaseNode, BehaviourTreeNode> nodeDict,List<BaseNode> allNodes)
         {
-            foreach (BaseNode node in BT.AllNodes)
+            foreach (BaseNode node in allNodes)
             {
                 BehaviourTreeNode graphNode = new BehaviourTreeNode();
                 graphNode.Init(node,window);
@@ -229,14 +267,14 @@ namespace CatBehaviour.Editor
         /// <summary>
         /// 构建节点连接
         /// </summary>
-        private void BuildConnect(Dictionary<BaseNode, BehaviourTreeNode> nodeDict)
+        private void BuildConnect(Dictionary<BaseNode, BehaviourTreeNode> nodeDict,List<BaseNode> allNodes)
         {
-            foreach (BaseNode node in BT.AllNodes)
+            foreach (BaseNode node in allNodes)
             {
                 BehaviourTreeNode graphNode = nodeDict[node];
                 if (graphNode.outputContainer.childCount == 0)
                 {
-                    //没有子节点 跳过
+                    //不需要子节点 跳过
                     continue;
                 }
                 
@@ -259,7 +297,9 @@ namespace CatBehaviour.Editor
             }
         }
 
-        
+        /// <summary>
+        /// 获取可连线的节点列表
+        /// </summary>
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
         {
             var compatiblePorts = new List<Port>();

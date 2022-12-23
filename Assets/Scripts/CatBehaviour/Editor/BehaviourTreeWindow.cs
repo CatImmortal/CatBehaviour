@@ -156,8 +156,7 @@ namespace CatBehaviour.Editor
                 }
             }
             
-            //收集节点
-            
+            //开始收集节点
             bt.AllNodes.Clear();
             
             //清空ID和父子关系
@@ -190,12 +189,14 @@ namespace CatBehaviour.Editor
                 {
                     continue;
                 }
+                
+                //将自身添加的父节点的子节点里
                 var parent = (BehaviourTreeNode)inputEdge.output.node;
                 parent.RuntimeNode.AddChild(node.RuntimeNode);
             }
 
             //记录属性面板宽度
-            bt.InspectorWidth = splitView.Q<VisualElement>("left").layout.width;
+            bt.InspectorWidth = splitView.Q("left").layout.width;
             
             //记录节点图位置
             bt.Rect = new Rect(graphView.viewTransform.position, graphView.viewTransform.scale);
