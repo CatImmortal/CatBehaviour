@@ -135,7 +135,6 @@ namespace CatBehaviour.Editor
         private void Init(BehaviourTree bt)
         {
             //若传入的行为树为空则创建个默认的
-            this.bt = bt;
             if (bt == null)
             {
                 bt = new BehaviourTree();
@@ -146,6 +145,7 @@ namespace CatBehaviour.Editor
                 };
                 bt.AllNodes.Add(bt.RootNode);
             }
+            this.bt = bt;
 
             //设置节点属性面板的宽度
             if (bt.InspectorWidth != 0)

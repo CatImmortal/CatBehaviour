@@ -7,6 +7,12 @@ using UnityEngine;
 namespace CatBehaviour.Runtime
 {
     /// <summary>
+    /// 创建子树回调方法的原型
+    /// </summary>
+    public delegate void CreateSubTreeCallback(string subTreeName, BehaviourTree parent,
+        Action<BehaviourTree> onSubTreeCreated);
+    
+    /// <summary>
     /// 行为树
     /// </summary>
     [Serializable]
@@ -23,9 +29,14 @@ namespace CatBehaviour.Runtime
         public static IBinarySerializer BinarySerializer { get; set; }
 
         /// <summary>
+        /// 创建子树的处理回调
+        /// </summary>
+        public static CreateSubTreeCallback OnCreateSubTreeCallback;
+        
+        /// <summary>
         /// 行为树运行结束回调
         /// </summary>
-        public event Action<bool> OnFinish
+        public event Action<bool> OnFinished
         {
             add
             {
@@ -34,7 +45,7 @@ namespace CatBehaviour.Runtime
                     return;
                 }
 
-                RootNode.OnFinish += value;
+                RootNode.OnFinished += value;
             }
 
             remove
@@ -44,7 +55,7 @@ namespace CatBehaviour.Runtime
                     return;
                 }
 
-                RootNode.OnFinish -= value;
+                RootNode.OnFinished -= value;
             }
         }
         
@@ -115,7 +126,7 @@ namespace CatBehaviour.Runtime
             }
 
 #if UNITY_EDITOR
-            OnFinish += (result) =>
+            OnFinished += (result) =>
             {
                 BTDebugger.Remove(this);
             };
