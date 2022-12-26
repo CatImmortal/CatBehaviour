@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using CatBehaviour.Runtime;
-using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -14,6 +13,11 @@ namespace CatBehaviour.Editor
     /// </summary>
     public class BehaviourTreeNode : Node
     {
+        private static Color freeColor = new Color(81/255f, 81/255f, 81/255f, 255f/255);
+        private static Color runningColor = new Color(38 / 255f, 130 / 255f, 205 / 255f, 255f / 255);
+        private static Color successColor = new Color(36 / 255f, 178 / 255f, 50 / 255f, 255f / 255);
+        private static Color failedColor = new Color(203 / 255f, 81 / 255f, 61 / 255f, 255f / 255);
+        
         public BaseNode RuntimeNode;
         private Port inputPort;
         private Port outputPort;
@@ -185,17 +189,25 @@ namespace CatBehaviour.Editor
             stateField.value = RuntimeNode.CurState;
             
             var element = stateField.ElementAt(0);
-            if (RuntimeNode.CurState == BaseNode.State.Running)
+
+            Color color = default;
+            switch (RuntimeNode.CurState)
             {
-               
-                var color = new Color(38/255f, 130/255f, 205/255f, 255f/255);
-                element.style.backgroundColor = color;
+                case BaseNode.State.Free:
+                    color = freeColor;
+                    break;
+                case BaseNode.State.Running:
+                    color = runningColor;
+                    break;
+                case BaseNode.State.Success:
+                    color = successColor;
+                    break;
+                case BaseNode.State.Failed:
+                    color = failedColor;
+                    break;
             }
-            else
-            {
-                var color = new Color(81/255f, 81/255f, 81/255f, 255f/255);
-                element.style.backgroundColor = color;
-            }
+            
+            element.style.backgroundColor = color;
         }
         
         public override string ToString()

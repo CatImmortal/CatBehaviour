@@ -1,10 +1,9 @@
 ﻿#if UNITY_EDITOR
 
 using System.Collections.Generic;
-using CatBehaviour.Runtime;
 using UnityEngine;
 
-namespace CatBehaviour.Editor
+namespace CatBehaviour.Runtime
 {
     /// <summary>
     /// 行为树调试器

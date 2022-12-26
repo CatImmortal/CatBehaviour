@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using CatBehaviour.Editor;
+
 using UnityEngine;
 
 namespace CatBehaviour.Runtime
@@ -90,10 +90,17 @@ namespace CatBehaviour.Runtime
         /// 是否已初始化
         /// </summary>
         private bool isInit;
+        
+        private Action<BaseNode> resetAction;
 
         public static void OnUpdate(float deltaTime)
         {
             UpdateManager.OnUpdate(deltaTime);
+        }
+
+        public BehaviourTree()
+        {
+            resetAction = Reset;
         }
         
         /// <summary>
@@ -120,6 +127,11 @@ namespace CatBehaviour.Runtime
         /// </summary>
         public void Start(string debugName = null)
         {
+            if (RootNode == null)
+            {
+                throw new Exception("行为树运行失败，根节点为空");
+            }
+            
             if (RootNode.CurState == BaseNode.State.Running)
             {
                 return;
@@ -128,6 +140,12 @@ namespace CatBehaviour.Runtime
             if (!isInit)
             {
                 Init();
+                isInit = true;
+            }
+            else
+            {
+                //第二次被启动 重置所有节点运行状态为Free
+                Reset();
             }
             
 #if UNITY_EDITOR
@@ -159,6 +177,18 @@ namespace CatBehaviour.Runtime
 #endif
         }
 
+        private void Reset()
+        {
+            Reset(RootNode);
+        }
+
+        
+        private void Reset(BaseNode node)
+        {
+            node.CurState = BaseNode.State.Free;
+            node.ForeachChild(resetAction);
+        }
+        
         /// <summary>
         /// 获取行为树节点
         /// </summary>

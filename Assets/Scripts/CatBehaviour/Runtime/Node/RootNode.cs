@@ -1,5 +1,4 @@
 ﻿using System;
-using CatBehaviour.Editor;
 
 namespace CatBehaviour.Runtime
 {

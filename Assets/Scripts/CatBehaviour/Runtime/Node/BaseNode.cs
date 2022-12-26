@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
-using UnityEngine.UIElements;
+
 
 #if UNITY_EDITOR
+using UnityEngine.UIElements;
 using UnityEditor;
 #endif
 
@@ -30,6 +31,16 @@ namespace CatBehaviour.Runtime
             /// 运行中
             /// </summary>
             Running,
+            
+            /// <summary>
+            /// 运行成功
+            /// </summary>
+            Success,
+            
+            /// <summary>
+            /// 运行失败
+            /// </summary>
+            Failed,
         }
 
         /// <summary>
@@ -197,7 +208,8 @@ namespace CatBehaviour.Runtime
         /// </summary>
         protected virtual void Finish(bool success)
         {
-            CurState = State.Free;
+            CurState = success ? State.Success : State.Failed;
+
             ParentNode?.ChildFinished(this, success);
         }
 

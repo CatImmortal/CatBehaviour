@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using CatBehaviour.Runtime;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -17,11 +18,6 @@ namespace CatBehaviour.Editor
         public static void Open()
         {
             var window = GetWindow<BTDebuggerWindow>("行为树调试器");
-        }
-
-        private void OnEnable()
-        {
-            
         }
 
         private void OnGUI()
