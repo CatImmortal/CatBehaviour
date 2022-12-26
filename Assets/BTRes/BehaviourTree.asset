@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1af296f33d54c1f854c0eb141f8a40d, type: 3}
+  m_Name: BehaviourTree
+  m_EditorClassIdentifier: 
+  BT:
+    RootNodeId: 1
+    AllNodes:
+    - rid: 6460882653426221081
+    - rid: 6460882653426221082
+    - rid: 6460882653426221083
+    - rid: 6460882653426221084
+    - rid: 6460882653426221085
+    - rid: 6460882653426221086
+    Rect:
+      serializedVersion: 2
+      x: 91
+      y: -136
+      width: 1
+      height: 1
+    InspectorWidth: 420
+  BBParams: []
+  BlackBoardRect:
+    serializedVersion: 2
+    x: 10
+    y: 30
+    width: 250
+    height: 250
+  references:
+    version: 2
+    RefIds:
+    - rid: 6460882653426221081
+      type: {class: RootNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
+      data:
+        Id: 1
+        Position: {x: 500, y: 100}
+        ParentNodeId: 0
+        ChildId: 2
+    - rid: 6460882653426221082
+      type: {class: SequenceNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
+      data:
+        Id: 2
+        Position: {x: 500, y: 234}
+        ParentNodeId: 1
+        ChildIdList: 030000000400000005000000
+    - rid: 6460882653426221083
+      type: {class: DelayNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
+      data:
+        Id: 3
+        Position: {x: 387, y: 390}
+        ParentNodeId: 2
+        DelayTime:
+          Key: 
+          Value: 5
+    - rid: 6460882653426221084
+      type: {class: SuccessNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
+      data:
+        Id: 4
+        Position: {x: 520, y: 390}
+        ParentNodeId: 2
+        ChildId: 6
+    - rid: 6460882653426221085
+      type: {class: LogNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
+      data:
+        Id: 5
+        Position: {x: 648, y: 390}
+        ParentNodeId: 2
+        Level: 0
+        Log:
+          Key: 
+          Value: 111
+    - rid: 6460882653426221086
+      type: {class: LogNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
+      data:
+        Id: 6
+        Position: {x: 500, y: 531}
+        ParentNodeId: 4
+        Level: 0
+        Log:
+          Key: 
+          Value: 222

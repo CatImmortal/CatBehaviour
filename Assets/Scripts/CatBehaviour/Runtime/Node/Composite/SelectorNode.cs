@@ -3,7 +3,7 @@
     /// <summary>
     /// 选择节点（依次执行子节点，直到有子节点运行成功，则此节点运行成功，否则失败）
     /// </summary>
-    [NodeInfo(Name = "选择节点",Desc = "依次执行子节点，直到有子节点运行成功，则此节点运行成功，否则失败",Icon = "Icon/Selector",Order = 1)]
+    [NodeInfo(Name = "选择节点",Desc = "依次执行子节点，直到有子节点运行成功，则此节点运行成功，否则失败",Icon = "Icon/Selector",Order = 2)]
     public class SelectorNode : BaseCompositeNode
     {
         /// <summary>

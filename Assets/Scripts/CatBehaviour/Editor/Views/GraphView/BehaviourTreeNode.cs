@@ -13,11 +13,18 @@ namespace CatBehaviour.Editor
     /// </summary>
     public class BehaviourTreeNode : Node
     {
+        private static Color inputPortColor = Color.cyan;
+        private static Color outputPortColor = Color.cyan;
+        
+        private static Color compositeColor = new Color(81/255f, 81/255f, 81/255f, 255f/255);
+        private static Color decoratorColor = new Color(81/255f, 81/255f, 81/255f, 255f/255);
+        private static Color actionColor = Color.blue;
+        
         private static Color freeColor = new Color(81/255f, 81/255f, 81/255f, 255f/255);
         private static Color runningColor = new Color(38 / 255f, 130 / 255f, 205 / 255f, 255f / 255);
         private static Color successColor = new Color(36 / 255f, 178 / 255f, 50 / 255f, 255f / 255);
         private static Color failedColor = new Color(203 / 255f, 81 / 255f, 61 / 255f, 255f / 255);
-        
+
         public BaseNode RuntimeNode;
         private Port inputPort;
         private Port outputPort;
@@ -53,19 +60,8 @@ namespace CatBehaviour.Editor
             SetNameAndPos();
             SetVertical();
             AddPort();
-
-            var nodeInfo = RuntimeNode.GetType().GetCustomAttribute<NodeInfoAttribute>();
-            if (nodeInfo != null && !string.IsNullOrEmpty(nodeInfo.Icon))
-            {
-                var icon = Resources.Load<Texture>(nodeInfo.Icon);
-                if (icon != null)
-                {
-                    Image img = new Image();
-                    img.image = icon;
-                    var imgParent = this.Q<VisualElement>("title");
-                    imgParent.Insert(0,img);
-                }
-            }
+            AddIcon();
+            SetNodeColor();
             
             if (window.IsDebugMode)
             {
@@ -117,7 +113,7 @@ namespace CatBehaviour.Editor
             {
                 inputPort = Port.Create<Edge>(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(Port));
                 inputPort.portName = "父节点";
-                inputPort.portColor = Color.cyan;
+                inputPort.portColor = inputPortColor;
                 //inputPort.style.flexDirection = FlexDirection.Column;
                 inputContainer.Add(inputPort);
             }
@@ -141,12 +137,62 @@ namespace CatBehaviour.Editor
             }
             outputPort = Port.Create<Edge>(Orientation.Vertical, Direction.Output, outputCount, typeof(Port));
             outputPort.portName = "子节点";
-            outputPort.portColor = Color.red;
+            outputPort.portColor = outputPortColor;
             //outputPort.style.flexDirection = FlexDirection.ColumnReverse;
             outputContainer.Add(outputPort);
 
         }
 
+        /// <summary>
+        /// 添加节点icon
+        /// </summary>
+        private void AddIcon()
+        {
+            var nodeInfo = RuntimeNode.GetType().GetCustomAttribute<NodeInfoAttribute>();
+            if (nodeInfo != null && !string.IsNullOrEmpty(nodeInfo.Icon))
+            {
+                var icon = Resources.Load<Texture>(nodeInfo.Icon);
+                if (icon != null)
+                {
+                    Image img = new Image();
+                    img.image = icon;
+                    var imgParent = this.Q<VisualElement>("title");
+                    imgParent.Insert(0,img);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 设置节点颜色
+        /// </summary>
+        private void SetNodeColor()
+        {
+            Color borderColor = default;
+
+            if (RuntimeNode is BaseActionNode)
+            {
+                borderColor = actionColor;
+            }
+            else if (RuntimeNode is BaseCompositeNode)
+            {
+                borderColor = compositeColor;
+            }
+            else if (RuntimeNode is BaseDecoratorNode)
+            {
+                borderColor = decoratorColor;
+            }
+            else
+            {
+                return;
+            }
+
+            var nodeBorder = this.Q<VisualElement>("node-border");
+            nodeBorder.style.borderTopColor = borderColor;
+            nodeBorder.style.borderBottomColor = borderColor;
+            nodeBorder.style.borderLeftColor = borderColor;
+            nodeBorder.style.borderRightColor = borderColor;
+        }
+        
         /// <summary>
         /// 添加状态显示UI
         /// </summary>
