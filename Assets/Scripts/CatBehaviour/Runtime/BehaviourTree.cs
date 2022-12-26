@@ -25,7 +25,7 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 行为树运行结束回调
         /// </summary>
-        public event Action OnFinish
+        public event Action<bool> OnFinish
         {
             add
             {
@@ -115,7 +115,7 @@ namespace CatBehaviour.Runtime
             }
 
 #if UNITY_EDITOR
-            OnFinish += () =>
+            OnFinish += (result) =>
             {
                 BTDebugger.Remove(this);
             };

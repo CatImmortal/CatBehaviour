@@ -11,9 +11,9 @@ public class Test : MonoBehaviour
     private void Start()
     {
         bt = BTSO.CloneBehaviourTree();
-        bt.OnFinish += () =>
+        bt.OnFinish += (result) =>
         {
-            Debug.Log("行为树运行结束");
+            Debug.Log($"行为树运行结束:{result}");
         };
     }
 

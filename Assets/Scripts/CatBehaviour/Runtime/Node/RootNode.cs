@@ -11,7 +11,7 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 运行结束回调
         /// </summary>
-        public Action OnFinish;
+        public Action<bool> OnFinish;
         
         /// <inheritdoc />
         protected override void OnStart()
@@ -28,8 +28,8 @@ namespace CatBehaviour.Runtime
         /// <inheritdoc />
         protected override void OnChildFinished(BaseNode child, bool success)
         {
-            Finish(true);
-            OnFinish?.Invoke();
+            Finish(success);
+            OnFinish?.Invoke(success);
         }
     }
 }
