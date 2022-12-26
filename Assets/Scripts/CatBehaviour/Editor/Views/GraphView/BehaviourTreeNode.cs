@@ -18,7 +18,7 @@ namespace CatBehaviour.Editor
         
         private static Color compositeColor = new Color(81/255f, 81/255f, 81/255f, 255f/255);
         private static Color decoratorColor = new Color(81/255f, 81/255f, 81/255f, 255f/255);
-        private static Color actionColor = Color.blue;
+        private static Color actionColor =  new Color(81/255f, 81/255f, 81/255f, 255f/255);
         
         private static Color freeColor = new Color(81/255f, 81/255f, 81/255f, 255f/255);
         private static Color runningColor = new Color(38 / 255f, 130 / 255f, 205 / 255f, 255f / 255);
