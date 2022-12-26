@@ -273,10 +273,12 @@ namespace CatBehaviour.Runtime
                     var bbParam = (BBParam)fieldInfo.GetValue(this);
                     
                     bbParam.OnGUI(true,Owner);
+                    
+                    EditorGUILayout.Space();
                 }
             }
         }
-        
+
 #endif
     }
 }

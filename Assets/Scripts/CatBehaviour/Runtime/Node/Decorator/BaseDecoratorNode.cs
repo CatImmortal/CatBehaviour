@@ -77,6 +77,10 @@ namespace CatBehaviour.Runtime
         /// <inheritdoc />
         public override void RebuildNodeReference(List<BaseNode> allNodes)
         {
+            if (ChildId == 0)
+            {
+                return;
+            }
             BaseNode child = allNodes[ChildId - 1];
             AddChild(child);
         }
