@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using CatBehaviour.Runtime;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
@@ -61,7 +63,18 @@ namespace CatBehaviour.Editor
         /// </summary>
         private void AddNodeOptions<T>(List<SearchTreeEntry> entries)
         {
-            foreach (Type type in TypeCache.GetTypesDerivedFrom<T>())
+            var types = TypeCache.GetTypesDerivedFrom<T>().ToList();
+            
+            //将节点按照order排序
+            types.Sort((x, y) =>
+            {
+                var xNodeAttr = x.GetCustomAttribute<NodeInfoAttribute>();
+                var yNodeAttr = y.GetCustomAttribute<NodeInfoAttribute>();
+
+                return xNodeAttr.Order.CompareTo(yNodeAttr.Order);
+            });
+            
+            foreach (Type type in types)
             {
                 if (type.IsAbstract)
                 {
@@ -73,8 +86,30 @@ namespace CatBehaviour.Editor
                     //跳过根节点
                     continue;
                 }
+
+                //加载节点icon
+                Texture2D icon = null;
+                var nodeAttr = type.GetCustomAttribute<NodeInfoAttribute>();
+                if (nodeAttr == null)
+                {
+                    Debug.LogError($"节点{type.Name}未标记NodeInfo特性");
+                    continue;
+                }
+                if (!string.IsNullOrEmpty(nodeAttr.Icon))
+                {
+                    icon = Resources.Load<Texture2D>(nodeAttr.Icon);
+                    if (icon == null)
+                    {
+                        icon = emptyIcon;
+                    }
+                }
+                else
+                {
+                   icon = emptyIcon;
+                }
                 
-                entries.Add(new SearchTreeEntry(new GUIContent(BehaviourTreeNode.GetNodeName(type),emptyIcon)) { level = 2, userData = type });
+                var guiContent = new GUIContent(BehaviourTreeNode.GetNodeName(type), icon);
+                entries.Add(new SearchTreeEntry(guiContent) { level = 2, userData = type });
             }
         }
 

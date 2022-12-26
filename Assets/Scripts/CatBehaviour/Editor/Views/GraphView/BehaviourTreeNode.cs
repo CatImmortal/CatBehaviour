@@ -30,16 +30,7 @@ namespace CatBehaviour.Editor
         public static string GetNodeName(Type type)
         {
             NodeInfoAttribute nodeInfo = type.GetCustomAttribute<NodeInfoAttribute>();
-            string name;
-            if (nodeInfo != null)
-            {
-                name = nodeInfo.Name;
-            }
-            else
-            {
-                name = type.Name;
-            }
-
+            string name = nodeInfo.Name;
             return name;
         }
         

@@ -84,5 +84,22 @@ namespace CatBehaviour.Runtime
             BaseNode child = allNodes[ChildId - 1];
             AddChild(child);
         }
+        
+        /// <inheritdoc />
+        protected override void OnStart()
+        {
+            Child.Start();
+        }
+
+        /// <inheritdoc />
+        protected override void OnCancel()
+        {
+            Child.Cancel();
+        }
+        
+        protected override void OnChildFinished(BaseNode child, bool success)
+        {
+            Finish(success);
+        }
     }
 }

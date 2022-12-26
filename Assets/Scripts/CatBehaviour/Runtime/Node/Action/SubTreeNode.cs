@@ -7,7 +7,7 @@ namespace CatBehaviour.Runtime
     /// <summary>
     /// 子树节点
     /// </summary>
-    [NodeInfo(Name = "子树节点",Icon = "Icon/Root")]
+    [NodeInfo(Name = "子树节点",Icon = "Icon/Root",Order = 3)]
     public class SubTreeNode : BaseActionNode
     {
         /// <inheritdoc />

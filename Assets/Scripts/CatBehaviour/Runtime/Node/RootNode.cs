@@ -14,18 +14,6 @@ namespace CatBehaviour.Runtime
         public Action<bool> OnFinished;
         
         /// <inheritdoc />
-        protected override void OnStart()
-        {
-            Child.Start();
-        }
-
-        /// <inheritdoc />
-        protected override void OnCancel()
-        {
-            Child.Cancel();
-        }
-
-        /// <inheritdoc />
         protected override void OnChildFinished(BaseNode child, bool success)
         {
             Finish(success);

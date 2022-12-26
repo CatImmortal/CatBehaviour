@@ -331,7 +331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c264a324db87d24ea8b2d7aad1cd7d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BTSO: {fileID: 11400000, guid: 23d4ce0afc74b6b4eba128b12c9cea06, type: 2}
+  BTSO: {fileID: 0}
 --- !u!114 &1631476573
 MonoBehaviour:
   m_ObjectHideFlags: 0

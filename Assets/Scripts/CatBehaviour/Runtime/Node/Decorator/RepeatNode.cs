@@ -11,7 +11,7 @@ namespace CatBehaviour.Runtime
     /// <summary>
     /// 重复节点，根据重复模式重复运行子节点，然后返回成功
     /// </summary>
-    [NodeInfo(Name = "重复节点",Desc = "根据重复模式重复运行子节点，然后返回成功",Icon = "Icon/Repeat")]
+    [NodeInfo(Name = "重复节点",Desc = "根据重复模式重复运行子节点，然后返回成功",Icon = "Icon/Repeat",Order = 4)]
     public class RepeatNode : BaseDecoratorNode
     {
         /// <inheritdoc />
@@ -62,12 +62,7 @@ namespace CatBehaviour.Runtime
             repeatCounter = 0;
             Child.Start();
         }
-
-        /// <inheritdoc />
-        protected override void OnCancel()
-        {
-            Child.Cancel();
-        }
+        
 
         /// <inheritdoc />
         protected override void OnChildFinished(BaseNode child, bool success)

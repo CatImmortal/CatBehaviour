@@ -10,7 +10,7 @@ namespace CatBehaviour.Runtime
     /// <summary>
     /// 延时节点
     /// </summary>
-    [NodeInfo(Name = "延时节点",Icon = "Icon/Delay")]
+    [NodeInfo(Name = "延时节点",Icon = "Icon/Delay",Order = 1)]
     public class DelayNode : BaseActionNode
     {
         /// <inheritdoc />

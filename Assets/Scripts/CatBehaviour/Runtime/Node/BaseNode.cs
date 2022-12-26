@@ -82,7 +82,7 @@ namespace CatBehaviour.Runtime
         public BaseNode ParentNode;
 
         /// <summary>
-        /// 字段列表
+        /// 字段列表，重载此属性才会自动绘制节点用到的的黑板参数
         /// </summary>
         protected virtual FieldInfo[] FieldInfos => Array.Empty<FieldInfo>();
         

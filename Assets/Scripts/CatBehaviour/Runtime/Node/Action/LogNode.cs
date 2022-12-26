@@ -11,7 +11,7 @@ namespace CatBehaviour.Runtime
     /// <summary>
     /// 日志节点
     /// </summary>
-    [NodeInfo(Name = "日志节点",Icon = "Icon/Log")]
+    [NodeInfo(Name = "日志节点",Icon = "Icon/Log",Order = 2)]
     public class LogNode : BaseActionNode
     {
         /// <inheritdoc />
