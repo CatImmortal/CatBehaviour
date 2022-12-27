@@ -3,12 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-
-#if UNITY_EDITOR
-using UnityEngine.UIElements;
-using UnityEditor;
-#endif
-
 namespace CatBehaviour.Runtime
 {
     /// <summary>
@@ -84,7 +78,7 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 字段列表，重载此属性才会自动绘制节点用到的的黑板参数
         /// </summary>
-        protected virtual FieldInfo[] FieldInfos => Array.Empty<FieldInfo>();
+        public virtual FieldInfo[] FieldInfos => Array.Empty<FieldInfo>();
         
         /// <summary>
         /// 添加子节点
@@ -240,57 +234,5 @@ namespace CatBehaviour.Runtime
         {
             return GetType().Name;
         }
-
-#if UNITY_EDITOR
-        
-        /// <summary>
-        /// 基于UIElements绘制节点属性面板
-        /// </summary>
-        public virtual void CreateGUI(VisualElement contentContainer)
-        {
-
-        }
-
-        /// <summary>
-        /// 基于IMGUI绘制节点属性面板
-        /// </summary>
-        public virtual void OnGUI()
-        {
-            var infoAttr = GetType().GetCustomAttribute<NodeInfoAttribute>();
-            if (!string.IsNullOrEmpty(infoAttr.Desc))
-            {
-                //节点描述信息
-                EditorGUILayout.LabelField($"【{infoAttr.Desc}】");
-            }
-            
-            EditorGUILayout.Space();
-            
-            Type type = typeof(BBParam);
-            foreach (FieldInfo fieldInfo in FieldInfos)
-            {
-                if (type.IsAssignableFrom(fieldInfo.FieldType))
-                {
-                    var nameAttr = fieldInfo.GetCustomAttribute<BBParamInfoAttribute>();
-                    string name = null;
-                    if (nameAttr != null)
-                    {
-                        name = nameAttr.Name;
-                    }
-
-                    if (!string.IsNullOrEmpty(name))
-                    {
-                        EditorGUILayout.LabelField($"{name}({BBParam.GetBBParamTypeName(fieldInfo.FieldType)})");
-                    }
-
-                    var bbParam = (BBParam)fieldInfo.GetValue(this);
-                    
-                    bbParam.OnGUI(true,Owner);
-                    
-                    EditorGUILayout.Space();
-                }
-            }
-        }
-
-#endif
     }
 }

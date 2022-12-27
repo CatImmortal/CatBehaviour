@@ -1,10 +1,4 @@
-﻿using System;
-using System.Reflection;
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
+﻿using System.Reflection;
 
 namespace CatBehaviour.Runtime
 {
@@ -15,7 +9,7 @@ namespace CatBehaviour.Runtime
     public class RepeatNode : BaseDecoratorNode
     {
         /// <inheritdoc />
-        protected override FieldInfo[] FieldInfos =>
+        public override FieldInfo[] FieldInfos =>
             typeof(RepeatNode).GetFields(BindingFlags.Public | BindingFlags.Instance);
         
         /// <summary>
@@ -96,17 +90,5 @@ namespace CatBehaviour.Runtime
            
         }
 
-#if UNITY_EDITOR
-        public override void OnGUI()
-        {
-            base.OnGUI();
-            EditorGUILayout.Space();
-            
-            Mode = (RepeatMode)EditorGUILayout.EnumPopup("重复模式",Mode );
-            EditorGUILayout.LabelField("RepeatTimes：重复到指定次数后，返回成功");
-            EditorGUILayout.LabelField("RepeatUntil：重复到子节点返回指定结果时，返回成功");
-        }
-#endif
-       
     }
 }

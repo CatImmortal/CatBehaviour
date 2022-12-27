@@ -11,7 +11,7 @@ namespace CatBehaviour.Runtime
     public class SubTreeNode : BaseActionNode
     {
         /// <inheritdoc />
-        protected override FieldInfo[] FieldInfos =>
+        public override FieldInfo[] FieldInfos =>
             typeof(SubTreeNode).GetFields(BindingFlags.Public | BindingFlags.Instance);
         
         /// <summary>

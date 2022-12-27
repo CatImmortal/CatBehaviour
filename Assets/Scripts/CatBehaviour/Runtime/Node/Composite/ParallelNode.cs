@@ -1,10 +1,4 @@
-﻿using System;
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
-namespace CatBehaviour.Runtime
+﻿namespace CatBehaviour.Runtime
 {
     /// <summary>
     /// 并行节点（同时运行所有节点，根据设置的并行条件决定此节点如何判断成功/失败）
@@ -114,16 +108,6 @@ namespace CatBehaviour.Runtime
                     break;
             }
         }
-
-#if UNITY_EDITOR
-        public override void OnGUI()
-        {
-            base.OnGUI();
-
-           Condition = (ParallelCondition)EditorGUILayout.EnumPopup("并行条件", Condition);
-           EditorGUILayout.LabelField("FirstSuccess：任意一个子节点成功，则此节点成功，否则当所有子节点失败时，此节点失败");
-           EditorGUILayout.LabelField("FirstFailure：任意一个子节点失败，则此节点失败，否则当所有子节点成功时，此节点成功");
-        }
-#endif
+        
     }
 }

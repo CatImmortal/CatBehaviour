@@ -10,7 +10,7 @@ namespace CatBehaviour.Runtime
     public class RandomNode : BaseDecoratorNode
     {
         /// <inheritdoc />
-        protected override FieldInfo[] FieldInfos =>
+        public override FieldInfo[] FieldInfos =>
             typeof(RandomNode).GetFields(BindingFlags.Public | BindingFlags.Instance);
         
         private Random random;

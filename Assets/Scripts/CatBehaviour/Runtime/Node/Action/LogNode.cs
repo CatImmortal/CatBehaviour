@@ -15,7 +15,7 @@ namespace CatBehaviour.Runtime
     public class LogNode : BaseActionNode
     {
         /// <inheritdoc />
-        protected override FieldInfo[] FieldInfos =>
+        public override FieldInfo[] FieldInfos =>
             typeof(LogNode).GetFields(BindingFlags.Public | BindingFlags.Instance);
         
         /// <summary>
@@ -63,17 +63,5 @@ namespace CatBehaviour.Runtime
         {
 
         }
-        
-#if UNITY_EDITOR
-        
-        /// <inheritdoc />
-        public override void OnGUI()
-        {
-            Level = (LogLevel)EditorGUILayout.EnumPopup("日志级别", Level);
-            EditorGUILayout.Space();
-            
-            base.OnGUI();
-        }
-#endif
     }
 }

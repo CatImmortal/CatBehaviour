@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using CatBehaviour.Runtime;
 using UnityEditor.Experimental.GraphView;
@@ -13,6 +14,7 @@ namespace CatBehaviour.Editor
     /// </summary>
     public class BehaviourTreeNode : Node
     {
+
         private static Color inputPortColor = Color.cyan;
         private static Color outputPortColor = Color.cyan;
         
@@ -30,7 +32,7 @@ namespace CatBehaviour.Editor
         private Port outputPort;
 
         private EnumField stateField;
-        
+
         /// <summary>
         /// 获取节点在节点图的名字
         /// </summary>

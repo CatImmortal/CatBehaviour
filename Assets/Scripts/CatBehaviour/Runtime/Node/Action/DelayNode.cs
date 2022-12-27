@@ -1,10 +1,5 @@
-﻿using System.Reflection;
-
-#if UNITY_EDITOR
-using UnityEditor;
-using UnityEditor.UIElements;
-#endif
-
+﻿using System;
+using System.Reflection;
 namespace CatBehaviour.Runtime
 {
     /// <summary>
@@ -14,7 +9,7 @@ namespace CatBehaviour.Runtime
     public class DelayNode : BaseActionNode
     {
         /// <inheritdoc />
-        protected override FieldInfo[] FieldInfos =>
+        public override FieldInfo[] FieldInfos =>
             typeof(DelayNode).GetFields(BindingFlags.Public | BindingFlags.Instance);
 
         /// <summary>
@@ -23,12 +18,13 @@ namespace CatBehaviour.Runtime
         [BBParamInfo(Name = "延时时间")]
         public BBParamFloat DelayTime = new BBParamFloat();
 
-        private float timer;
+        [NonSerialized]
+        public float Timer;
         
         /// <inheritdoc />
         protected override void OnStart()
         {
-            timer = 0;
+            Timer = 0;
             UpdateManager.AddUpdateTimer(OnUpdate);
         }
 
@@ -40,23 +36,13 @@ namespace CatBehaviour.Runtime
 
         private void OnUpdate(float deltaTime)
         {
-            timer += deltaTime;
-            if (timer >= DelayTime.Value)
+            Timer += deltaTime;
+            if (Timer >= DelayTime.Value)
             {
                 UpdateManager.RemoveUpdateTimer(OnUpdate);
                 Finish(true);
             }
         }
 
-#if UNITY_EDITOR
-        public override void OnGUI()
-        {
-            base.OnGUI();
-            
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField($"当前计时：{timer:f2}");
-        }
-#endif
-        
     }
 }
