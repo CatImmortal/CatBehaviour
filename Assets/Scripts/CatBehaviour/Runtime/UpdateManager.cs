@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace CatBehaviour.Runtime
 {
@@ -8,6 +9,13 @@ namespace CatBehaviour.Runtime
     /// </summary>
     public static class UpdateManager
     {
+        static UpdateManager()
+        {
+            GameObject go = new GameObject();
+            go.AddComponent<CatBehaviourComponent>();
+            go.hideFlags = HideFlags.HideInHierarchy;
+        }
+        
         private static List<Action<float>> timers = new List<Action<float>>();
 
         public static void AddUpdateTimer(Action<float> timer)

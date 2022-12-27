@@ -15,12 +15,12 @@ MonoBehaviour:
   BT:
     RootNodeId: 1
     AllNodes:
-    - rid: 6460882653426221081
-    - rid: 6460882653426221082
-    - rid: 6460882653426221083
-    - rid: 6460882653426221084
-    - rid: 6460882653426221085
-    - rid: 6460882653426221086
+    - rid: 6460882677410299904
+    - rid: 6460882677410299905
+    - rid: 6460882677410299906
+    - rid: 6460882677410299907
+    - rid: 6460882677410299908
+    - rid: 6460882677410299909
     Rect:
       serializedVersion: 2
       x: 91
@@ -38,52 +38,52 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 6460882653426221081
+    - rid: 6460882677410299904
       type: {class: RootNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 1
         Position: {x: 500, y: 100}
         ParentNodeId: 0
         ChildId: 2
-    - rid: 6460882653426221082
+    - rid: 6460882677410299905
       type: {class: SequenceNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 2
         Position: {x: 500, y: 234}
         ParentNodeId: 1
-        ChildIdList: 030000000400000005000000
-    - rid: 6460882653426221083
-      type: {class: DelayNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
-      data:
-        Id: 3
-        Position: {x: 387, y: 390}
-        ParentNodeId: 2
-        DelayTime:
-          Key: 
-          Value: 5
-    - rid: 6460882653426221084
-      type: {class: SuccessNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
-      data:
-        Id: 4
-        Position: {x: 520, y: 390}
-        ParentNodeId: 2
-        ChildId: 6
-    - rid: 6460882653426221085
+        ChildIdList: 050000000400000003000000
+    - rid: 6460882677410299906
       type: {class: LogNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
-        Id: 5
+        Id: 3
         Position: {x: 648, y: 390}
         ParentNodeId: 2
         Level: 0
         Log:
           Key: 
           Value: 111
-    - rid: 6460882653426221086
+    - rid: 6460882677410299907
+      type: {class: DelayNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
+      data:
+        Id: 4
+        Position: {x: 500, y: 390}
+        ParentNodeId: 2
+        DelayTime:
+          Key: 
+          Value: 5
+    - rid: 6460882677410299908
+      type: {class: SuccessNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
+      data:
+        Id: 5
+        Position: {x: 369, y: 390}
+        ParentNodeId: 2
+        ChildId: 6
+    - rid: 6460882677410299909
       type: {class: LogNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 6
-        Position: {x: 500, y: 531}
-        ParentNodeId: 4
+        Position: {x: 349, y: 531}
+        ParentNodeId: 5
         Level: 0
         Log:
           Key: 
