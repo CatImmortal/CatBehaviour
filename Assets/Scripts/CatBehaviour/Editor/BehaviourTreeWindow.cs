@@ -93,7 +93,6 @@ namespace CatBehaviour.Editor
                 }
                 
                 string path = evt.newValue.Replace('\\', '/');
-                Debug.Log(path);
                 if (!IsDebugMode)
                 {
                     RefreshFromAssetPath(path);
@@ -103,7 +102,6 @@ namespace CatBehaviour.Editor
                     var debugBT = BTDebugger.BTInstanceDict[path];
                     RefreshFromDebugger(debugBT);
                 }
-               
             }));
             
             ObjBTSO = rootVisualElement.Q<ObjectField>("ObjBTSO");

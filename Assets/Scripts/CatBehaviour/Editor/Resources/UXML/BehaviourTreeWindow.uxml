@@ -12,7 +12,9 @@
         </ui:VisualElement>
         <ui:VisualElement name="right" style="width: 70%;">
             <uie:Toolbar style="justify-content: space-between; align-items: stretch;">
-                <ui:DropdownField index="-1" name="dropdownBTSO" style="flex-grow: 0; align-items: stretch;" />
+                <ui:DropdownField index="-1" name="dropdownBTSO" style="flex-grow: 0; align-items: stretch; flex-direction: row-reverse; opacity: 1; display: flex; visibility: visible; overflow: hidden; flex-shrink: 0;">
+                    <ui:Label text="选择行为树:" display-tooltip-when-elided="true" />
+                </ui:DropdownField>
                 <uie:ObjectField name="ObjBTSO" style="align-items: stretch; justify-content: flex-start; transform-origin: center; translate: 0 0;">
                     <ui:Button text="保存" display-tooltip-when-elided="true" name="btnSave" />
                     <ui:Button text="新建" display-tooltip-when-elided="true" name="btnNew" />
