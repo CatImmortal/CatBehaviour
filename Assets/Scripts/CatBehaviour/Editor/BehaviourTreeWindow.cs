@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using CatBehaviour.Editor;
@@ -17,15 +18,19 @@ namespace CatBehaviour.Editor
     /// </summary>
     public class BehaviourTreeWindow : EditorWindow
     {
-        private string assetPath;
-        private BehaviourTreeSO originBTSO;
-        private BehaviourTree bt;
+        private DropdownField dropdownBTSO;
+        private ObjectField ObjBTSO;
+        private Button btnSave;
+        private Button btnNew;
         
-        private Label labelAssetPath;
         private SplitView splitView;
         private InspectorView inspector;
         private BehaviourTreeGraphView graphView;
 
+        private string assetPath;
+        private BehaviourTreeSO originBTSO;
+        private BehaviourTree bt;
+        
         /// <summary>
         /// 是否为调试模式
         /// </summary>
@@ -55,7 +60,8 @@ namespace CatBehaviour.Editor
         private static void OpenFromAssetPath(string assetPath)
         {
             BehaviourTreeWindow window = CreateWindow<BehaviourTreeWindow>("行为树窗口");
-            window.InitFromAssetPath(assetPath);
+            window.Init(false);
+            window.RefreshFromAssetPath(assetPath);
         }
 
         /// <summary>
@@ -64,7 +70,8 @@ namespace CatBehaviour.Editor
         public static void OpenFromDebugger(BehaviourTree debugBT)
         {
             BehaviourTreeWindow window = CreateWindow<BehaviourTreeWindow>("行为树窗口");
-            window.InitFromDebugger(debugBT);
+            window.Init(true);
+            window.RefreshFromDebugger(debugBT);
         }
 
         public void CreateGUI()
@@ -76,63 +83,116 @@ namespace CatBehaviour.Editor
             
             var styleSheet = Resources.Load<StyleSheet>("USS/BehaviourTreeWindow");
             root.styleSheets.Add(styleSheet);
-
-            labelAssetPath = rootVisualElement.Q<Label>("labelAssetPath");
             
-            var btnSave = root.Q<Button>("btnSave");
+            dropdownBTSO = rootVisualElement.Q<DropdownField>("dropdownBTSO");
+            dropdownBTSO.RegisterValueChangedCallback((evt =>
+            {
+                if (string.IsNullOrEmpty(evt.newValue))
+                {
+                    return;
+                }
+                
+                string path = evt.newValue.Replace('\\', '/');
+                Debug.Log(path);
+                if (!IsDebugMode)
+                {
+                    RefreshFromAssetPath(path);
+                }
+                else
+                {
+                    var debugBT = BTDebugger.BTInstanceDict[path];
+                    RefreshFromDebugger(debugBT);
+                }
+               
+            }));
+            
+            ObjBTSO = rootVisualElement.Q<ObjectField>("ObjBTSO");
+            
+            btnSave = root.Q<Button>("btnSave");
             btnSave.clicked += Save;
-
+            
+            btnNew = root.Q<Button>("btnNew");
+            btnNew.clicked += New;
+            
             splitView = root.Q<SplitView>();
             inspector = root.Q<InspectorView>("inspector");
             graphView = rootVisualElement.Q<BehaviourTreeGraphView>("graphView");
+            graphView.Init(this);
         }
 
         /// <summary>
-        /// 使用行为树SO路径初始化
+        /// 初始化
         /// </summary>
-        private void InitFromAssetPath(string assetPath)
+        private void Init(bool isDebugMode)
+        {
+            IsDebugMode = isDebugMode;
+            RefreshDropDown(isDebugMode);
+
+            if (isDebugMode)
+            {
+                //调试状态下 删掉SO引用 保存和新建按钮
+                ObjBTSO.RemoveFromHierarchy();
+            }
+        }
+        
+        /// <summary>
+        /// 刷新下拉菜单
+        /// </summary>
+        private void RefreshDropDown(bool isDebugMode)
+        {
+            List<string> paths;
+            if (!isDebugMode)
+            {
+                paths = AssetDatabase.FindAssets($"t:{nameof(BehaviourTreeSO)}")
+                    .Select(((s, i) => AssetDatabase.GUIDToAssetPath(s).Replace('/','\\'))).ToList();
+            }
+            else
+            {
+                paths = BTDebugger.BTInstanceDict.Keys.ToList();
+            }
+            dropdownBTSO.choices = paths.ToList();
+        }
+        
+        /// <summary>
+        /// 使用行为树SO路径刷新
+        /// </summary>
+        private void RefreshFromAssetPath(string assetPath)
         {
             this.assetPath = assetPath;
             BehaviourTree bt = null;
             if (!string.IsNullOrEmpty(assetPath))
             {
-                labelAssetPath.text = $"文件名:{assetPath}";
-                
+
                 originBTSO = AssetDatabase.LoadAssetAtPath<BehaviourTreeSO>(assetPath);
                 if (originBTSO != null)
                 {
                     //深拷贝一份用于编辑
                     bt = originBTSO.CloneBehaviourTree();
                 }
-            }
-            else
-            {
-               labelAssetPath.text = $"文件名:newFile";
+
+                int index = dropdownBTSO.choices.IndexOf(assetPath.Replace('/','\\'));
+                dropdownBTSO.index = index;
+                ObjBTSO.value = originBTSO;
             }
 
-            Init(bt);
+            Refresh(bt);
         }
 
         /// <summary>
-        /// 使用调试用行为树对象初始化
+        /// 使用调试用行为树对象刷新
         /// </summary>
-        private void InitFromDebugger(BehaviourTree debugBT)
+        private void RefreshFromDebugger(BehaviourTree debugBT)
         {
-            IsDebugMode = true;
+            int index = dropdownBTSO.choices.IndexOf(debugBT.DebugName.Replace('/','\\'));
+            dropdownBTSO.index = index;
             
-            labelAssetPath.text = $"行为树调试名:{debugBT.DebugName}";
-            
-            //调试状态下 删掉保存按钮
-            var btnSave = rootVisualElement.Q<Button>("btnSave");
-            btnSave.RemoveFromHierarchy();
-            
-            Init(debugBT);
+            Refresh(debugBT);
         }
         
         /// <summary>
-        /// 初始化
+        /// 刷新
         /// </summary>
-        private void Init(BehaviourTree bt)
+        private void Refresh(BehaviourTree bt)
         {
             //若传入的行为树为空则创建个默认的
             if (bt == null)
@@ -156,10 +216,9 @@ namespace CatBehaviour.Editor
             {
                 splitView.fixedPaneInitialDimension = 420;
             }
-
-            graphView.Init(this, bt);
+            
+            graphView.Refresh(bt);
         }
-
         
         
         /// <summary>
@@ -251,13 +310,26 @@ namespace CatBehaviour.Editor
             EditorUtility.SetDirty(originBTSO);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
+
+            RefreshDropDown(false);
+            RefreshFromAssetPath(assetPath);
             
-            labelAssetPath.text = $"文件名:{assetPath}";
             
             Debug.Log($"保存行为树成功，路径:{assetPath}");
         }
 
-
+        /// <summary>
+        /// 新建行为树
+        /// </summary>
+        private void New()
+        {
+            assetPath = null;
+            originBTSO = null;
+            bt = null;
+            dropdownBTSO.index = -1;
+            ObjBTSO.value = null;
+            RefreshFromAssetPath(null);
+        }
     }
 }
 

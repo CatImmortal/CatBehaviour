@@ -175,15 +175,12 @@ namespace CatBehaviour.Editor
             }
         }
 
-        
-
         /// <summary>
         /// 初始化
         /// </summary>
-        public void Init(BehaviourTreeWindow window, BehaviourTree bt)
+        public void Init(BehaviourTreeWindow window)
         {
             this.window = window;
-            BT = bt;
             
             //节点创建时的搜索窗口
             var searchWindowProvider = ScriptableObject.CreateInstance<NodeSearchWindowProvider>();
@@ -194,7 +191,17 @@ namespace CatBehaviour.Editor
                 //打开搜索窗口
                 SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), searchWindowProvider);
             };
-            
+        }
+        
+        
+        /// <summary>
+        /// 刷新
+        /// </summary>
+        public void Refresh(BehaviourTree bt)
+        {
+          
+            BT = bt;
+
             //还原位置与大小
             if (bt.Rect != default)
             {
@@ -202,6 +209,8 @@ namespace CatBehaviour.Editor
                 viewTransform.scale = new Vector3(bt.Rect.size.x,bt.Rect.size.y,1);
             }
 
+            
+            
             CreateMiniMap();
             CreateBlackBoard();
             BuildGraphView();
@@ -241,6 +250,15 @@ namespace CatBehaviour.Editor
         private void BuildGraphView()
         {
             Dictionary<BaseNode, BehaviourTreeNode> nodeDict = new Dictionary<BaseNode, BehaviourTreeNode>();
+
+            foreach (Node node in nodes)
+            {
+                RemoveElement(node);
+            }
+            foreach (Edge edge in edges)
+            {
+                RemoveElement(edge);
+            }
             
             //创建节点
             CreateGraphNode(nodeDict,BT.AllNodes);
