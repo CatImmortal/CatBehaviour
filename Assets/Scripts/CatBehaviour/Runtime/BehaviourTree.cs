@@ -58,9 +58,14 @@ namespace CatBehaviour.Runtime
                 RootNode.OnFinished -= value;
             }
         }
+
+        /// <summary>
+        /// 行为树被取消回调
+        /// </summary>
+        public Action OnCanceled;
         
         /// <summary>
-        /// 行为树实例调试名
+        /// 行为树调试名
         /// </summary>
         [NonSerialized]
         public string DebugName;
@@ -124,13 +129,7 @@ namespace CatBehaviour.Runtime
             {
                 node.RebuildBBParamReference();
             }
-
-#if UNITY_EDITOR
-            OnFinished += (result) =>
-            {
-                BTDebugger.Remove(this);
-            };
-#endif
+            
         }
 
         /// <summary>
@@ -165,7 +164,6 @@ namespace CatBehaviour.Runtime
             {
                 DebugName = DateTime.Now.ToString();
             }
-            BTDebugger.Add(this);   
 #endif
             
             RootNode.Start();
@@ -182,10 +180,7 @@ namespace CatBehaviour.Runtime
             }
             
             RootNode.Cancel();
-            
-#if UNITY_EDITOR
-            BTDebugger.Remove(this);   
-#endif
+            OnCanceled?.Invoke();
         }
 
         private void Reset()

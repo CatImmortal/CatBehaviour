@@ -27,14 +27,8 @@ public class Test : MonoBehaviour
         bt.OnFinished += (result) =>
         {
             Debug.Log($"行为树运行结束:{result}");
-        };
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
             bt.Start("TestBT");
-        }
+        };
+        bt.Start("TestBT");
     }
 }

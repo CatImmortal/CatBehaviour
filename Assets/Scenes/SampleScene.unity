@@ -310,7 +310,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1631476574}
-  - component: {fileID: 1631476573}
   - component: {fileID: 1631476572}
   m_Layer: 0
   m_Name: Test
@@ -332,18 +331,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BTSO: {fileID: 11400000, guid: 02125077d43cedd40811ca1e74b5dd49, type: 2}
---- !u!114 &1631476573
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1631476571}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 817a830eaa3248beaa770fdeb71c8e5b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1631476574
 Transform:
   m_ObjectHideFlags: 0
