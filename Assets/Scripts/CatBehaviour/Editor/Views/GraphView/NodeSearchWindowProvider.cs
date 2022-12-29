@@ -18,8 +18,8 @@ namespace CatBehaviour.Editor
         private BehaviourTreeWindow window;
         private BehaviourTreeGraphView graphView;
 
-        private PortView sourceInputPortView;
-        private PortView sourceOutputPortView;
+        private PortView sourceInputPort;
+        private PortView sourceOutputPort;
         
         private Texture2D emptyIcon;
         
@@ -31,8 +31,8 @@ namespace CatBehaviour.Editor
             this.window = window;
             graphView = window.GraphView;
 
-            sourceInputPortView = edge?.input as PortView;
-            sourceOutputPortView = edge?.output as PortView;
+            sourceInputPort = edge?.input as PortView;
+            sourceOutputPort = edge?.output as PortView;
 
             emptyIcon = new Texture2D(1, 1);
             emptyIcon.SetPixel(0,0,new Color(0,0,0,0));
@@ -130,11 +130,10 @@ namespace CatBehaviour.Editor
             var point = context.screenMousePosition - window.position.position;  //鼠标相对于窗口的位置
             Vector2 graphMousePosition = graphView.contentViewContainer.WorldToLocal(point);  //鼠标在节点图下的位置
             nodeView.SetPosition(new Rect(graphMousePosition,nodeView.GetPosition().size));
-            
             graphView.AddElement(nodeView);
             
             //如果是通过拖动线创建的节点 就连接起来
-            var sourcePort = sourceInputPortView ?? sourceOutputPortView;
+            var sourcePort = sourceInputPort ?? sourceOutputPort;
             if (sourcePort != null)
             {
                 //先断开已有的连线
@@ -145,8 +144,9 @@ namespace CatBehaviour.Editor
                     graphView.RemoveElement(sourcePortEdge);
                 }
 
+                //连接发起连线的节点和创建出的节点
                 PortView targetPort;
-                if (sourcePort == sourceInputPortView)
+                if (sourcePort == sourceInputPort)
                 {
                     targetPort = (PortView)nodeView.outputContainer[0];
                 }
