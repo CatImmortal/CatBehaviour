@@ -25,7 +25,9 @@ namespace CatBehaviour.Runtime
         protected override void OnCancel()
         {
             base.OnCancel();
+#if UNITY_EDITOR
             BTDebugger.Remove(Owner);   
+#endif
         }
 
         /// <inheritdoc />
