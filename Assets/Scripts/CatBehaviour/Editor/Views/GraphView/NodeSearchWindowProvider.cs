@@ -18,8 +18,8 @@ namespace CatBehaviour.Editor
         private BehaviourTreeWindow window;
         private BehaviourTreeGraphView graphView;
 
-        private PortView inputPortView;
-        private PortView outputPortView;
+        private PortView sourceInputPortView;
+        private PortView sourceOutputPortView;
         
         private Texture2D emptyIcon;
         
@@ -31,8 +31,8 @@ namespace CatBehaviour.Editor
             this.window = window;
             graphView = window.GraphView;
 
-            inputPortView = edge?.input as PortView;
-            outputPortView = edge?.output as PortView;
+            sourceInputPortView = edge?.input as PortView;
+            sourceOutputPortView = edge?.output as PortView;
 
             emptyIcon = new Texture2D(1, 1);
             emptyIcon.SetPixel(0,0,new Color(0,0,0,0));
@@ -134,17 +134,30 @@ namespace CatBehaviour.Editor
             graphView.AddElement(nodeView);
             
             //如果是通过拖动线创建的节点 就连接起来
-            if (inputPortView != null)
+            var sourcePort = sourceInputPortView ?? sourceOutputPortView;
+            if (sourcePort != null)
             {
-                var edge = inputPortView.ConnectTo(nodeView.outputContainer[0] as PortView);
+                //先断开已有的连线
+                foreach (Edge sourcePortEdge in sourcePort.connections.ToList())
+                {
+                    sourcePortEdge.input.Disconnect(sourcePortEdge);
+                    sourcePortEdge.output.Disconnect(sourcePortEdge);
+                    graphView.RemoveElement(sourcePortEdge);
+                }
+
+                PortView targetPort;
+                if (sourcePort == sourceInputPortView)
+                {
+                    targetPort = (PortView)nodeView.outputContainer[0];
+                }
+                else
+                {
+                    targetPort = (PortView)nodeView.inputContainer[0];
+                }
+                var edge = sourcePort.ConnectTo(targetPort);
                 graphView.AddElement(edge);
             }
-            else if (outputPortView != null)
-            {
-                var edge = outputPortView.ConnectTo(nodeView.inputContainer[0] as PortView);
-                graphView.AddElement(edge);
-            }
-            
+
             return true;
         }
     }

@@ -23,8 +23,7 @@ namespace CatBehaviour.Editor
         
         public void OnDropOutsidePort(Edge edge, Vector2 position)
         {
-            Debug.Log($"OnDropOutsidePort:{position}");  //鼠标相对于窗口的坐标
-            
+            //Debug.Log($"OnDropOutsidePort:{position}");  //鼠标相对于窗口的坐标
             ShowNodeCreationMenuFromEdge(edge,position);
         }
         
@@ -69,7 +68,7 @@ namespace CatBehaviour.Editor
             var searchWindowProvider = ScriptableObject.CreateInstance<NodeSearchWindowProvider>();
             var window = (BehaviourTreeWindow)EditorWindow.focusedWindow;
             searchWindowProvider.Init(window,edge);
-            var screenMousePosition = position + EditorWindow.focusedWindow.position.position;
+            var screenMousePosition = position + EditorWindow.focusedWindow.position.position;  //鼠标在屏幕坐标
             SearchWindow.Open(new SearchWindowContext(screenMousePosition), searchWindowProvider);
         }
     }
