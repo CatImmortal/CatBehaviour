@@ -40,18 +40,18 @@ namespace CatBehaviour.Editor
         /// <summary>
         /// 绘制节点检查器面板
         /// </summary>
-        public void DrawInspector(BehaviourTreeNode node)
+        public void DrawInspector(NodeView nodeView)
         {
             Clear();
 
             //获取节点对应的属性面板Inspector
             BaseNodeInspector nodeInspector = defaultNodeInspector;
-            var nodeType = node.RuntimeNode.GetType();
+            var nodeType = nodeView.RuntimeNode.GetType();
             if (nodeInspectorDict.ContainsKey(nodeType))
             {
                 nodeInspector = nodeInspectorDict[nodeType];
             }
-            nodeInspector.Target = node.RuntimeNode;
+            nodeInspector.Target = nodeView.RuntimeNode;
             
             //绘制节点属性面板
             nodeInspector.CreateGUI(contentContainer);

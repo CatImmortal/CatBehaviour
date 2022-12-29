@@ -10,9 +10,9 @@ using UnityEngine.UIElements;
 namespace CatBehaviour.Editor
 {
     /// <summary>
-    /// 行为树节点图节点
+    /// 行为树节点View
     /// </summary>
-    public class BehaviourTreeNode : Node
+    public class NodeView : Node
     {
 
         private static Color inputPortColor = Color.cyan;
@@ -113,7 +113,8 @@ namespace CatBehaviour.Editor
         {
             if (!(RuntimeNode is RootNode))
             {
-                inputPort = Port.Create<Edge>(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(Port));
+                //inputPort = Port.Create<Edge>(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(Port));
+                inputPort = PortView.Create(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(PortView));
                 inputPort.portName = "父节点";
                 inputPort.portColor = inputPortColor;
                 //inputPort.style.flexDirection = FlexDirection.Column;
@@ -138,13 +139,15 @@ namespace CatBehaviour.Editor
                 throw new Exception($"行为树节点类型无效，不是3种基础节点类型的派生之一：{title}");
             }
             outputPort = Port.Create<Edge>(Orientation.Vertical, Direction.Output, outputCount, typeof(Port));
+            outputPort = PortView.Create(Orientation.Vertical, Direction.Output, outputCount, typeof(PortView));
             outputPort.portName = "子节点";
             outputPort.portColor = outputPortColor;
             //outputPort.style.flexDirection = FlexDirection.ColumnReverse;
             outputContainer.Add(outputPort);
 
         }
-
+        
+        
         /// <summary>
         /// 添加节点icon
         /// </summary>

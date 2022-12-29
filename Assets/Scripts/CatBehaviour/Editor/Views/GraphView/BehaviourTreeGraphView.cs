@@ -44,8 +44,6 @@ namespace CatBehaviour.Editor
             this.AddManipulator(new SelectionDragger());  //节点可拖动
             this.AddManipulator(new ContentDragger());  //节点图可移动
             this.AddManipulator(new RectangleSelector());  //可框选多个节点
-            
-            //graphViewChanged += OnGraphViewChanged;
         }
 
         /// <summary>
@@ -57,11 +55,11 @@ namespace CatBehaviour.Editor
             List<BaseNode> allNodes = new List<BaseNode>();
             string result = null;
 
-            List<BehaviourTreeNode> graphNodes = new List<BehaviourTreeNode>();
-            HashSet<BehaviourTreeNode> graphNodeSet = new HashSet<BehaviourTreeNode>();
+            List<NodeView> graphNodes = new List<NodeView>();
+            HashSet<NodeView> graphNodeSet = new HashSet<NodeView>();
             foreach (GraphElement element in elements)
             {
-                if (element is BehaviourTreeNode graphNode)
+                if (element is NodeView graphNode)
                 {
                     if (graphNode.RuntimeNode is RootNode)
                     {
@@ -104,7 +102,7 @@ namespace CatBehaviour.Editor
                 }
                 
                 //将自身添加的父节点的子节点里
-                var parent = (BehaviourTreeNode)inputEdge.output.node;
+                var parent = (NodeView)inputEdge.output.node;
                 if (graphNodeSet.Contains(parent))
                 {
                     //父节点要被包含在 被复制的节点集合 里，才添加
@@ -160,7 +158,7 @@ namespace CatBehaviour.Editor
                 node.RebuildNodeReference(allNodes);
             }
             
-            Dictionary<BaseNode, BehaviourTreeNode> nodeDict = new Dictionary<BaseNode, BehaviourTreeNode>();
+            Dictionary<BaseNode, NodeView> nodeDict = new Dictionary<BaseNode, NodeView>();
             
             //创建节点
             CreateGraphNode(nodeDict,allNodes);
@@ -184,7 +182,7 @@ namespace CatBehaviour.Editor
             
             //节点创建时的搜索窗口
             var searchWindowProvider = ScriptableObject.CreateInstance<NodeSearchWindowProvider>();
-            searchWindowProvider.Init(window,this);
+            searchWindowProvider.Init(window);
         
             nodeCreationRequest += context =>
             {
@@ -249,7 +247,7 @@ namespace CatBehaviour.Editor
         /// </summary>
         private void BuildGraphView()
         {
-            Dictionary<BaseNode, BehaviourTreeNode> nodeDict = new Dictionary<BaseNode, BehaviourTreeNode>();
+            Dictionary<BaseNode, NodeView> nodeDict = new Dictionary<BaseNode, NodeView>();
 
             foreach (Node node in nodes)
             {
@@ -270,14 +268,14 @@ namespace CatBehaviour.Editor
         /// <summary>
         /// 创建节点图节点
         /// </summary >
-        private void CreateGraphNode(Dictionary<BaseNode, BehaviourTreeNode> nodeDict,List<BaseNode> allNodes)
+        private void CreateGraphNode(Dictionary<BaseNode, NodeView> nodeDict,List<BaseNode> allNodes)
         {
             foreach (BaseNode node in allNodes)
             {
-                BehaviourTreeNode graphNode = new BehaviourTreeNode();
-                graphNode.Init(node,window);
-                AddElement(graphNode);
-                nodeDict.Add(node,graphNode);
+                NodeView nodeView = new NodeView();
+                nodeView.Init(node,window);
+                AddElement(nodeView);
+                nodeDict.Add(node,nodeView);
             }
         }
 
@@ -285,18 +283,18 @@ namespace CatBehaviour.Editor
         /// <summary>
         /// 构建节点连接
         /// </summary>
-        private void BuildConnect(Dictionary<BaseNode, BehaviourTreeNode> nodeDict,List<BaseNode> allNodes)
+        private void BuildConnect(Dictionary<BaseNode, NodeView> nodeDict,List<BaseNode> allNodes)
         {
             foreach (BaseNode node in allNodes)
             {
-                BehaviourTreeNode graphNode = nodeDict[node];
-                if (graphNode.outputContainer.childCount == 0)
+                NodeView nodeView = nodeDict[node];
+                if (nodeView.outputContainer.childCount == 0)
                 {
                     //不需要子节点 跳过
                     continue;
                 }
                 
-                Port selfOutput = (Port)graphNode.outputContainer[0];
+                Port selfOutput = (Port)nodeView.outputContainer[0];
                 
                 //与当前节点的子节点进行连线
                 node.ForeachChild((child =>
@@ -306,9 +304,9 @@ namespace CatBehaviour.Editor
                         return;
                     }
                 
-                    BehaviourTreeNode graphChildNode = nodeDict[child];
+                    NodeView childNodeView = nodeDict[child];
                 
-                    Port childInput = (Port)graphChildNode.inputContainer[0];
+                    Port childInput = (Port)childNodeView.inputContainer[0];
                     Edge edge = selfOutput.ConnectTo(childInput);
                     AddElement(edge);
                 }));

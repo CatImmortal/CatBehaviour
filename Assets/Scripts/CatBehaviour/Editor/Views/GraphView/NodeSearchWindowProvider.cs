@@ -18,15 +18,21 @@ namespace CatBehaviour.Editor
         private BehaviourTreeWindow window;
         private BehaviourTreeGraphView graphView;
 
+        private PortView inputPortView;
+        private PortView outputPortView;
+        
         private Texture2D emptyIcon;
         
         /// <summary>
         /// 初始化
         /// </summary>
-        public void Init(BehaviourTreeWindow window,BehaviourTreeGraphView graphView)
+        public void Init(BehaviourTreeWindow window,Edge edge = null)
         {
             this.window = window;
-            this.graphView = graphView;
+            graphView = window.GraphView;
+
+            inputPortView = edge?.input as PortView;
+            outputPortView = edge?.output as PortView;
 
             emptyIcon = new Texture2D(1, 1);
             emptyIcon.SetPixel(0,0,new Color(0,0,0,0));
@@ -51,10 +57,6 @@ namespace CatBehaviour.Editor
             entries.Add(new SearchTreeGroupEntry(new GUIContent("动作节点"),1));
             AddNodeOptions<BaseActionNode>(entries);
 
-
-         
-           
-           
            return entries;
         }
 
@@ -108,7 +110,7 @@ namespace CatBehaviour.Editor
                    icon = emptyIcon;
                 }
                 
-                var guiContent = new GUIContent(BehaviourTreeNode.GetNodeName(type), icon);
+                var guiContent = new GUIContent(NodeView.GetNodeName(type), icon);
                 entries.Add(new SearchTreeEntry(guiContent) { level = 2, userData = type });
             }
         }
@@ -121,15 +123,28 @@ namespace CatBehaviour.Editor
             //创建node
             BaseNode runtimeNode = (BaseNode)Activator.CreateInstance(type);
             runtimeNode.Owner = graphView.BT;
-            BehaviourTreeNode node = new BehaviourTreeNode();
-            node.Init(runtimeNode,window);
+            NodeView nodeView = new NodeView();
+            nodeView.Init(runtimeNode,window);
             
             //将节点创建在鼠标的位置里
             var point = context.screenMousePosition - window.position.position;  //鼠标相对于窗口的位置
             Vector2 graphMousePosition = graphView.contentViewContainer.WorldToLocal(point);  //鼠标在节点图下的位置
-            node.SetPosition(new Rect(graphMousePosition,node.GetPosition().size));
+            nodeView.SetPosition(new Rect(graphMousePosition,nodeView.GetPosition().size));
             
-            graphView.AddElement(node);
+            graphView.AddElement(nodeView);
+            
+            //如果是通过拖动线创建的节点 就连接起来
+            if (inputPortView != null)
+            {
+                var edge = inputPortView.ConnectTo(nodeView.outputContainer[0] as PortView);
+                graphView.AddElement(edge);
+            }
+            else if (outputPortView != null)
+            {
+                var edge = outputPortView.ConnectTo(nodeView.inputContainer[0] as PortView);
+                graphView.AddElement(edge);
+            }
+            
             return true;
         }
     }
