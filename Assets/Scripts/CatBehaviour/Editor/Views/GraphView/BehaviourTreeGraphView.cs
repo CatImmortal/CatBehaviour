@@ -189,9 +189,13 @@ namespace CatBehaviour.Editor
                 //打开搜索窗口
                 SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), searchWindowProvider);
             };
+            
+            //黑板
+            BlackboardView = new BlackBoardView();
+            Add(BlackboardView);
+            BlackboardView.Init(this);
         }
-        
-        
+
         /// <summary>
         /// 刷新
         /// </summary>
@@ -208,9 +212,7 @@ namespace CatBehaviour.Editor
             }
 
             
-            
-            CreateMiniMap();
-            CreateBlackBoard();
+            BlackboardView.Refresh();
             BuildGraphView();
         }
 
@@ -224,23 +226,7 @@ namespace CatBehaviour.Editor
             // miniMap.SetPosition(new Rect(cords.x, cords.y, 200, 140));
             // Add(miniMap);
         }
-        
-        /// <summary>
-        /// 创建黑板
-        /// </summary>
-        private void CreateBlackBoard()
-        {
-            BlackBoardView blackBoardView = new BlackBoardView();
-            blackBoardView.Init(this);
-            if (BT.BlackBoard.Position != default)
-            {
-                blackBoardView.SetPosition(BT.BlackBoard.Position);
-            }
-            
-            Add(blackBoardView);
 
-            BlackboardView = blackBoardView;
-        }
         
         /// <summary>
         /// 构建行为树节点图
@@ -249,6 +235,7 @@ namespace CatBehaviour.Editor
         {
             Dictionary<BaseNode, NodeView> nodeDict = new Dictionary<BaseNode, NodeView>();
 
+            //先删掉旧的节点和线
             foreach (Node node in nodes)
             {
                 RemoveElement(node);
@@ -279,7 +266,6 @@ namespace CatBehaviour.Editor
             }
         }
 
-                
         /// <summary>
         /// 构建节点连接
         /// </summary>

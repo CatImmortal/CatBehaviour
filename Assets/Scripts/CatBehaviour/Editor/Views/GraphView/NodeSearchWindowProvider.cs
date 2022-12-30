@@ -130,33 +130,39 @@ namespace CatBehaviour.Editor
             var point = context.screenMousePosition - window.position.position;  //鼠标相对于窗口的位置
             Vector2 graphMousePosition = graphView.contentViewContainer.WorldToLocal(point);  //鼠标在节点图下的位置
             nodeView.SetPosition(new Rect(graphMousePosition,nodeView.GetPosition().size));
-            graphView.AddElement(nodeView);
-            
-            //如果是通过拖动线创建的节点 就连接起来
-            var sourcePort = sourceInputPort ?? sourceOutputPort;
-            if (sourcePort != null)
+            nodeView.RuntimeNode.Position = graphMousePosition;  //这里手动赋值一下初始坐标 否则后面同步数据到BT时，因为是同一帧会导致获取不到正确位置
+            window.RecordObject($"Add {type} Node",(() =>
             {
-                //先断开已有的连线
-                foreach (Edge sourcePortEdge in sourcePort.connections.ToList())
+                graphView.AddElement(nodeView);
+            
+                //如果是通过拖动线创建的节点 就连接起来
+                var sourcePort = sourceInputPort ?? sourceOutputPort;
+                if (sourcePort != null)
                 {
-                    sourcePortEdge.input.Disconnect(sourcePortEdge);
-                    sourcePortEdge.output.Disconnect(sourcePortEdge);
-                    graphView.RemoveElement(sourcePortEdge);
-                }
+                    //先断开已有的连线
+                    foreach (Edge sourcePortEdge in sourcePort.connections.ToList())
+                    {
+                        sourcePortEdge.input.Disconnect(sourcePortEdge);
+                        sourcePortEdge.output.Disconnect(sourcePortEdge);
+                        graphView.RemoveElement(sourcePortEdge);
+                    }
 
-                //连接发起连线的节点和创建出的节点
-                PortView targetPort;
-                if (sourcePort == sourceInputPort)
-                {
-                    targetPort = (PortView)nodeView.outputContainer[0];
+                    //连接发起连线的节点和创建出的节点
+                    PortView targetPort;
+                    if (sourcePort == sourceInputPort)
+                    {
+                        targetPort = (PortView)nodeView.outputContainer[0];
+                    }
+                    else
+                    {
+                        targetPort = (PortView)nodeView.inputContainer[0];
+                    }
+                    var edge = sourcePort.ConnectTo(targetPort);
+                    graphView.AddElement(edge);
                 }
-                else
-                {
-                    targetPort = (PortView)nodeView.inputContainer[0];
-                }
-                var edge = sourcePort.ConnectTo(targetPort);
-                graphView.AddElement(edge);
-            }
+            }));
+            
+           
 
             return true;
         }

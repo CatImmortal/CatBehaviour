@@ -26,6 +26,7 @@ namespace CatBehaviour.Editor
         public override void Init(BehaviourTreeGraphView graphView)
         {
             base.Init(graphView);
+            
             base.title = "黑板";
             Scrollable = true;  //可滚动
             SetPosition(new Rect(10, 30, 250, 250));
@@ -33,8 +34,15 @@ namespace CatBehaviour.Editor
             {
                 text = "+"
             });
-
             graphView.OnBlackBoardChanged += UpdateContent;
+        }
+        
+        public override void Refresh()
+        {
+            if (graphView.BT.BlackBoard.Position != default)
+            {
+                SetPosition(graphView.BT.BlackBoard.Position);
+            }
             UpdateContent();
         }
 

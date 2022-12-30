@@ -99,12 +99,22 @@ namespace CatBehaviour.Editor
             hierarchy.Add(new Resizer(() => onResized?.Invoke()));
         }
 
+        
+        
         /// <summary>
         /// 初始化
         /// </summary>
         public virtual void Init(BehaviourTreeGraphView graphView)
         {
             this.graphView = graphView;
+        }
+
+        /// <summary>
+        /// 刷新
+        /// </summary>
+        public virtual void Refresh()
+        {
+            
         }
 
     }

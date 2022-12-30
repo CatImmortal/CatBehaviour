@@ -14,7 +14,7 @@ using UnityEditor.UIElements;
 namespace CatBehaviour.Editor
 {
     /// <summary>
-    /// 行为树茶壶功能卡
+    /// 行为树窗口
     /// </summary>
     public class BehaviourTreeWindow : EditorWindow
     {
@@ -29,6 +29,7 @@ namespace CatBehaviour.Editor
 
         private string assetPath;
         private BehaviourTreeSO originBTSO;
+        private BehaviourTreeSO clonedBTSO;
         private BehaviourTree bt;
         
         /// <summary>
@@ -91,6 +92,7 @@ namespace CatBehaviour.Editor
                 {
                     return;
                 }
+                Undo.ClearAll();
                 
                 string path = evt.newValue.Replace('\\', '/');
                 if (!IsDebugMode)
@@ -116,7 +118,26 @@ namespace CatBehaviour.Editor
             inspector = root.Q<InspectorView>("inspector");
             GraphView = rootVisualElement.Q<BehaviourTreeGraphView>("graphView");
             GraphView.Init(this);
+
+            Undo.undoRedoPerformed += OnUndoRedoPerformed;
         }
+
+        private void OnDestroy()
+        {
+            Undo.undoRedoPerformed -= OnUndoRedoPerformed;
+            Undo.ClearAll();
+        }
+
+        private void OnUndoRedoPerformed()
+        {
+            Debug.Log("OnUndoRedoPerformed");
+            if (clonedBTSO == null)
+            {
+                return;
+            }
+            Refresh(clonedBTSO.BT);
+        }
+
 
         /// <summary>
         /// 初始化
@@ -165,7 +186,8 @@ namespace CatBehaviour.Editor
                 if (originBTSO != null)
                 {
                     //深拷贝一份用于编辑
-                    bt = originBTSO.CloneBehaviourTree();
+                    clonedBTSO = Instantiate(originBTSO);
+                    bt = clonedBTSO.BT;
                 }
 
                 int index = dropdownBTSO.choices.IndexOf(assetPath.Replace('/','\\'));
@@ -202,7 +224,11 @@ namespace CatBehaviour.Editor
                     Owner = bt
                 };
                 bt.AllNodes.Add(bt.RootNode);
+                
+                clonedBTSO = CreateInstance<BehaviourTreeSO>();
+                clonedBTSO.BT = bt;
             }
+            
             this.bt = bt;
 
             //设置节点属性面板的宽度
@@ -244,6 +270,8 @@ namespace CatBehaviour.Editor
                 this.assetPath = assetPath;
                 originBTSO = CreateInstance<BehaviourTreeSO>();
                 AssetDatabase.CreateAsset(originBTSO,assetPath);
+                
+                originBTSO.BT = bt;
             }
             else
             {
@@ -253,6 +281,26 @@ namespace CatBehaviour.Editor
                 }
             }
             
+            //同步节点图数据至行为树
+            SyncGraphViewToBT();
+
+            //保存原始SO
+            EditorUtility.SetDirty(originBTSO);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+
+            RefreshDropDown(false);
+            RefreshFromAssetPath(assetPath);
+            
+            
+            Debug.Log($"保存行为树成功，路径:{assetPath}");
+        }
+
+        /// <summary>
+        /// 将节点图的数据同步到行为树对象上
+        /// </summary>
+        private void SyncGraphViewToBT()
+        {
             //开始收集节点
             bt.AllNodes.Clear();
             
@@ -300,22 +348,8 @@ namespace CatBehaviour.Editor
             
             //记录黑板位置
             bt.BlackBoard.Position = GraphView.BlackboardView.GetPosition();
-
-            //将编辑好的行为树赋值给原始SO
-            originBTSO.BT = bt;
-
-            //保存原始SO
-            EditorUtility.SetDirty(originBTSO);
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
-
-            RefreshDropDown(false);
-            RefreshFromAssetPath(assetPath);
-            
-            
-            Debug.Log($"保存行为树成功，路径:{assetPath}");
         }
-
+        
         /// <summary>
         /// 新建行为树
         /// </summary>
@@ -327,6 +361,15 @@ namespace CatBehaviour.Editor
             dropdownBTSO.index = -1;
             ObjBTSO.value = null;
             RefreshFromAssetPath(null);
+        }
+        
+        public void RecordObject(string undoName,Action action)
+        {
+            //Undo.RegisterCompleteObjectUndo(clonedBTSO, undoName);
+            Undo.RecordObject(clonedBTSO, undoName);
+            action?.Invoke();
+            
+            SyncGraphViewToBT();
         }
     }
 }
