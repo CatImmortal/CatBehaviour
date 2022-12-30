@@ -53,9 +53,8 @@ namespace CatBehaviour.Editor
             window.RecordObject($"Create {type.Name} Node");
             
             BaseNode runtimeNode = window.GraphView.BT.CreateNode(type);
-            runtimeNode.Position = pos; 
-            runtimeNode.Owner = window.GraphView.BT;
-            
+            runtimeNode.Position = pos;
+
             NodeView nodeView = new NodeView();
             nodeView.Init(runtimeNode,window);
             window.GraphView.AddElement(nodeView);
@@ -141,30 +140,26 @@ namespace CatBehaviour.Editor
                 inputContainer.Add(inputPort);
             }
 
-            if (RuntimeNode is BaseActionNode)
+            var capacityInfo = RuntimeNode.GetType().GetCustomAttribute<ChildCapacityInfoAttribute>();
+            if (capacityInfo == null || capacityInfo.Capacity == ChildCapacity.None)
             {
                 return;
             }
             Port.Capacity outputCount;
-            if (RuntimeNode is BaseCompositeNode)
-            {
-                outputCount = Port.Capacity.Multi;
-                
-            }else if (RuntimeNode is BaseDecoratorNode)
+            if (capacityInfo.Capacity == ChildCapacity.Single)
             {
                 outputCount = Port.Capacity.Single;
             }
             else
             {
-                throw new Exception($"行为树节点类型无效，不是3种基础节点类型的派生之一：{title}");
+                outputCount = Port.Capacity.Multi;
             }
-            outputPort = Port.Create<Edge>(Orientation.Vertical, Direction.Output, outputCount, typeof(Port));
+            
             outputPort = PortView.Create(Orientation.Vertical, Direction.Output, outputCount, typeof(PortView));
             outputPort.portName = "子节点";
             outputPort.portColor = outputPortColor;
             //outputPort.style.flexDirection = FlexDirection.ColumnReverse;
             outputContainer.Add(outputPort);
-
         }
 
         /// <summary>
@@ -287,10 +282,30 @@ namespace CatBehaviour.Editor
         /// </summary>
         public void AddChild(NodeView child)
         {
-            window.RecordObject($"AddChild {this}");
+            var info = RuntimeNode.GetType().GetCustomAttribute<ChildCapacityInfoAttribute>();
+            if (info == null || info.Capacity == ChildCapacity.None)
+            {
+                return;
+            }
             
-            RuntimeNode.AddChild(child.RuntimeNode);
+            window.RecordObject($"AddChild {this}");
 
+            //如果当前节点的子节点容量为single 就先清空子节点
+            if (info.Capacity == ChildCapacity.Single)
+            {
+                ClearChild();
+            }
+
+            //如果要添加的子节点已有父节点了 就将它从旧的父节点那里删掉
+            if (child.inputPort.connected)
+            {
+                var edgeToOldParent = child.inputPort.connections.First();
+                var oldParent = (NodeView)edgeToOldParent.output.node;
+                oldParent.RemoveChild(child);
+            }
+            
+            //添加子节点
+            RuntimeNode.AddChild(child.RuntimeNode);
             var edge = outputPort.ConnectTo(child.inputPort);
             window.GraphView.AddElement(edge);
         }

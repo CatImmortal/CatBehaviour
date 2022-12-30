@@ -6,6 +6,7 @@ namespace CatBehaviour.Runtime
     /// <summary>
     /// 装饰节点基类
     /// </summary>
+    [ChildCapacityInfo(Capacity = ChildCapacity.Single)]
     public abstract class BaseDecoratorNode : BaseNode
     {
         /// <summary>
@@ -20,27 +21,32 @@ namespace CatBehaviour.Runtime
         public BaseNode Child;
         
         /// <inheritdoc />
-        public override void AddChild(BaseNode node)
+        public override void AddChild(BaseNode child)
         {
-            if (node == null)
+            if (child == null)
             {
                 return;
             }
+
+            if (child.ParentNode != null)
+            {
+                child.ParentNode.RemoveChild(child);
+            }
             
-            node.ParentNode = this;
-            Child = node;
+            child.ParentNode = this;
+            Child = child;
         }
 
         /// <inheritdoc />
-        public override void RemoveChild(BaseNode node)
+        public override void RemoveChild(BaseNode child)
         {
-            if (node == null)
+            if (child == null)
             {
                 return;
             }
 
             ChildId = 0;
-            node.ParentNode = null;
+            child.ParentNode = null;
             Child = null;
         }
 

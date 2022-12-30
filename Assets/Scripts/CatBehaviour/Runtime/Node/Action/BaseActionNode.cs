@@ -6,18 +6,19 @@ namespace CatBehaviour.Runtime
     /// <summary>
     /// 动作节点基类
     /// </summary>
+    [ChildCapacityInfo(Capacity = ChildCapacity.None)]
     public abstract class BaseActionNode : BaseNode
     {
 
         
         /// <inheritdoc />
-        public sealed override void AddChild(BaseNode node)
+        public sealed override void AddChild(BaseNode child)
         {
             
         }
         
         /// <inheritdoc />
-        public sealed override void RemoveChild(BaseNode node)
+        public sealed override void RemoveChild(BaseNode child)
         {
             
         }

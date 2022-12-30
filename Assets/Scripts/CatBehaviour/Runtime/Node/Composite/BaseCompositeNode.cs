@@ -6,6 +6,7 @@ namespace CatBehaviour.Runtime
     /// <summary>
     /// 复合节点基类
     /// </summary>
+    [ChildCapacityInfo(Capacity = ChildCapacity.Multi)]
     public abstract class BaseCompositeNode : BaseNode
     {
         /// <summary>
@@ -20,28 +21,32 @@ namespace CatBehaviour.Runtime
         public List<BaseNode> Children  = new List<BaseNode>();
 
         /// <inheritdoc />
-        public override void AddChild(BaseNode node)
+        public override void AddChild(BaseNode child)
         {
-            if (node == null)
+            if (child == null)
             {
                 return;
             }
+
+            if (child.ParentNode != null)
+            {
+                child.ParentNode.RemoveChild(child);
+            }
             
-            node.ParentNode = this;
-            node.Owner = Owner;
-            Children.Add(node);
+            child.ParentNode = this;
+            Children.Add(child);
         }
 
         /// <inheritdoc />
-        public override void RemoveChild(BaseNode node)
+        public override void RemoveChild(BaseNode child)
         {
-            if (node == null)
+            if (child == null)
             {
                 return;
             }
             
-            node.ParentNode = null;
-            Children.Remove(node);
+            child.ParentNode = null;
+            Children.Remove(child);
         }
         
         /// <inheritdoc />

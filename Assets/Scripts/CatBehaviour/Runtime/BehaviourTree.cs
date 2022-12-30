@@ -201,6 +201,7 @@ namespace CatBehaviour.Runtime
         public BaseNode CreateNode(Type nodeType)
         {
             BaseNode node = (BaseNode)Activator.CreateInstance(nodeType);
+            node.Owner = this;
             AllNodes.Add(node);
             return node;
         }
@@ -210,6 +211,7 @@ namespace CatBehaviour.Runtime
         /// </summary>
         public void RemoveNode(BaseNode node)
         {
+            node.Owner = null;
             AllNodes.Remove(node);
         }
         

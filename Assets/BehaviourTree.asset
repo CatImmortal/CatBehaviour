@@ -15,9 +15,9 @@ MonoBehaviour:
   BT:
     RootNodeId: 1
     AllNodes:
-    - rid: 6460882743956340786
-    - rid: 6460882743956340787
-    - rid: 6460882743956340788
+    - rid: 6460882743956340813
+    - rid: 6460882743956340814
+    - rid: 6460882743956340815
     Rect:
       serializedVersion: 2
       x: 0
@@ -35,24 +35,24 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 6460882743956340786
+    - rid: 6460882743956340813
       type: {class: RootNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 1
         Position: {x: 500, y: 100}
         ParentNodeId: 0
-        ChildId: 2
-    - rid: 6460882743956340787
+        ChildId: 3
+    - rid: 6460882743956340814
       type: {class: SequenceNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 2
-        Position: {x: 453, y: 291}
+        Position: {x: 517, y: 260}
         ParentNodeId: 1
         ChildIdList: 
-    - rid: 6460882743956340788
+    - rid: 6460882743956340815
       type: {class: SequenceNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 3
-        Position: {x: 712, y: 283}
-        ParentNodeId: 0
+        Position: {x: 732, y: 279}
+        ParentNodeId: 1
         ChildIdList: 

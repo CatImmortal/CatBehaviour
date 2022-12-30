@@ -83,12 +83,12 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 添加子节点
         /// </summary>
-        public abstract void AddChild(BaseNode node);
+        public abstract void AddChild(BaseNode child);
 
         /// <summary>
         /// 删除子节点
         /// </summary>
-        public abstract void RemoveChild(BaseNode node);
+        public abstract void RemoveChild(BaseNode child);
 
         /// <summary>
         /// 清空子节点

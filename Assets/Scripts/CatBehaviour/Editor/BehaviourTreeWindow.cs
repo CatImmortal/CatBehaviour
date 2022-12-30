@@ -130,7 +130,6 @@ namespace CatBehaviour.Editor
 
         private void OnUndoRedoPerformed()
         {
-            Debug.Log("OnUndoRedoPerformed");
             if (clonedBTSO == null)
             {
                 return;
