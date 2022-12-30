@@ -266,14 +266,15 @@ namespace CatBehaviour.Editor
             element.style.backgroundColor = color;
         }
         
-        public override string ToString()
-        {
-            return RuntimeNode.ToString();
-        }
         
-        public override void SetPosition(Rect newPos)
+        /// <summary>
+        /// 设置位置并记录
+        /// </summary>
+        public void SetPosAndRecord(Rect newPos)
         {
-            base.SetPosition(newPos);
+            window.RecordObject($"SetPosition {this}");
+            
+            SetPosition(newPos);
             RuntimeNode.Position = newPos.position;
         }
 
@@ -346,6 +347,20 @@ namespace CatBehaviour.Editor
                 outputPort.DisconnectAll();
             }
         }
-        
+
+        /// <summary>
+        /// 删除节点
+        /// </summary>
+        public void RemoveSelf()
+        {
+            window.RecordObject($"RemoveNode {this}");
+            
+            window.GraphView.BT.RemoveNode(RuntimeNode);
+        }
+                
+        public override string ToString()
+        {
+            return RuntimeNode.ToString();
+        }
     }
 }

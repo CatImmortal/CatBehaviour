@@ -23,9 +23,9 @@ namespace CatBehaviour.Editor
                 styleSheets.Add(style);
         }
 
-        public override void Init(BehaviourTreeGraphView graphView)
+        public override void Init(BehaviourTreeWindow window)
         {
-            base.Init(graphView);
+            base.Init(window);
             
             base.title = "黑板";
             Scrollable = true;  //可滚动
@@ -128,6 +128,19 @@ namespace CatBehaviour.Editor
                 content.Add(row);
             }
             
+        }
+        
+        /// <summary>
+        /// 设置位置并记录
+        /// </summary>
+        public void SetPosAndRecord(Rect newPos)
+        {
+            window.RecordObject($"SetPosition BlackBoard");
+            
+            SetPosition(newPos);
+            
+            graphView.BT.BlackBoard.Position = newPos;
+            window.ClonedBTSO.BlackBoardRect = newPos;
         }
     }
 }

@@ -29,6 +29,9 @@ namespace CatBehaviour.Editor
         
         public BehaviourTreeGraphView()
         {
+            //监听节点与黑板移动 节点删除 线删除
+            graphViewChanged = GraphViewChangedCallback;
+            
             //这三个回调实现节点的复制粘贴功能
             serializeGraphElements = SerializeGraphElementsCallback;
             canPasteSerializedData = CanPasteSerializedDataCallback;
@@ -44,6 +47,48 @@ namespace CatBehaviour.Editor
             this.AddManipulator(new SelectionDragger());  //节点可拖动
             this.AddManipulator(new ContentDragger());  //节点图可移动
             this.AddManipulator(new RectangleSelector());  //可框选多个节点
+        }
+
+        private GraphViewChange GraphViewChangedCallback(GraphViewChange changes)
+        {
+            //移动
+            if (changes.movedElements != null)
+            {
+                foreach (GraphElement element in changes.movedElements)
+                {
+                    if (element is NodeView nodeView)
+                    {
+                        nodeView.SetPosAndRecord(nodeView.GetPosition());
+                    }
+                    else if (element is BlackBoardView blackBoardView)
+                    {
+                        blackBoardView.SetPosAndRecord(blackBoardView.GetPosition());
+                    }
+                }
+            }
+
+            //删除
+            if (changes.elementsToRemove != null)
+            {
+                foreach (GraphElement element in changes.elementsToRemove)
+                {
+                    if (element is NodeView nodeView)
+                    {
+                        //Debug.Log($"删除节点 {nodeView}");
+                        nodeView.RemoveSelf();
+                    }
+                    else if (element is Edge edge)
+                    {
+                        //Debug.Log($"删除线 {edge.output.node} -> {edge.input.node}");
+                        var parentNode = (NodeView) edge.output.node;
+                        var childNode = (NodeView) edge.input.node;
+                        parentNode.RemoveChild(childNode);
+                    }
+                }
+            }
+            
+
+            return changes;
         }
 
         /// <summary>
@@ -193,7 +238,7 @@ namespace CatBehaviour.Editor
             //黑板
             BlackboardView = new BlackBoardView();
             Add(BlackboardView);
-            BlackboardView.Init(this);
+            BlackboardView.Init(window);
         }
 
         /// <summary>

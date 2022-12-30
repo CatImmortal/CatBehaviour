@@ -29,7 +29,7 @@ namespace CatBehaviour.Editor
 
         private string assetPath;
         private BehaviourTreeSO originBTSO;
-        private BehaviourTreeSO clonedBTSO;
+        public BehaviourTreeSO ClonedBTSO;
         private BehaviourTree bt;
         
         /// <summary>
@@ -130,11 +130,11 @@ namespace CatBehaviour.Editor
 
         private void OnUndoRedoPerformed()
         {
-            if (clonedBTSO == null)
+            if (ClonedBTSO == null)
             {
                 return;
             }
-            Refresh(clonedBTSO.BT);
+            Refresh(ClonedBTSO.BT);
         }
 
 
@@ -185,8 +185,8 @@ namespace CatBehaviour.Editor
                 if (originBTSO != null)
                 {
                     //深拷贝一份用于编辑
-                    clonedBTSO = Instantiate(originBTSO);
-                    bt = clonedBTSO.BT;
+                    ClonedBTSO = Instantiate(originBTSO);
+                    bt = ClonedBTSO.BT;
                 }
 
                 int index = dropdownBTSO.choices.IndexOf(assetPath.Replace('/','\\'));
@@ -224,8 +224,8 @@ namespace CatBehaviour.Editor
                 };
                 bt.AllNodes.Add(bt.RootNode);
                 
-                clonedBTSO = CreateInstance<BehaviourTreeSO>();
-                clonedBTSO.BT = bt;
+                ClonedBTSO = CreateInstance<BehaviourTreeSO>();
+                ClonedBTSO.BT = bt;
             }
             
             this.bt = bt;
@@ -280,18 +280,13 @@ namespace CatBehaviour.Editor
                 }
             }
             
-            //同步节点图数据至行为树
-            //SyncGraphViewToBT();
             
             //记录属性面板宽度
             bt.InspectorWidth = splitView.Q("left").layout.width;
             
             //记录节点图位置
             bt.Rect = new Rect(GraphView.viewTransform.position, GraphView.viewTransform.scale);
-            
-            //记录黑板位置
-            bt.BlackBoard.Position = GraphView.BlackboardView.GetPosition();
-            
+
             //保存原始SO
             EditorUtility.SetDirty(originBTSO);
             AssetDatabase.SaveAssets();
@@ -373,7 +368,7 @@ namespace CatBehaviour.Editor
         
         public void RecordObject(string undoName)
         {
-            Undo.RecordObject(clonedBTSO, undoName);
+            Undo.RecordObject(ClonedBTSO, undoName);
         }
     }
 }

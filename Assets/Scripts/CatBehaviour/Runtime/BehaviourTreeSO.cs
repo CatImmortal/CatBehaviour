@@ -38,7 +38,6 @@ namespace CatBehaviour.Runtime
             {
                 BBParams.Add(pair.Value);
             }
-            BlackBoardRect = BT.BlackBoard.Position;
         }
 
         

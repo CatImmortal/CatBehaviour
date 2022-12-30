@@ -128,6 +128,10 @@ namespace CatBehaviour.Runtime
             {
                 ParentNodeId = ParentNode.Id;
             }
+            else
+            {
+                ParentNodeId = 0;
+            }
         }
 
         /// <summary>

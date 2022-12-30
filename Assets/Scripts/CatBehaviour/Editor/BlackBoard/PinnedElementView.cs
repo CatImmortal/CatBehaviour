@@ -10,6 +10,9 @@ namespace CatBehaviour.Editor
         private const string pinnedElementTree = "UXML/PinnedElementView";
         private const string pinnedElementStyle = "USS/PinnedElementView";
         
+        protected BehaviourTreeGraphView graphView;
+        protected BehaviourTreeWindow window;
+        
         private ScrollView scrollView;
         private bool scrollable;
         
@@ -21,7 +24,9 @@ namespace CatBehaviour.Editor
 
         protected event Action onResized;
 
-        protected BehaviourTreeGraphView graphView;
+        
+
+        
         
         public override string title
         {
@@ -104,9 +109,10 @@ namespace CatBehaviour.Editor
         /// <summary>
         /// 初始化
         /// </summary>
-        public virtual void Init(BehaviourTreeGraphView graphView)
+        public virtual void Init(BehaviourTreeWindow window)
         {
-            this.graphView = graphView;
+            this.window = window;
+            this.graphView = window.GraphView;
         }
 
         /// <summary>
