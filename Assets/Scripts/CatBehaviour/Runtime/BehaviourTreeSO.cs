@@ -25,19 +25,22 @@ namespace CatBehaviour.Runtime
         /// </summary>
         public Rect BlackBoardRect;
 
+        public void SetParam(string key, BBParam param)
+        {
+            BT.BlackBoard.SetParam(key,param);
+            BBParams.Add(param);
+        }
+
+        public void RemoveParam(string key)
+        {
+            var param = BT.BlackBoard.GetParam(key);
+            BBParams.Remove(param);
+            BT.BlackBoard.RemoveParam(key);
+        }
+        
         public void OnBeforeSerialize()
         {
-            if (BT == null)
-            {
-                return;
-            }
-            BT.PreProcessSerialize();
-            
-            BBParams.Clear();
-            foreach (KeyValuePair<string,BBParam> pair in BT.BlackBoard.ParamDict)
-            {
-                BBParams.Add(pair.Value);
-            }
+            BT?.PreProcessSerialize();
         }
 
         
@@ -47,6 +50,8 @@ namespace CatBehaviour.Runtime
             {
                 return;
             }
+            
+            //恢复黑板数据
             BT.BlackBoard.ParamDict.Clear();
             for (int i = 0; i < BBParams.Count; i++)
             {

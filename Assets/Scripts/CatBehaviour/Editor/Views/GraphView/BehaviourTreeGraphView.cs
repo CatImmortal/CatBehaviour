@@ -246,7 +246,6 @@ namespace CatBehaviour.Editor
         /// </summary>
         public void Refresh(BehaviourTree bt)
         {
-          
             BT = bt;
 
             //还原位置与大小
@@ -255,7 +254,6 @@ namespace CatBehaviour.Editor
                 viewTransform.position = bt.Rect.position;
                 viewTransform.scale = new Vector3(bt.Rect.size.x,bt.Rect.size.y,1);
             }
-
             
             BlackboardView.Refresh();
             BuildGraphView();
@@ -371,10 +369,11 @@ namespace CatBehaviour.Editor
         /// </summary>
         public void AddBlackBoardParam(string key,Type type,object value = null)
         {
+            window.RecordObject($"AddBlackBoard {key}");
+            
             BBParam bbParam = (BBParam)Activator.CreateInstance(type);
             bbParam.ValueObj = value;
-            
-            BT.BlackBoard.SetParam(key,bbParam);
+            window.ClonedBTSO.SetParam(key,bbParam);
 
             OnBlackBoardChanged?.Invoke();
         }
@@ -384,7 +383,9 @@ namespace CatBehaviour.Editor
         /// </summary>
         public void RemoveBlackBoardParam(string key)
         {
-            BT.BlackBoard.RemoveParam(key);
+            window.RecordObject($"RemoveBlackBoard {key}");
+            
+            window.ClonedBTSO.RemoveParam(key);
             OnBlackBoardChanged?.Invoke();
         }
 
