@@ -194,6 +194,24 @@ namespace CatBehaviour.Runtime
             node.CurState = BaseNode.State.Free;
             node.ForeachChild(resetAction);
         }
+
+        /// <summary>
+        /// 创建行为树节点
+        /// </summary>
+        public BaseNode CreateNode(Type nodeType)
+        {
+            BaseNode node = (BaseNode)Activator.CreateInstance(nodeType);
+            AllNodes.Add(node);
+            return node;
+        }
+
+        /// <summary>
+        /// 删除行为树节点
+        /// </summary>
+        public void RemoveNode(BaseNode node)
+        {
+            AllNodes.Remove(node);
+        }
         
         /// <summary>
         /// 获取行为树节点
@@ -214,9 +232,12 @@ namespace CatBehaviour.Runtime
         /// </summary>
         public void PreProcessSerialize()
         {
-            //排序子节点
-            foreach (BaseNode node in AllNodes)
+            //为所有节点建立Id 并排序子节点
+            for (int i = 0; i < AllNodes.Count; i++)
             {
+                int id = i + 1;
+                BaseNode node = AllNodes[i];
+                node.Id = id;   
                 node.SortChild();
             }
             

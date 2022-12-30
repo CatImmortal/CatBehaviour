@@ -17,9 +17,9 @@ namespace CatBehaviour.Editor
     {
         private BehaviourTreeWindow window;
         private BehaviourTreeGraphView graphView;
-
-        private PortView sourceInputPort;
-        private PortView sourceOutputPort;
+        
+        private NodeView sourceNode;
+        private bool isParentWithSourceNode;
         
         private Texture2D emptyIcon;
         
@@ -31,8 +31,20 @@ namespace CatBehaviour.Editor
             this.window = window;
             graphView = window.GraphView;
 
-            sourceInputPort = edge?.input as PortView;
-            sourceOutputPort = edge?.output as PortView;
+            if (edge != null)
+            {
+                if (edge.output != null)
+                {
+                    sourceNode = (NodeView)edge.output.node;
+                    isParentWithSourceNode = true;
+                }
+                else
+                {
+                    sourceNode = (NodeView)edge.input.node;
+                    isParentWithSourceNode = false; 
+                }
+            }
+
 
             emptyIcon = new Texture2D(1, 1);
             emptyIcon.SetPixel(0,0,new Color(0,0,0,0));
@@ -120,50 +132,23 @@ namespace CatBehaviour.Editor
             //取出类型信息
             Type type = (Type)searchTreeEntry.userData;
             
-            //创建node
-            BaseNode runtimeNode = (BaseNode)Activator.CreateInstance(type);
-            runtimeNode.Owner = graphView.BT;
-            NodeView nodeView = new NodeView();
-            nodeView.Init(runtimeNode,window);
-            
-            //将节点创建在鼠标的位置里
+            //创建节点 
             var point = context.screenMousePosition - window.position.position;  //鼠标相对于窗口的位置
             Vector2 graphMousePosition = graphView.contentViewContainer.WorldToLocal(point);  //鼠标在节点图下的位置
-            nodeView.SetPosition(new Rect(graphMousePosition,nodeView.GetPosition().size));
-            nodeView.RuntimeNode.Position = graphMousePosition;  //这里手动赋值一下初始坐标 否则后面同步数据到BT时，因为是同一帧会导致获取不到正确位置
-            window.RecordObject($"Add {type} Node",(() =>
+            NodeView nodeView = NodeView.Create(type, window,graphMousePosition);
+            
+            //如果是通过拖动线创建的节点 就连接起来
+            if (sourceNode != null)
             {
-                graphView.AddElement(nodeView);
-            
-                //如果是通过拖动线创建的节点 就连接起来
-                var sourcePort = sourceInputPort ?? sourceOutputPort;
-                if (sourcePort != null)
+                if (isParentWithSourceNode)
                 {
-                    //先断开已有的连线
-                    foreach (Edge sourcePortEdge in sourcePort.connections.ToList())
-                    {
-                        sourcePortEdge.input.Disconnect(sourcePortEdge);
-                        sourcePortEdge.output.Disconnect(sourcePortEdge);
-                        graphView.RemoveElement(sourcePortEdge);
-                    }
-
-                    //连接发起连线的节点和创建出的节点
-                    PortView targetPort;
-                    if (sourcePort == sourceInputPort)
-                    {
-                        targetPort = (PortView)nodeView.outputContainer[0];
-                    }
-                    else
-                    {
-                        targetPort = (PortView)nodeView.inputContainer[0];
-                    }
-                    var edge = sourcePort.ConnectTo(targetPort);
-                    graphView.AddElement(edge);
+                    sourceNode.AddChild(nodeView);
                 }
-            }));
-            
-           
-
+                else
+                {
+                    nodeView.AddChild(sourceNode);
+                }
+            }
             return true;
         }
     }

@@ -91,6 +91,11 @@ namespace CatBehaviour.Runtime
         public abstract void RemoveChild(BaseNode node);
 
         /// <summary>
+        /// 清空子节点
+        /// </summary>
+        public abstract void ClearChild();
+
+        /// <summary>
         /// 遍历子节点
         /// </summary>
         public abstract void ForeachChild(Action<BaseNode> action);

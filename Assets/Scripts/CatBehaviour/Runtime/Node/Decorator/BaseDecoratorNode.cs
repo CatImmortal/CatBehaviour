@@ -45,6 +45,12 @@ namespace CatBehaviour.Runtime
         }
 
         /// <inheritdoc />
+        public override void ClearChild()
+        {
+            RemoveChild(Child);
+        }
+
+        /// <inheritdoc />
         public override void ForeachChild(Action<BaseNode> action)
         {
             action?.Invoke(Child);

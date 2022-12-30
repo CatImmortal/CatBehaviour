@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using CatBehaviour.Runtime;
 using UnityEditor.Experimental.GraphView;
@@ -27,12 +28,13 @@ namespace CatBehaviour.Editor
         private static Color successColor = new Color(36 / 255f, 178 / 255f, 50 / 255f, 255f / 255);
         private static Color failedColor = new Color(203 / 255f, 81 / 255f, 61 / 255f, 255f / 255);
 
-        public BaseNode RuntimeNode;
+        private BehaviourTreeWindow window;
         private Port inputPort;
         private Port outputPort;
-
         private EnumField stateField;
 
+        public BaseNode RuntimeNode;
+        
         /// <summary>
         /// 获取节点在节点图的名字
         /// </summary>
@@ -42,12 +44,31 @@ namespace CatBehaviour.Editor
             string name = nodeInfo.Name;
             return name;
         }
+
+        /// <summary>
+        /// 创建节点
+        /// </summary>
+        public static NodeView Create(Type type,BehaviourTreeWindow window,Vector2 pos)
+        {
+            window.RecordObject($"Create {type.Name} Node");
+            
+            BaseNode runtimeNode = window.GraphView.BT.CreateNode(type);
+            runtimeNode.Position = pos; 
+            runtimeNode.Owner = window.GraphView.BT;
+            
+            NodeView nodeView = new NodeView();
+            nodeView.Init(runtimeNode,window);
+            window.GraphView.AddElement(nodeView);
+            
+            return nodeView;
+        }
         
         /// <summary>
         /// 初始化
         /// </summary>
         public void Init(BaseNode runtimeNode,BehaviourTreeWindow window)
         {
+            this.window = window;
             RuntimeNode = runtimeNode;
             
             //注册点击事件
@@ -73,7 +94,6 @@ namespace CatBehaviour.Editor
             }
             
         }
-        
 
         /// <summary>
         /// 设置节点名和位置
@@ -146,8 +166,7 @@ namespace CatBehaviour.Editor
             outputContainer.Add(outputPort);
 
         }
-        
-        
+
         /// <summary>
         /// 添加节点icon
         /// </summary>
@@ -252,11 +271,66 @@ namespace CatBehaviour.Editor
             element.style.backgroundColor = color;
         }
         
-        
-        
         public override string ToString()
         {
             return RuntimeNode.ToString();
         }
+        
+        public override void SetPosition(Rect newPos)
+        {
+            base.SetPosition(newPos);
+            RuntimeNode.Position = newPos.position;
+        }
+
+        /// <summary>
+        /// 添加子节点
+        /// </summary>
+        public void AddChild(NodeView child)
+        {
+            window.RecordObject($"AddChild {this}");
+            
+            RuntimeNode.AddChild(child.RuntimeNode);
+
+            var edge = outputPort.ConnectTo(child.inputPort);
+            window.GraphView.AddElement(edge);
+        }
+
+        /// <summary>
+        /// 删除子节点
+        /// </summary>
+        public void RemoveChild(NodeView child)
+        {
+            window.RecordObject($"RemoveChild {this}");
+            
+            RuntimeNode.RemoveChild(child.RuntimeNode);
+
+            var edge = child.inputPort.connections.First();
+            outputPort.Disconnect(edge);
+            
+            window.GraphView.RemoveElement(edge);
+        }
+
+        /// <summary>
+        /// 清空子节点
+        /// </summary>
+        public void ClearChild()
+        {
+            window.RecordObject($"ClearChild {this}");
+            
+            RuntimeNode.ClearChild();
+            if (outputPort != null)
+            {
+                //遍历output端口的所有线 让线的input端口都断开连接 并删除线
+                foreach (Edge edge in outputPort.connections.ToList())
+                {
+                    edge.input.DisconnectAll();
+                    window.GraphView.RemoveElement(edge);
+                }
+                
+                //断开output断开的所有连接
+                outputPort.DisconnectAll();
+            }
+        }
+        
     }
 }

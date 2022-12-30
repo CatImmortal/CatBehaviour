@@ -282,8 +282,17 @@ namespace CatBehaviour.Editor
             }
             
             //同步节点图数据至行为树
-            SyncGraphViewToBT();
-
+            //SyncGraphViewToBT();
+            
+            //记录属性面板宽度
+            bt.InspectorWidth = splitView.Q("left").layout.width;
+            
+            //记录节点图位置
+            bt.Rect = new Rect(GraphView.viewTransform.position, GraphView.viewTransform.scale);
+            
+            //记录黑板位置
+            bt.BlackBoard.Position = GraphView.BlackboardView.GetPosition();
+            
             //保存原始SO
             EditorUtility.SetDirty(originBTSO);
             AssetDatabase.SaveAssets();
@@ -296,59 +305,59 @@ namespace CatBehaviour.Editor
             Debug.Log($"保存行为树成功，路径:{assetPath}");
         }
 
-        /// <summary>
-        /// 将节点图的数据同步到行为树对象上
-        /// </summary>
-        private void SyncGraphViewToBT()
-        {
-            //开始收集节点
-            bt.AllNodes.Clear();
-            
-            //清空ID和父子关系
-            foreach (Node element in GraphView.nodes)
-            {
-                NodeView nodeView = (NodeView) element;
-                nodeView.RuntimeNode.ClearId();
-                nodeView.RuntimeNode.ClearNodeReference();
-                
-                //记录位置
-                nodeView.RuntimeNode.Position = nodeView.GetPosition().position;
-                
-                //添加到allNodes里 建立ID
-                bt.AllNodes.Add(nodeView.RuntimeNode);
-                nodeView.RuntimeNode.Id = bt.AllNodes.Count;
-            }
-            
-            //根据节点图连线重建父子关系
-            foreach (Node element in GraphView.nodes)
-            {
-                NodeView nodeView = (NodeView) element;
-                if (nodeView.inputContainer.childCount == 0)
-                {
-                    continue;
-                }
-                
-                Port inputPort = (Port)nodeView.inputContainer[0];
-                Edge inputEdge = inputPort.connections.FirstOrDefault();
-                if (inputEdge == null)
-                {
-                    continue;
-                }
-                
-                //将自身添加的父节点的子节点里
-                var parent = (NodeView)inputEdge.output.node;
-                parent.RuntimeNode.AddChild(nodeView.RuntimeNode);
-            }
-
-            //记录属性面板宽度
-            bt.InspectorWidth = splitView.Q("left").layout.width;
-            
-            //记录节点图位置
-            bt.Rect = new Rect(GraphView.viewTransform.position, GraphView.viewTransform.scale);
-            
-            //记录黑板位置
-            bt.BlackBoard.Position = GraphView.BlackboardView.GetPosition();
-        }
+        // /// <summary>
+        // /// 将节点图的数据同步到行为树对象上
+        // /// </summary>
+        // private void SyncGraphViewToBT()
+        // {
+        //     //开始收集节点
+        //     bt.AllNodes.Clear();
+        //     
+        //     //清空ID和父子关系
+        //     foreach (Node element in GraphView.nodes)
+        //     {
+        //         NodeView nodeView = (NodeView) element;
+        //         nodeView.RuntimeNode.ClearId();
+        //         nodeView.RuntimeNode.ClearNodeReference();
+        //         
+        //         //记录位置
+        //         nodeView.RuntimeNode.Position = nodeView.GetPosition().position;
+        //         
+        //         //添加到allNodes里 建立ID
+        //         bt.AllNodes.Add(nodeView.RuntimeNode);
+        //         nodeView.RuntimeNode.Id = bt.AllNodes.Count;
+        //     }
+        //     
+        //     //根据节点图连线重建父子关系
+        //     foreach (Node element in GraphView.nodes)
+        //     {
+        //         NodeView nodeView = (NodeView) element;
+        //         if (nodeView.inputContainer.childCount == 0)
+        //         {
+        //             continue;
+        //         }
+        //         
+        //         Port inputPort = (Port)nodeView.inputContainer[0];
+        //         Edge inputEdge = inputPort.connections.FirstOrDefault();
+        //         if (inputEdge == null)
+        //         {
+        //             continue;
+        //         }
+        //         
+        //         //将自身添加的父节点的子节点里
+        //         var parent = (NodeView)inputEdge.output.node;
+        //         parent.RuntimeNode.AddChild(nodeView.RuntimeNode);
+        //     }
+        //
+        //     //记录属性面板宽度
+        //     bt.InspectorWidth = splitView.Q("left").layout.width;
+        //     
+        //     //记录节点图位置
+        //     bt.Rect = new Rect(GraphView.viewTransform.position, GraphView.viewTransform.scale);
+        //     
+        //     //记录黑板位置
+        //     bt.BlackBoard.Position = GraphView.BlackboardView.GetPosition();
+        // }
         
         /// <summary>
         /// 新建行为树
@@ -363,13 +372,9 @@ namespace CatBehaviour.Editor
             RefreshFromAssetPath(null);
         }
         
-        public void RecordObject(string undoName,Action action)
+        public void RecordObject(string undoName)
         {
-            //Undo.RegisterCompleteObjectUndo(clonedBTSO, undoName);
             Undo.RecordObject(clonedBTSO, undoName);
-            action?.Invoke();
-            
-            SyncGraphViewToBT();
         }
     }
 }

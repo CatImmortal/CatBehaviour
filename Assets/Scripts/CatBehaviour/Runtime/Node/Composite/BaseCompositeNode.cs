@@ -43,6 +43,15 @@ namespace CatBehaviour.Runtime
             node.ParentNode = null;
             Children.Remove(node);
         }
+        
+        /// <inheritdoc />
+        public override void ClearChild()
+        {
+            for (int i = Children.Count - 1; i >= 0; i--)
+            {
+                RemoveChild(Children[i]);
+            }
+        }
 
         /// <inheritdoc />
         public override void ForeachChild(Action<BaseNode> action)

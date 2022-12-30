@@ -21,6 +21,12 @@ namespace CatBehaviour.Runtime
         {
             
         }
+        
+        /// <inheritdoc />
+        public sealed override void ClearChild()
+        {
+           
+        }
 
         /// <inheritdoc />
         public sealed override void ForeachChild(Action<BaseNode> action)

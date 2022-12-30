@@ -48,7 +48,6 @@ namespace CatBehaviour.Runtime
             {
                 return;
             }
-            
             BT.BlackBoard.ParamDict.Clear();
             for (int i = 0; i < BBParams.Count; i++)
             {
