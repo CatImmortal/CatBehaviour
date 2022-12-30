@@ -371,9 +371,9 @@ namespace CatBehaviour.Editor
         {
             window.RecordObject($"AddBlackBoard {key}");
             
-            BBParam bbParam = (BBParam)Activator.CreateInstance(type);
-            bbParam.ValueObj = value;
-            window.ClonedBTSO.SetParam(key,bbParam);
+            BBParam param = (BBParam)Activator.CreateInstance(type);
+            param.ValueObj = value;
+            window.ClonedBTSO.SetParam(key,param);
 
             OnBlackBoardChanged?.Invoke();
         }
@@ -399,9 +399,12 @@ namespace CatBehaviour.Editor
                 //Debug.Log($"重命名黑板key失败，已存在同名key:{newKey}");
                 return false;
             }
+            
+            //window.RecordObject($"RenameBlackBoard {oldKey} -> {newKey}");
+            
             //Debug.Log($"重命名黑板key成功，{oldKey} -> {newKey}");
-            BT.BlackBoard.RemoveParam(oldKey);
-            BT.BlackBoard.SetParam(newKey,param);
+            window.ClonedBTSO.RemoveParam(oldKey);
+            window.ClonedBTSO.SetParam(newKey,param);
             //OnBlackBoardChaged?.Invoke();
 
             return true;

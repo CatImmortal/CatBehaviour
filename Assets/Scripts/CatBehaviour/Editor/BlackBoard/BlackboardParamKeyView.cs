@@ -24,6 +24,7 @@ namespace CatBehaviour.Editor
             icon.style.height = 4;
             keyField = this.Q<TextField>("textField");
             
+
             keyField.RegisterValueChangedCallback((e) =>
             {
                 //重命名了黑板key
@@ -43,6 +44,7 @@ namespace CatBehaviour.Editor
         /// <param name="evt"></param>
         private void BuildContextualMenu(ContextualMenuPopulateEvent evt)
         {
+            evt.menu.RemoveItemAt(0);
             evt.menu.AppendAction("重命名", (a) => OpenTextEditor(), DropdownMenuAction.AlwaysEnabled);
             evt.menu.AppendAction("删除", (a) => graphView.RemoveBlackBoardParam(text), DropdownMenuAction.AlwaysEnabled);
 
