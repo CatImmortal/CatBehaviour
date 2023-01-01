@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using CatBehaviour.Runtime;
 using UnityEditor;
@@ -11,6 +12,7 @@ namespace CatBehaviour.Editor
     /// </summary>
     public class BaseNodeInspector
     {
+
         /// <summary>
         /// 要绘制的目标节点
         /// </summary>
@@ -56,9 +58,13 @@ namespace CatBehaviour.Editor
                     }
 
                     var bbParam = (BBParam)fieldInfo.GetValue(Target);
-                    
-                    bbParam.OnGUI(true,Target.Owner);
-                    
+
+                    if (BaseBBParamDrawer.BBParamDrawerDict.TryGetValue(bbParam.GetType(),out var drawer))
+                    {
+                        drawer.Target = bbParam;
+                        drawer.OnGUI(true,Target.Owner);
+                    }
+
                     EditorGUILayout.Space();
                 }
             }

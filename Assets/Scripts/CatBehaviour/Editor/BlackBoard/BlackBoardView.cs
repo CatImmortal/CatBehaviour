@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using CatBehaviour.Runtime;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
@@ -14,6 +15,7 @@ namespace CatBehaviour.Editor
     /// </summary>
     public class BlackBoardView : PinnedElementView
     {
+        
         private const string exposedParameterViewStyle = "USS/BlackBoardView";
         
         public BlackBoardView()

@@ -14,14 +14,22 @@ namespace CatBehaviour.Editor
         public void DrawValue(BBParam bbParam)
         {
             Clear();
-            bbParam.CreateGUI(contentContainer,false,null);
             
-            IMGUIContainer imguiContainer = new IMGUIContainer(){};
-            imguiContainer.onGUIHandler =  (() =>
+            if (BaseBBParamDrawer.BBParamDrawerDict.TryGetValue(bbParam.GetType(),out var drawer))
             {
-                bbParam.OnGUI(false,null);
-            });
-            Add(imguiContainer);
+                drawer.Target = bbParam;
+                
+                drawer.CreateGUI(contentContainer,false,null);
+                IMGUIContainer imguiContainer = new IMGUIContainer(){};
+                imguiContainer.onGUIHandler =  (() =>
+                {
+                    drawer.OnGUI(false,null);
+                });
+                Add(imguiContainer);
+            }
+            
+         
+          
         }
     }
 }

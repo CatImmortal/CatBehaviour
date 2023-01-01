@@ -1,10 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.UIElements;
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace CatBehaviour.Runtime
 {
@@ -23,75 +18,7 @@ namespace CatBehaviour.Runtime
         /// 参数值obj
         /// </summary>
         public abstract object ValueObj { get; set; }
-
-#if UNITY_EDITOR
-
-        private int selectedKeyIndex = 0;
         
-        /// <summary>
-        /// 基于UIElements绘制黑板值
-        /// </summary>
-        public virtual void CreateGUI(VisualElement contentContainer,bool isInspector,BehaviourTree bt)
-        {
-
-        }
-
-        /// <summary>
-        /// 基于IMGUI绘制黑板值
-        /// </summary>
-        public virtual void OnGUI(bool isInspector,BehaviourTree bt)
-        {
-            using (new EditorGUILayout.HorizontalScope())
-            {
-                if (isInspector)
-                {
-                    var keys = bt.BlackBoard.GetKeys(GetType());
-
-                    //修正索引 防止因为删除了前面的key导致顺序变化 最终索引到了错误的key
-                    for (int i = 0; i < keys.Length; i++)
-                    {
-                        if (Key == keys[i] && selectedKeyIndex != i)
-                        {
-                            selectedKeyIndex = i;
-                            break;
-                        }
-                    }
-                    
-                    int newIndex = EditorGUILayout.Popup("黑板Key" ,selectedKeyIndex, keys);
-                    if (newIndex == 0 || newIndex >= keys.Length)
-                    {
-                        selectedKeyIndex = 0;
-                        Key = null;
-                    }
-                    else
-                    {
-                        if (selectedKeyIndex > 0 && Key != keys[selectedKeyIndex])
-                        {
-                            //当前索引到的key和保存的key不一致 重置为null
-                            //这时可能是之前的key被删了，或者被重命名了
-                            selectedKeyIndex = 0;
-                            Key = null;
-                        }
-                        else
-                        {
-                            var newKey = keys[newIndex];
-                            selectedKeyIndex = newIndex;
-                            Key = newKey;
-                        }
-                    }
-                }
-                OnGUI();
-            }
-        }
-
-        /// <summary>
-        /// 基于IMGUI绘制黑板值
-        /// </summary>
-        protected virtual void OnGUI()
-        {
-            
-        }
-
         /// <summary>
         /// 获取黑板参数的类型名
         /// </summary>
@@ -101,7 +28,7 @@ namespace CatBehaviour.Runtime
             name = name.Replace("BBParam", "");
             return name;
         }
-#endif
+
     }
     
     public abstract class BBParam<T> : BBParam
@@ -124,85 +51,48 @@ namespace CatBehaviour.Runtime
         {
             return Value.ToString();
         }
-
-        
     }
     
     [Serializable]
     public class BBParamBool : BBParam<bool>
     {
-#if UNITY_EDITOR
-        protected override void OnGUI()
-        {
-            Value = EditorGUILayout.Toggle("Value",Value);
-        }
-#endif
+
     }
     
     [Serializable]
     public class BBParamInt : BBParam<int>
     {
-#if UNITY_EDITOR
-        protected override void OnGUI()
-        {
-            Value = EditorGUILayout.IntField("Value",Value);
-        }
-#endif
+
     }
     
     [Serializable]
     public class BBParamFloat : BBParam<float>
     {
-#if UNITY_EDITOR
-        protected override void OnGUI()
-        {
-            Value = EditorGUILayout.FloatField("Value",Value);
-        }
-#endif
+
     }
     
     [Serializable]
     public class BBParamString : BBParam<string>
     {
-#if UNITY_EDITOR
-        protected override void OnGUI()
-        {
-            Value = EditorGUILayout.TextField("Value",Value);
-        }
-#endif
+
     }
     
     [Serializable]
     public class BBParamVector2 : BBParam<Vector2>
     {
-#if UNITY_EDITOR
-        protected override void OnGUI()
-        {
-            EditorGUILayout.Vector2Field("Value", Value);
-        }
-#endif
+
     }
     
     [Serializable]
     public class BBParamVector3 : BBParam<Vector3>
     {
-#if UNITY_EDITOR
-        protected override void OnGUI()
-        {
-            EditorGUILayout.Vector3Field("Value", Value);
-        }
-#endif
+
     }
     
     [Serializable]
     public class BBParamVector4 : BBParam<Vector4>
     {
-#if UNITY_EDITOR
-        protected override void OnGUI()
-        {
-            EditorGUILayout.Vector4Field("Value", Value);
-        }
-#endif
+
     }
 
 }
