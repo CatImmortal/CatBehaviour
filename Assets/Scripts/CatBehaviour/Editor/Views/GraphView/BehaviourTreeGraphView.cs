@@ -60,10 +60,10 @@ namespace CatBehaviour.Editor
                     {
                         nodeView.SetPosAndRecord(nodeView.GetPosition());
                     }
-                    else if (element is BlackBoardView blackBoardView)
-                    {
-                        blackBoardView.SetPosAndRecord(blackBoardView.GetPosition());
-                    }
+                    // else if (element is BlackBoardView blackBoardView)
+                    // {
+                    //     blackBoardView.SetPosAndRecord(blackBoardView.GetPosition());
+                    // }
                 }
             }
 
@@ -238,6 +238,7 @@ namespace CatBehaviour.Editor
             //黑板
             BlackboardView = new BlackBoardView();
             Add(BlackboardView);
+            //AddElement(BlackboardView);
             BlackboardView.Init(window);
         }
 
@@ -403,8 +404,7 @@ namespace CatBehaviour.Editor
             //window.RecordObject($"RenameBlackBoard {oldKey} -> {newKey}");
             
             //Debug.Log($"重命名黑板key成功，{oldKey} -> {newKey}");
-            window.ClonedBTSO.RemoveParam(oldKey);
-            window.ClonedBTSO.SetParam(newKey,param);
+            param.Key = newKey;
             //OnBlackBoardChaged?.Invoke();
 
             return true;

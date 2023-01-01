@@ -23,8 +23,6 @@ namespace CatBehaviour.Editor
             icon.style.width = 4;
             icon.style.height = 4;
             keyField = this.Q<TextField>("textField");
-            
-
             keyField.RegisterValueChangedCallback((e) =>
             {
                 //重命名了黑板key

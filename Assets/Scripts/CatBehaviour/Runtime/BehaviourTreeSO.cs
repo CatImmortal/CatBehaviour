@@ -40,7 +40,13 @@ namespace CatBehaviour.Runtime
         
         public void OnBeforeSerialize()
         {
-            BT?.PreProcessSerialize();
+            if (BT == null)
+            {
+                return;
+            }
+            
+            BT.PreProcessSerialize();
+            BlackBoardRect = BT.BlackBoard.Position;
         }
 
         
