@@ -94,14 +94,14 @@ namespace CatBehaviour.Editor
                 }
                 Undo.ClearAll();
                 
-                string path = evt.newValue.Replace('\\', '/');
                 if (!IsDebugMode)
                 {
+                    string path = evt.newValue.Replace('\\', '/');
                     RefreshFromAssetPath(path);
                 }
                 else
                 {
-                    var debugBT = BTDebugger.BTInstanceDict[path];
+                    var debugBT = BTDebugger.BTInstanceDict[evt.newValue];
                     RefreshFromDebugger(debugBT);
                 }
             }));

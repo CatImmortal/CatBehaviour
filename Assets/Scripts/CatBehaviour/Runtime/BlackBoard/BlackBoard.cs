@@ -29,15 +29,15 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 获取参数
         /// </summary>
-        public BBParam<T> GetParam<T>(string key)
+        public T GetParam<T>(string key) where T : BBParam
         {
-            var param = GetParam(key);
+            BBParam param = GetParam(key);
             if (param == null)
             {
-                return null;
+                return default;
             }
 
-            return (BBParam<T>)param;
+            return ((T)param);
         }
 
         /// <summary>
@@ -54,6 +54,11 @@ namespace CatBehaviour.Runtime
         /// </summary>
         public void SetParam(string key, BBParam param)
         {
+            if (param == null)
+            {
+                return;
+            }
+            
             param.Key = key;
             ParamDict[key] = param;
 

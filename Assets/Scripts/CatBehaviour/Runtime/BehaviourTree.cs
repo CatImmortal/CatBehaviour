@@ -164,6 +164,7 @@ namespace CatBehaviour.Runtime
             {
                 DebugName = DateTime.Now.ToString();
             }
+            DebugName = DebugName.Replace('/', '\\');
 #endif
             
             RootNode.Start();
