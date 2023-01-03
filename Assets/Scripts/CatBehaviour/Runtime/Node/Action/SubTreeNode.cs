@@ -19,7 +19,12 @@ namespace CatBehaviour.Runtime
         /// </summary>
         [BBParamInfo(Name = "子树名")]
         public BBParamString SubTreeName = new BBParamString();
-
+        
+        /// <summary>
+        /// 是否继承黑板数据
+        /// </summary>
+        public bool IsInheritBlackBoard = true;
+        
         private Action<BehaviourTree> onCreateSubTreeCallback;
         private Action<bool> onFinishCallback;
         
@@ -41,6 +46,15 @@ namespace CatBehaviour.Runtime
         {
             subTree = bt;
             subTree.OnFinished += onFinishCallback;
+
+            //继承黑板数据
+            if (IsInheritBlackBoard)
+            {
+                foreach (var pair in Owner.BlackBoard.ParamDict)
+                {
+                    subTree.BlackBoard.SetParam(pair.Key,pair.Value);
+                }
+            }
             
             subTree.Start(subTreeDebugName);
         }
