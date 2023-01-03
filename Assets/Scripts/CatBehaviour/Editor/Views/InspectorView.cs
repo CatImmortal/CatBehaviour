@@ -25,6 +25,8 @@ namespace CatBehaviour.Editor
         private static Dictionary<Type, BaseNodeInspector>
             nodeInspectorDict = new Dictionary<Type, BaseNodeInspector>();
 
+        public NodeView CurSelectNodeView;
+        
         public InspectorView()
         {
             nodeInspectorDict.Clear();
@@ -42,6 +44,8 @@ namespace CatBehaviour.Editor
         /// </summary>
         public void DrawInspector(NodeView nodeView)
         {
+            CurSelectNodeView = nodeView;
+            
             Clear();
 
             //获取节点对应的属性面板Inspector
@@ -58,9 +62,6 @@ namespace CatBehaviour.Editor
             IMGUIContainer imguiContainer = new IMGUIContainer(){};
             imguiContainer.onGUIHandler = nodeInspector.OnGUI;
             Add(imguiContainer);
-            
-            
-           
         }
     }
 }

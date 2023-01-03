@@ -76,6 +76,11 @@ namespace CatBehaviour.Editor
                     {
                         //Debug.Log($"删除节点 {nodeView}");
                         nodeView.RemoveSelf();
+                        if (window.NodeInspector.CurSelectNodeView == nodeView)
+                        {
+                            window.NodeInspector.CurSelectNodeView = null;
+                            window.NodeInspector.Clear();
+                        }
                     }
                     else if (element is Edge edge)
                     {

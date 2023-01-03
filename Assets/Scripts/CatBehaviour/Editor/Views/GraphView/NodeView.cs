@@ -69,6 +69,12 @@ namespace CatBehaviour.Editor
         {
             this.window = window;
             RuntimeNode = runtimeNode;
+
+            if (RuntimeNode is RootNode)
+            {
+                //根节点不可删除
+                capabilities -= Capabilities.Deletable;
+            }
             
             //注册点击事件
             RegisterCallback<MouseDownEvent>((evt =>
@@ -84,6 +90,7 @@ namespace CatBehaviour.Editor
             AddPort();
             AddIcon();
             SetNodeColor();
+            //AddComment();
             
             if (window.IsDebugMode)
             {
@@ -227,14 +234,20 @@ namespace CatBehaviour.Editor
         }
         
         // /// <summary>
-        // /// 绘制节点属性
+        // /// 添加节点注释
         // /// </summary>
-        // private void DrawProperty()
+        // private void AddComment()
         // {
-        //     RuntimeNode.CreateGUI(nodeBorder);
-        //     IMGUIContainer imguiContainer = new IMGUIContainer(){};
-        //     imguiContainer.onGUIHandler = RuntimeNode.OnGUI;
-        //     nodeBorder.Add(imguiContainer);
+        //     var nodeBorder = this.Q<VisualElement>("node-border");
+        //
+        //     TextField comment = new TextField();
+        //     comment.value = RuntimeNode.Comment;
+        //     comment.RegisterValueChangedCallback((evt =>
+        //     {
+        //         RuntimeNode.Comment = evt.newValue;
+        //     }));
+        //     //插入到title下
+        //     nodeBorder.Insert(2,comment);
         // }
 
         /// <summary>

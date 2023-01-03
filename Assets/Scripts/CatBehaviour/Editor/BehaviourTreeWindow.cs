@@ -24,7 +24,7 @@ namespace CatBehaviour.Editor
         private Button btnNew;
         
         private SplitView splitView;
-        private InspectorView inspector;
+        public InspectorView NodeInspector;
         public BehaviourTreeGraphView GraphView;
 
         private string assetPath;
@@ -115,7 +115,7 @@ namespace CatBehaviour.Editor
             btnNew.clicked += New;
             
             splitView = root.Q<SplitView>();
-            inspector = root.Q<InspectorView>("inspector");
+            NodeInspector = root.Q<InspectorView>("inspector");
             GraphView = rootVisualElement.Q<BehaviourTreeGraphView>("graphView");
             GraphView.Init(this);
 
@@ -250,7 +250,7 @@ namespace CatBehaviour.Editor
         /// </summary>
         public void OnNodeClick(NodeView nodeView)
         {
-            inspector.DrawInspector(nodeView);
+            NodeInspector.DrawInspector(nodeView);
         }
         
         /// <summary>
