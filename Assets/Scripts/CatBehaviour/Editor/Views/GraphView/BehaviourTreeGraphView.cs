@@ -97,7 +97,7 @@ namespace CatBehaviour.Editor
                                         changes.elementsToRemove.Remove(connection);
                                     }
                                 }
-
+                
                                 if (innerNodeView.inputContainer.childCount > 0)
                                 {
                                     var inputPort = innerNodeView.inputContainer[0] as PortView;

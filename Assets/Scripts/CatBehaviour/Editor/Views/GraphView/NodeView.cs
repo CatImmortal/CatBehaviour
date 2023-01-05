@@ -371,28 +371,6 @@ namespace CatBehaviour.Editor
             window.GraphView.BT.RemoveNode(RuntimeNode);
         }
 
-        public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
-        {
-            base.BuildContextualMenu(evt);
-            
-            
-            //从注释块分离
-            if (evt.target is NodeView nodeView)
-            {
-                foreach (CommentBlockView commentBlockView in window.GraphView.CommentBlockViews)
-                {
-                    if (commentBlockView.ContainsElement(nodeView))
-                    {
-                        evt.menu.InsertAction(1, "从注释块分离", (e) =>
-                        {
-                            commentBlockView.RemoveNode(this);
-                
-                        }, DropdownMenuAction.AlwaysEnabled);
-                    }
-                }
-            }
-        }
-
         public override string ToString()
         {
             return RuntimeNode.ToString();
