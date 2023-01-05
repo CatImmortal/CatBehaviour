@@ -78,6 +78,41 @@ namespace CatBehaviour.Editor
             //删除
             if (changes.elementsToRemove != null)
             {
+                foreach (GraphElement element in changes.elementsToRemove.ToList())
+                {
+                    //删除注释块时 不能删除注释块内的节点和线 除非这个节点也被选中了
+                    if (element is CommentBlockView commentBlockView)
+                    {
+                        foreach (NodeView innerNodeView in commentBlockView.NodeViews)
+                        {
+                            if (!selection.Contains(innerNodeView))
+                            {
+                                changes.elementsToRemove.Remove(innerNodeView);
+                                
+                                if (innerNodeView.outputContainer.childCount > 0)
+                                {
+                                    var outputPort = innerNodeView.outputContainer[0] as PortView;
+                                    foreach (Edge connection in outputPort.connections)
+                                    {
+                                        changes.elementsToRemove.Remove(connection);
+                                    }
+                                }
+
+                                if (innerNodeView.inputContainer.childCount > 0)
+                                {
+                                    var inputPort = innerNodeView.inputContainer[0] as PortView;
+                                    if (inputPort.connected)
+                                    {
+                                        var connection = inputPort.connections.First();
+                                        changes.elementsToRemove.Remove(connection);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                
                 foreach (GraphElement element in changes.elementsToRemove)
                 {
                     if (element is NodeView nodeView)
@@ -108,7 +143,6 @@ namespace CatBehaviour.Editor
             return changes;
         }
         
-
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
         {
             base.BuildContextualMenu(evt);

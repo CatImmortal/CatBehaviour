@@ -18,8 +18,7 @@ namespace CatBehaviour.Editor
         private CommentBlock commentBlock;
 
         public List<NodeView> NodeViews = new List<NodeView>();
-
-        private Label LabelComment;
+        
         private ColorField colorField;
         
         public CommentBlockView()
@@ -66,7 +65,6 @@ namespace CatBehaviour.Editor
             this.AddManipulator(new ContextualMenuManipulator(BuildContextualMenu));
             
             //注释
-            LabelComment = headerContainer.Q<Label>();
             headerContainer.Q<TextField>().RegisterCallback<ChangeEvent<string>>((evt =>
             {
                 window.RecordObject($"Update Comment");
@@ -125,7 +123,7 @@ namespace CatBehaviour.Editor
         }
         
         /// <summary>
-        /// 删除节点
+        /// 删除注释块
         /// </summary>
         public void RemoveSelf()
         {
