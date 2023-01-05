@@ -23,9 +23,9 @@ namespace CatBehaviour.Runtime
         public Color Color = new Color(0, 0, 0, 0.3f);
         
         /// <summary>
-        /// 位置与大小
+        /// 位置
         /// </summary>
-        public Rect Position;
+        public Vector2 Position;
 
         /// <summary>
         /// 注释块内的节点列表
@@ -48,15 +48,7 @@ namespace CatBehaviour.Runtime
         public CommentBlock(string comment, Vector2 position) : this()
         {
             Comment = comment;
-            Position.position = position;
-        }
-
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        public void Init()
-        {
-            Position.size = new Vector2(400, 200);
+            Position = position;
         }
 
         /// <summary>

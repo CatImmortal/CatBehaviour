@@ -17,6 +17,8 @@ namespace CatBehaviour.Editor
         private BehaviourTreeWindow window;
         private CommentBlock commentBlock;
 
+        public List<NodeView> NodeViews = new List<NodeView>();
+
         private Label LabelComment;
         private ColorField colorField;
         
@@ -33,7 +35,6 @@ namespace CatBehaviour.Editor
             CommentBlock commentBlock = new CommentBlock("注释块",pos);
             window.GraphView.BT.CommentBlocks.Add(commentBlock);
             
-            commentBlock.Init();
             CommentBlockView view = Create(commentBlock, window,null);
             
             return view;
@@ -60,7 +61,7 @@ namespace CatBehaviour.Editor
             this.commentBlock = commentBlock;
 
             title = commentBlock.Comment;
-            SetPosition(commentBlock.Position);
+            SetPosition(new Rect(commentBlock.Position,new Vector2(400, 200)));
             
             this.AddManipulator(new ContextualMenuManipulator(BuildContextualMenu));
             
@@ -81,13 +82,15 @@ namespace CatBehaviour.Editor
             });
             UpdateColor(commentBlock.Color);
             
-            //节点
+            //初始节点
             if (commentBlock.Nodes != null)
             {
                 foreach (BaseNode node in commentBlock.Nodes)
                 {
                     NodeView nodeView = nodeDict[node];
+                    NodeViews.Add(nodeView);
                     AddElement(nodeView);
+                    
                 }
             }
         }
@@ -108,8 +111,7 @@ namespace CatBehaviour.Editor
         public override void SetPosition(Rect newPos)
         {
             base.SetPosition(newPos);
-
-            commentBlock.Position = newPos;
+            commentBlock.Position = newPos.position;
         }
 
         /// <summary>
@@ -118,6 +120,7 @@ namespace CatBehaviour.Editor
         public void AddNodeView(NodeView nodeView)
         {
             commentBlock.Nodes.Add(nodeView.RuntimeNode);
+            NodeViews.Add(nodeView);
             AddElement(nodeView);
         }
         
@@ -149,6 +152,7 @@ namespace CatBehaviour.Editor
                     }
                     
                     commentBlock.Nodes.Add(nodeView.RuntimeNode);
+                    NodeViews.Add(nodeView);
                 }
             }
         }
@@ -166,6 +170,7 @@ namespace CatBehaviour.Editor
                 if (element is NodeView nodeView)
                 {
                     commentBlock.Nodes.Remove(nodeView.RuntimeNode);
+                    NodeViews.Remove(nodeView);
                 }
             }
         }
