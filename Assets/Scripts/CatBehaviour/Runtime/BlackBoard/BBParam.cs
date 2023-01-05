@@ -30,8 +30,8 @@ namespace CatBehaviour.Runtime
         }
 
     }
-    
-    public abstract class BBParam<T> : BBParam
+
+    public class BBParam<T> : BBParam
     {
         /// <summary>
         /// 参数值

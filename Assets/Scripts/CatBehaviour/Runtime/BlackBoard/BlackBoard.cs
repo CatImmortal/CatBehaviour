@@ -29,12 +29,21 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 获取参数
         /// </summary>
-        public T GetParam<T>(string key) where T : BBParam
+        public T GetParam<T>(string key,bool isCrete = false) where T : BBParam,new()
         {
             BBParam param = GetParam(key);
             if (param == null)
             {
-                return default;
+                if (isCrete)
+                {
+                    //isCreate为true 则不存在时创建
+                    param = new T();
+                }
+                else
+                {
+                    return default;
+                }
+               
             }
 
             return ((T)param);

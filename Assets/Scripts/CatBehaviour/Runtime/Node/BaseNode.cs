@@ -46,7 +46,7 @@ namespace CatBehaviour.Runtime
         /// 节点位置
         /// </summary>
         public Vector2 Position;
-
+        
         /// <summary>
         /// 当前节点状态
         /// </summary>
