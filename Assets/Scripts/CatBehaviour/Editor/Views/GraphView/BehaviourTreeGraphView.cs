@@ -163,7 +163,7 @@ namespace CatBehaviour.Editor
                             continue;
                         }
                         
-                        commentBlockView.AddNodeView(nodeView);
+                        commentBlockView.AddNode(nodeView);
                     }
                 }
                 

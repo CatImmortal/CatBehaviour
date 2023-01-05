@@ -115,11 +115,21 @@ namespace CatBehaviour.Editor
         /// <summary>
         /// 添加节点到注释块内
         /// </summary>
-        public void AddNodeView(NodeView nodeView)
+        public void AddNode(NodeView nodeView)
         {
             commentBlock.Nodes.Add(nodeView.RuntimeNode);
             NodeViews.Add(nodeView);
             AddElement(nodeView);
+        }
+
+        /// <summary>
+        /// 将节点从注释块分离
+        /// </summary>
+        public void RemoveNode(NodeView nodeView)
+        {
+            commentBlock.Nodes.Remove(nodeView.RuntimeNode);
+            NodeViews.Remove(nodeView);
+            RemoveElement(nodeView);
         }
         
         /// <summary>

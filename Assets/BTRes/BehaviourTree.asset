@@ -15,22 +15,22 @@ MonoBehaviour:
   BT:
     RootNodeId: 4
     AllNodes:
-    - rid: 4537223913930752113
-    - rid: 4537223913930752114
-    - rid: 4537223913930752115
-    - rid: 4537223913930752116
+    - rid: 4537223915061903388
+    - rid: 4537223915061903389
+    - rid: 4537223915061903390
+    - rid: 4537223915061903391
     Rect:
       serializedVersion: 2
-      x: 132
-      y: 47
+      x: 262
+      y: 3
       width: 0.7561437
       height: 0.7561437
     InspectorWidth: 420
     CommentBlocks:
-    - Comment: "\u6CE8\u91CA\u5757"
+    - Comment: 111
       Color: {r: 0, g: 0, b: 0, a: 0.3}
       Position: {x: -12.139984, y: 451.76752}
-      NodeIds: 0200000003000000
+      NodeIds: 020000000100000003000000
   BBParams: []
   BlackBoardRect:
     serializedVersion: 2
@@ -41,14 +41,14 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 4537223913930752113
+    - rid: 4537223915061903388
       type: {class: SequenceNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 1
-        Position: {x: 464, y: 215}
+        Position: {x: 390, y: 246}
         ParentNodeId: 4
         ChildIdList: 0200000003000000
-    - rid: 4537223913930752114
+    - rid: 4537223915061903389
       type: {class: DelayNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 2
@@ -57,17 +57,17 @@ MonoBehaviour:
         DelayTime:
           Key: 
           Value: 10
-    - rid: 4537223913930752115
+    - rid: 4537223915061903390
       type: {class: LogNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 3
-        Position: {x: 765, y: 513}
+        Position: {x: 623, y: 479}
         ParentNodeId: 1
         Level: 0
         Log:
           Key: 
           Value: 222
-    - rid: 4537223913930752116
+    - rid: 4537223915061903391
       type: {class: RootNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 4
