@@ -16,13 +16,17 @@ namespace CatBehaviour.Editor
     public class BlackBoardView : PinnedElementView
     {
         
-        private const string exposedParameterViewStyle = "USS/BlackBoardView";
-        
         public BlackBoardView()
         {
-            var style = Resources.Load<StyleSheet>(exposedParameterViewStyle);
-            if (style != null)
-                styleSheets.Add(style);
+            styleSheets.Add(Resources.Load<StyleSheet>("USS/BlackBoardView"));
+        }
+
+        public static BlackBoardView Create(BehaviourTreeWindow window)
+        {
+            BlackBoardView view = new BlackBoardView();
+            window.GraphView.Add(view);
+            view.Init(window);
+            return view;
         }
 
         public override void Init(BehaviourTreeWindow window)

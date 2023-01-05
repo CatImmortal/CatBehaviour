@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using CatBehaviour.Runtime;
-using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -21,6 +18,8 @@ namespace CatBehaviour.Editor
         public BehaviourTree BT;
         private BehaviourTreeWindow window;
         public BlackBoardView BlackboardView;
+
+        public List<CommentBlockView> CommentBlockViews = new List<CommentBlockView>();
 
         /// <summary>
         /// 黑板变化事件
@@ -88,6 +87,10 @@ namespace CatBehaviour.Editor
                         var parentNode = (NodeView) edge.output.node;
                         var childNode = (NodeView) edge.input.node;
                         parentNode.RemoveChild(childNode);
+                    }else if (element is CommentBlockView commentBlockView)
+                    {
+                        Debug.Log($"删除注释块 {commentBlockView.title}");
+                        commentBlockView.RemoveSelf();
                     }
                 }
             }
@@ -223,6 +226,33 @@ namespace CatBehaviour.Editor
             }
         }
 
+        public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
+        {
+            base.BuildContextualMenu(evt);
+            
+            Vector2 position = (evt.currentTarget as VisualElement).ChangeCoordinatesTo(contentViewContainer, evt.localMousePosition);
+            evt.menu.InsertAction(1, "创建注释块", (e) =>
+            {
+                CommentBlockView commentBlockView = CommentBlockView.Create(window,position);
+
+                //将当前选中的节点放入注释块内
+                foreach (var selectable in selection)
+                {
+                    if (selectable is NodeView nodeView)
+                    {
+                        if (CommentBlockViews.Exists((x => x.ContainsElement(nodeView))))
+                        {
+                            //已被其他注释块包含的节点 需要跳过
+                            continue;
+                        }
+                        
+                        commentBlockView.AddNodeView(nodeView);
+                    }
+                }
+                
+            }, DropdownMenuAction.AlwaysEnabled);
+        }
+
         /// <summary>
         /// 初始化
         /// </summary>
@@ -241,10 +271,7 @@ namespace CatBehaviour.Editor
             };
             
             //黑板
-            BlackboardView = new BlackBoardView();
-            Add(BlackboardView);
-            //AddElement(BlackboardView);
-            BlackboardView.Init(window);
+            BlackboardView = BlackBoardView.Create(window);
         }
 
         /// <summary>
@@ -284,7 +311,7 @@ namespace CatBehaviour.Editor
         {
             Dictionary<BaseNode, NodeView> nodeDict = new Dictionary<BaseNode, NodeView>();
 
-            //先删掉旧的节点和线
+            //先删掉旧的节点 线 和注释块
             foreach (Node node in nodes)
             {
                 RemoveElement(node);
@@ -293,12 +320,20 @@ namespace CatBehaviour.Editor
             {
                 RemoveElement(edge);
             }
+            foreach (var commentBlockView in CommentBlockViews)
+            {
+                RemoveElement(commentBlockView);
+            }
+            CommentBlockViews.Clear();
             
             //创建节点
             CreateGraphNode(nodeDict,BT.AllNodes);
             
             //根据父子关系连线
             BuildConnect(nodeDict,BT.AllNodes);
+            
+            //创建注释块
+            CreateCommentBlock(nodeDict,BT.CommentBlocks);
         }
         
         /// <summary>
@@ -309,7 +344,7 @@ namespace CatBehaviour.Editor
             foreach (BaseNode node in allNodes)
             {
                 NodeView nodeView = new NodeView();
-                nodeView.Init(node,window);
+                nodeView.Init(window,node);
                 AddElement(nodeView);
                 nodeDict.Add(node,nodeView);
             }
@@ -348,6 +383,17 @@ namespace CatBehaviour.Editor
             }
         }
 
+        /// <summary>
+        /// 创建注释块
+        /// </summary>
+        private void CreateCommentBlock(Dictionary<BaseNode, NodeView> nodeDict,List<CommentBlock> commentBlocks)
+        {
+            foreach (CommentBlock commentBlock in commentBlocks)
+            {
+                CommentBlockView.Create(commentBlock,window,nodeDict);
+            }
+        }
+        
         /// <summary>
         /// 获取可连线的节点列表
         /// </summary>

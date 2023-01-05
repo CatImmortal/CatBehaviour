@@ -56,7 +56,7 @@ namespace CatBehaviour.Editor
             runtimeNode.Position = pos;
 
             NodeView nodeView = new NodeView();
-            nodeView.Init(runtimeNode,window);
+            nodeView.Init(window, runtimeNode);
             window.GraphView.AddElement(nodeView);
             
             return nodeView;
@@ -65,7 +65,7 @@ namespace CatBehaviour.Editor
         /// <summary>
         /// 初始化
         /// </summary>
-        public void Init(BaseNode runtimeNode,BehaviourTreeWindow window)
+        public void Init(BehaviourTreeWindow window,BaseNode runtimeNode)
         {
             this.window = window;
             RuntimeNode = runtimeNode;

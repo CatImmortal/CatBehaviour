@@ -109,7 +109,12 @@ namespace CatBehaviour.Runtime
         {
             Children.Sort((a, b) =>
             {
-                return a.Position.x.CompareTo(b.Position.x);
+                if (Math.Abs(a.Position.x - b.Position.x) > float.Epsilon)
+                {
+                    return a.Position.x.CompareTo(b.Position.x);
+                }
+
+                return a.Id.CompareTo(b.Id);
             });
         }
     }

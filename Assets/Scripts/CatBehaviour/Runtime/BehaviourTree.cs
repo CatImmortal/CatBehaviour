@@ -82,7 +82,7 @@ namespace CatBehaviour.Runtime
         public RootNode RootNode;
         
         /// <summary>
-        /// 所有节点的列表
+        /// 节点列表
         /// </summary>
         [SerializeReference]
         public List<BaseNode> AllNodes = new List<BaseNode>();
@@ -101,7 +101,12 @@ namespace CatBehaviour.Runtime
         /// 节点属性面板宽度
         /// </summary>
         public float InspectorWidth;
-        
+
+        /// <summary>
+        /// 注释块列表
+        /// </summary>
+        public List<CommentBlock> CommentBlocks = new List<CommentBlock>();
+
         /// <summary>
         /// 是否已初始化
         /// </summary>
@@ -253,6 +258,12 @@ namespace CatBehaviour.Runtime
             {
                 node.RebuildId();
             }
+
+            //重建注释块包含的节点id
+            foreach (var commentBlock in CommentBlocks)
+            {
+                commentBlock.RebuildId();
+            }
         }
 
         /// <summary>
@@ -267,6 +278,12 @@ namespace CatBehaviour.Runtime
                 //重建对父子节点和Owner的引用
                 node.Owner = this;
                 node.RebuildNodeReference(AllNodes);  
+            }
+            
+            //重建对注释块包含的节点的引用
+            foreach (var commentBlock in CommentBlocks)
+            {
+                commentBlock.RebuildNodeReference(AllNodes);
             }
         }
         

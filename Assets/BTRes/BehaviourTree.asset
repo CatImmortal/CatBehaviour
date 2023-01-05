@@ -15,17 +15,27 @@ MonoBehaviour:
   BT:
     RootNodeId: 4
     AllNodes:
-    - rid: 6460882699319246890
-    - rid: 6460882699319246891
-    - rid: 6460882699319246892
-    - rid: 6460882699319246893
+    - rid: 4537223913930752033
+    - rid: 4537223913930752034
+    - rid: 4537223913930752035
+    - rid: 4537223913930752036
     Rect:
       serializedVersion: 2
-      x: 0
-      y: 0
-      width: 1
-      height: 1
+      x: 132
+      y: 47
+      width: 0.7561437
+      height: 0.7561437
     InspectorWidth: 420
+    CommentBlocks:
+    - Comment: "\u6CE8\u91CA\u5757"
+      Color: {r: 0, g: 0, b: 0, a: 0.3}
+      Position:
+        serializedVersion: 2
+        x: 462.87497
+        y: 421.8775
+        width: 400
+        height: 200
+      NodeIds: 0200000003000000
   BBParams: []
   BlackBoardRect:
     serializedVersion: 2
@@ -36,33 +46,33 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 6460882699319246890
+    - rid: 4537223913930752033
       type: {class: SequenceNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 1
         Position: {x: 464, y: 215}
         ParentNodeId: 4
         ChildIdList: 0200000003000000
-    - rid: 6460882699319246891
+    - rid: 4537223913930752034
       type: {class: DelayNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 2
-        Position: {x: 365, y: 368}
+        Position: {x: 392, y: 395}
         ParentNodeId: 1
         DelayTime:
           Key: 
           Value: 10
-    - rid: 6460882699319246892
+    - rid: 4537223913930752035
       type: {class: LogNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 3
-        Position: {x: 595, y: 378}
+        Position: {x: 558, y: 395}
         ParentNodeId: 1
         Level: 0
         Log:
           Key: 
           Value: 222
-    - rid: 6460882699319246893
+    - rid: 4537223913930752036
       type: {class: RootNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 4
