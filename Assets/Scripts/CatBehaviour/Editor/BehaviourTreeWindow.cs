@@ -101,7 +101,7 @@ namespace CatBehaviour.Editor
                 }
                 else
                 {
-                    var debugBT = BTDebugger.BTInstanceDict[evt.newValue];
+                    var debugBT = BTDebugger.Get(evt.newValue);
                     RefreshFromDebugger(debugBT);
                 }
             }));
@@ -324,6 +324,10 @@ namespace CatBehaviour.Editor
         
         public void RecordObject(string undoName)
         {
+            if (IsDebugMode)
+            {
+                return;
+            }
             Undo.RecordObject(ClonedBTSO, undoName);
         }
     }

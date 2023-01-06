@@ -36,6 +36,15 @@ namespace CatBehaviour.Runtime
         {
             BTInstanceDict.Remove(bt.DebugName);
         }
+
+        /// <summary>
+        /// 获取行为树
+        /// </summary>
+        public static BehaviourTree Get(string debugName)
+        {
+            BTInstanceDict.TryGetValue(debugName, out var bt);
+            return bt;
+        }
     }
 }
 

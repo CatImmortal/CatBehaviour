@@ -83,6 +83,12 @@ namespace CatBehaviour.Editor
             //初始节点
             if (commentBlock.Nodes != null)
             {
+                //修复commentBlock.Nodes未知原因被清空的问题
+                if (commentBlock.NodeIds.Count > 0 && commentBlock.Nodes.Count == 0)
+                {
+                    commentBlock.RebuildNodeReference(window.GraphView.BT.AllNodes);
+                }
+                
                 foreach (BaseNode node in commentBlock.Nodes)
                 {
                     NodeView nodeView = nodeDict[node];

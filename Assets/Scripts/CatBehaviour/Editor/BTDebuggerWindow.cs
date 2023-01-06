@@ -39,7 +39,7 @@ namespace CatBehaviour.Editor
             if (GUILayout.Button("查看行为树运行状态"))
             {
                 string name = BTDebugger.BTInstanceDict.Keys.ToArray()[curIndex];
-                var bt = BTDebugger.BTInstanceDict[name];
+                var bt = BTDebugger.Get(name);
                 BehaviourTreeWindow.OpenFromDebugger(bt);
             }
         }
