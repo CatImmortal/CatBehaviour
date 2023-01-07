@@ -63,7 +63,7 @@ namespace CatBehaviour.Editor
             {
                 if (isInspector)
                 {
-                    var keys = bt.BlackBoard.GetKeys(GetType());
+                    var keys = bt.BlackBoard.GetKeys(Target.GetType());
 
                     //修正索引 防止因为删除了前面的key导致顺序变化 最终索引到了错误的key
                     for (int i = 0; i < keys.Length; i++)
