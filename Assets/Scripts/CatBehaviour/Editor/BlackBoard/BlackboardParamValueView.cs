@@ -17,12 +17,11 @@ namespace CatBehaviour.Editor
             
             if (BaseBBParamDrawer.BBParamDrawerDict.TryGetValue(bbParam.GetType(),out var drawer))
             {
-                drawer.Target = bbParam;
-                
                 drawer.CreateGUI(contentContainer,false,null);
                 IMGUIContainer imguiContainer = new IMGUIContainer(){};
                 imguiContainer.onGUIHandler =  (() =>
                 {
+                    drawer.Target = bbParam;
                     drawer.OnGUI(false,null);
                 });
                 Add(imguiContainer);

@@ -20,7 +20,7 @@ namespace CatBehaviour.Editor
         public List<NodeView> NodeViews = new List<NodeView>();
         
         private ColorField colorField;
-        
+
         public CommentBlockView()
         {
             styleSheets.Add(Resources.Load<StyleSheet>("USS/CommentBlockView"));
@@ -76,9 +76,13 @@ namespace CatBehaviour.Editor
             headerContainer.Add(colorField);
             colorField.RegisterValueChangedCallback(e =>
             {
-                UpdateColor(e.newValue);
+                window.RecordObject($"Update Color");
+                commentBlock.Color = e.newValue;
+                style.backgroundColor = e.newValue;
             });
-            UpdateColor(commentBlock.Color);
+ 
+            commentBlock.Color = commentBlock.Color;
+            style.backgroundColor = commentBlock.Color;
             
             //初始节点
             if (commentBlock.Nodes != null)
@@ -97,18 +101,9 @@ namespace CatBehaviour.Editor
                     
                 }
             }
+
         }
-        
-        /// <summary>
-        /// 更新颜色
-        /// </summary>
-        public void UpdateColor(Color newColor)
-        {
-            window.RecordObject($"Update Color");
-            commentBlock.Color = newColor;
-            style.backgroundColor = newColor;
-        }
-        
+
         /// <summary>
         /// 设置位置
         /// </summary>

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using CatBehaviour.Editor;
 using CatBehaviour.Runtime;
 using UnityEditor;
@@ -16,7 +17,7 @@ namespace CatBehaviour.Editor
     /// <summary>
     /// 行为树窗口
     /// </summary>
-    public class BehaviourTreeWindow : EditorWindow
+    public partial class BehaviourTreeWindow : EditorWindow
     {
         private DropdownField dropdownField;
         private ObjectField objField;
@@ -99,7 +100,8 @@ namespace CatBehaviour.Editor
                 {
                     return;
                 }
-                Undo.ClearAll();
+
+                ClearAllRecord();
                 
                 if (!IsDebugMode)
                 {
@@ -128,10 +130,12 @@ namespace CatBehaviour.Editor
 
             Undo.undoRedoPerformed += OnUndoRedoPerformed;
 
+            
             //还原数据 防止编译后窗口数据丢失
             if (!string.IsNullOrEmpty(assetPath))
             {
                 dropdownField.SetValueWithoutNotify(assetPath.Replace('/','\\'));
+                objField.value = AssetDatabase.LoadAssetAtPath<BehaviourTreeSO>(assetPath);
             }
             if (ClonedBTSO != null)
             {
@@ -143,7 +147,7 @@ namespace CatBehaviour.Editor
         private void OnDisable()
         {
             Undo.undoRedoPerformed -= OnUndoRedoPerformed;
-            Undo.ClearAll();
+            ClearAllRecord();
             
             //记录一些信息 用于编译后的窗口还原
             bt.InspectorWidth = splitView.Q("left").layout.width;
@@ -154,16 +158,6 @@ namespace CatBehaviour.Editor
         private void OnDestroy()
         {
             
-        }
-
-        private void OnUndoRedoPerformed()
-        {
-            //Debug.Log("OnUndoRedoPerformed");
-            if (ClonedBTSO == null)
-            {
-                return;
-            }
-            Refresh(ClonedBTSO.BT);
         }
 
 
@@ -270,11 +264,12 @@ namespace CatBehaviour.Editor
             {
                 splitView.fixedPaneInitialDimension = 420;
             }
-            
+
+            //GraphView刷新期间 不记录任何修改
+            canRecord = false;
             GraphView.Refresh(bt);
+            canRecord = true;
         }
-        
-        
         
         /// <summary>
         /// 节点被点击时的回调
@@ -338,8 +333,6 @@ namespace CatBehaviour.Editor
             Debug.Log($"保存行为树成功，路径:{assetPath}");
         }
 
-
-        
         /// <summary>
         /// 新建行为树
         /// </summary>
@@ -353,14 +346,7 @@ namespace CatBehaviour.Editor
             RefreshFromAssetPath(null);
         }
         
-        public void RecordObject(string undoName)
-        {
-            if (IsDebugMode)
-            {
-                return;
-            }
-            Undo.RecordObject(ClonedBTSO, undoName);
-        }
+
     }
 }
 

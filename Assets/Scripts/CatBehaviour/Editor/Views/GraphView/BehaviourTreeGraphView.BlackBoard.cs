@@ -41,7 +41,7 @@ namespace CatBehaviour.Editor
                 return false;
             }
             
-            //window.RecordObject($"RenameBlackBoard {oldKey} -> {newKey}");
+            window.RecordObject($"RenameBlackBoard {oldKey} -> {newKey}");
             
             //Debug.Log($"重命名黑板key成功，{oldKey} -> {newKey}");
             param.Key = newKey;
