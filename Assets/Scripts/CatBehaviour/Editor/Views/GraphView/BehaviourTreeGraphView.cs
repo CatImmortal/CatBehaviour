@@ -57,7 +57,6 @@ namespace CatBehaviour.Editor
                 {
                     if (element is NodeView nodeView)
                     {
-                        Debug.Log($"移动节点 {nodeView.RuntimeNode} {nodeView.GetPosition().position}");
                         nodeView.SetPosAndRecord(nodeView.GetPosition());
                     }
                     // else if (element is BlackBoardView blackBoardView)

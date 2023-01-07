@@ -18,8 +18,8 @@ namespace CatBehaviour.Editor
     /// </summary>
     public class BehaviourTreeWindow : EditorWindow
     {
-        private DropdownField dropdownBTSO;
-        private ObjectField ObjBTSO;
+        private DropdownField dropdownField;
+        private ObjectField objField;
         private Button btnSave;
         private Button btnNew;
         
@@ -31,6 +31,7 @@ namespace CatBehaviour.Editor
         private BehaviourTreeSO originBTSO;
         public BehaviourTreeSO ClonedBTSO;
         private BehaviourTree bt;
+        
         
         /// <summary>
         /// 是否为调试模式
@@ -77,6 +78,12 @@ namespace CatBehaviour.Editor
 
         public void CreateGUI()
         {
+
+        }
+
+        
+        private void OnEnable()
+        {
             VisualElement root = rootVisualElement;
             
             var visualTree = Resources.Load<VisualTreeAsset>("UXML/BehaviourTreeWindow");
@@ -85,8 +92,8 @@ namespace CatBehaviour.Editor
             var styleSheet = Resources.Load<StyleSheet>("USS/BehaviourTreeWindow");
             root.styleSheets.Add(styleSheet);
             
-            dropdownBTSO = rootVisualElement.Q<DropdownField>("dropdownBTSO");
-            dropdownBTSO.RegisterValueChangedCallback((evt =>
+            dropdownField = rootVisualElement.Q<DropdownField>("dropdownBTSO");
+            dropdownField.RegisterValueChangedCallback((evt =>
             {
                 if (string.IsNullOrEmpty(evt.newValue))
                 {
@@ -106,7 +113,7 @@ namespace CatBehaviour.Editor
                 }
             }));
             
-            ObjBTSO = rootVisualElement.Q<ObjectField>("ObjBTSO");
+            objField = rootVisualElement.Q<ObjectField>("ObjBTSO");
             
             btnSave = root.Q<Button>("btnSave");
             btnSave.clicked += Save;
@@ -120,12 +127,33 @@ namespace CatBehaviour.Editor
             GraphView.Init(this);
 
             Undo.undoRedoPerformed += OnUndoRedoPerformed;
-        }
 
-        private void OnDestroy()
+            //还原数据 防止编译后窗口数据丢失
+            if (!string.IsNullOrEmpty(assetPath))
+            {
+                dropdownField.SetValueWithoutNotify(assetPath.Replace('/','\\'));
+            }
+            if (ClonedBTSO != null)
+            {
+                Refresh(ClonedBTSO.BT);
+            }
+            
+        }
+        
+        private void OnDisable()
         {
             Undo.undoRedoPerformed -= OnUndoRedoPerformed;
             Undo.ClearAll();
+            
+            //记录一些信息 用于编译后的窗口还原
+            bt.InspectorWidth = splitView.Q("left").layout.width;
+            bt.Rect = new Rect(GraphView.viewTransform.position, GraphView.viewTransform.scale);
+            bt.BlackBoard.Position = GraphView.BlackboardView.GetPosition();
+        }
+        
+        private void OnDestroy()
+        {
+            
         }
 
         private void OnUndoRedoPerformed()
@@ -150,7 +178,7 @@ namespace CatBehaviour.Editor
             if (isDebugMode)
             {
                 //调试状态下 删掉SO引用 保存和新建按钮
-                ObjBTSO.RemoveFromHierarchy();
+                objField.RemoveFromHierarchy();
             }
         }
         
@@ -169,7 +197,7 @@ namespace CatBehaviour.Editor
             {
                 paths = BTDebugger.BTInstanceDict.Keys.ToList();
             }
-            dropdownBTSO.choices = paths.ToList();
+            dropdownField.choices = paths.ToList();
         }
         
         /// <summary>
@@ -190,11 +218,13 @@ namespace CatBehaviour.Editor
                     bt = ClonedBTSO.BT;
                 }
 
-                int index = dropdownBTSO.choices.IndexOf(assetPath.Replace('/','\\'));
-                dropdownBTSO.index = index;
-                ObjBTSO.value = originBTSO;
+                // int index = dropdownField.choices.IndexOf(assetPath.Replace('/', '\\'));
+                // dropdownField.index = index;
+                dropdownField.SetValueWithoutNotify(assetPath.Replace('/','\\'));
+                objField.value = originBTSO;
             }
 
+            
             Refresh(bt);
         }
 
@@ -203,8 +233,8 @@ namespace CatBehaviour.Editor
         /// </summary>
         private void RefreshFromDebugger(BehaviourTree debugBT)
         {
-            int index = dropdownBTSO.choices.IndexOf(debugBT.DebugName.Replace('/','\\'));
-            dropdownBTSO.index = index;
+            int index = dropdownField.choices.IndexOf(debugBT.DebugName.Replace('/','\\'));
+            dropdownField.index = index;
             
             Refresh(debugBT);
         }
@@ -243,6 +273,7 @@ namespace CatBehaviour.Editor
             
             GraphView.Refresh(bt);
         }
+        
         
         
         /// <summary>
@@ -317,8 +348,8 @@ namespace CatBehaviour.Editor
             assetPath = null;
             originBTSO = null;
             bt = null;
-            dropdownBTSO.index = -1;
-            ObjBTSO.value = null;
+            dropdownField.index = -1;
+            objField.value = null;
             RefreshFromAssetPath(null);
         }
         
