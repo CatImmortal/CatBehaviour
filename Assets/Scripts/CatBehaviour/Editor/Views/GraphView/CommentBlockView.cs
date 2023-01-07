@@ -80,8 +80,6 @@ namespace CatBehaviour.Editor
                 commentBlock.Color = e.newValue;
                 style.backgroundColor = e.newValue;
             });
- 
-            commentBlock.Color = commentBlock.Color;
             style.backgroundColor = commentBlock.Color;
             
             //初始节点
