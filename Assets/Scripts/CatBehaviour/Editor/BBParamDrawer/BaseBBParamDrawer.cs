@@ -63,40 +63,12 @@ namespace CatBehaviour.Editor
             {
                 if (isInspector)
                 {
-                    var keys = bt.BlackBoard.GetKeys(Target.GetType());
-
-                    //修正索引 防止因为删除了前面的key导致顺序变化 最终索引到了错误的key
-                    for (int i = 0; i < keys.Length; i++)
-                    {
-                        if (Target.Key == keys[i] && selectedKeyIndex != i)
-                        {
-                            selectedKeyIndex = i;
-                            break;
-                        }
-                    }
-                    
-                    int newIndex = EditorGUILayout.Popup("黑板Key" ,selectedKeyIndex, keys);
-                    if (newIndex == 0 || newIndex >= keys.Length)
-                    {
-                        selectedKeyIndex = 0;
-                        Target.Key = null;
-                    }
-                    else
-                    {
-                        if (selectedKeyIndex > 0 && Target.Key != keys[selectedKeyIndex])
-                        {
-                            //当前索引到的key和保存的key不一致 重置为null
-                            //这时可能是之前的key被删了，或者被重命名了
-                            selectedKeyIndex = 0;
-                            Target.Key = null;
-                        }
-                        else
-                        {
-                            var newKey = keys[newIndex];
-                            selectedKeyIndex = newIndex;
-                            Target.Key = newKey;
-                        }
-                    }
+                    //在节点属性面板下 绘制选择黑板key下拉菜单
+                    var (curIndex, curKey) =
+                        BBParamDrawerHelper.DrawBBParamKeyPopup(bt.BlackBoard,Target.GetType(), "黑板Key:",
+                            selectedKeyIndex, Target.Key);
+                    selectedKeyIndex = curIndex;
+                    Target.Key = curKey;
                 }
                 
                 OnGUI();

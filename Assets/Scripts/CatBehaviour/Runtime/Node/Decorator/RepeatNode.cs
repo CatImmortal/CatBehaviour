@@ -38,13 +38,13 @@ namespace CatBehaviour.Runtime
         /// 重复次数
         /// </summary>
         [BBParamInfo(Name = "重复次数")]
-        public BBParamInt repeatCount = new BBParamInt();
+        public BBParamInt repeatCount;
         
         /// <summary>
         /// 等待子节点运行的结果
         /// </summary>
         [BBParamInfo(Name = "等待子节点运行的结果")]
-        public BBParamBool UntilResult = new BBParamBool();
+        public BBParamBool UntilResult;
         
         /// <summary>
         /// 重复计数器

@@ -15,16 +15,16 @@ namespace CatBehaviour.Runtime
         public override FieldInfo[] FieldInfos => fieldInfos;
 
         /// <summary>
-        /// 此节点运行结果
-        /// </summary>
-        [BBParamInfo(Name = "此节点的运行结果")]
-        public BBParamBool Result;
-
-        /// <summary>
         /// 等待的子节点运行结果
         /// </summary>
         [BBParamInfo(Name = "等待的子节点运行结果")]
         public BBParamBool UntilResult;
+        
+        /// <summary>
+        /// 此节点运行结果
+        /// </summary>
+        [BBParamInfo(Name = "此节点的运行结果")]
+        public BBParamBool Result;
 
         private bool needStartChild;
 

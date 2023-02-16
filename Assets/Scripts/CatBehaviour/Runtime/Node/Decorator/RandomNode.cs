@@ -20,18 +20,14 @@ namespace CatBehaviour.Runtime
         /// 随机数种子
         /// </summary>
         [BBParamInfo(Name = "随机数种子")]
-        public BBParamInt Seed = new BBParamInt();
+        public BBParamInt Seed;
 
         /// <summary>
         /// 概率
         /// </summary>
         [BBParamInfo(Name = "概率0-100")]
-        public BBParamInt Probability = new BBParamInt();
-
-        public RandomNode()
-        {
-            Probability.Value = 50;
-        }
+        public BBParamInt Probability;
+        
         
         /// <inheritdoc />
         protected override void OnStart()

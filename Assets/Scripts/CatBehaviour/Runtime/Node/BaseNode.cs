@@ -80,8 +80,6 @@ namespace CatBehaviour.Runtime
         /// </summary>
         public virtual FieldInfo[] FieldInfos => Array.Empty<FieldInfo>();
         
-        
-        
         /// <summary>
         /// 添加子节点
         /// </summary>

@@ -42,8 +42,7 @@ namespace CatBehaviour.Editor
 
                 //记录位置
                 graphNode.RuntimeNode.Position = graphNode.GetPosition().position;
-                graphNode.RuntimeNode.Position += new Vector2(100, 100);  //被复制的节点 位置要做一点偏移量
-                    
+
                 //添加到allNodes里 建立ID
                 allNodes.Add(graphNode.RuntimeNode);
                 graphNode.RuntimeNode.Id = allNodes.Count;
@@ -112,6 +111,9 @@ namespace CatBehaviour.Editor
             {
                 BaseNode node = JsonSerializer.DeserializeNode(jsonElement);
                 node.Owner = BT;
+                node.Position += new Vector2(100, 100);  //被复制的节点 位置要做一点偏移量
+                
+                BT.AllNodes.Add(node);
                 allNodes.Add(node);
             }
             //恢复父子节点的引用

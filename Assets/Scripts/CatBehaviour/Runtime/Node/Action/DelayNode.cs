@@ -17,7 +17,7 @@ namespace CatBehaviour.Runtime
         /// 延时的时间
         /// </summary>
         [BBParamInfo(Name = "延时时间")]
-        public BBParamFloat DelayTime = new BBParamFloat();
+        public BBParamFloat DelayTime;
 
         [NonSerialized]
         public float Timer;

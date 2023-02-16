@@ -38,7 +38,7 @@ namespace CatBehaviour.Runtime
         /// 日志内容
         /// </summary>
         [BBParamInfo(Name = "日志信息")]
-        public BBParamString Log = new BBParamString();
+        public BBParamString Log;
         
         protected override void OnStart()
         {

@@ -21,7 +21,7 @@ namespace CatBehaviour.Runtime
         /// 随机数种子
         /// </summary>
         [BBParamInfo(Name = "随机数种子")]
-        public BBParamInt Seed = new BBParamInt();
+        public BBParamInt Seed;
         
         
         protected override void OnStart()

@@ -19,7 +19,7 @@ namespace CatBehaviour.Runtime
         /// 子树名
         /// </summary>
         [BBParamInfo(Name = "子树名")]
-        public BBParamString SubTreeName = new BBParamString();
+        public BBParamString SubTreeName;
         
         /// <summary>
         /// 是否继承黑板数据

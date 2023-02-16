@@ -59,7 +59,13 @@ namespace CatBehaviour.Editor
 
                     //获取参数对象
                     var bbParam = (BBParam)fieldInfo.GetValue(Target);
-                    if (BaseBBParamDrawer.BBParamDrawerDict.TryGetValue(bbParam.GetType(),out var drawer))
+                    if (bbParam == null)
+                    {
+                        bbParam = (BBParam)Activator.CreateInstance(fieldInfo.FieldType);
+                        fieldInfo.SetValue(Target,bbParam);
+                    }
+                    
+                    if (BaseBBParamDrawer.BBParamDrawerDict.TryGetValue(fieldInfo.FieldType,out var drawer))
                     {
                         drawer.Target = bbParam;
                         drawer.OnGUI(true,Target.Owner);
