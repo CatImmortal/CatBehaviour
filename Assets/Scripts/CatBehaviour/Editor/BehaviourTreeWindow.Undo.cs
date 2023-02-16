@@ -79,7 +79,6 @@ namespace CatBehaviour.Editor
             {
                 return;
             }
-            
             Undo.RecordObject(ClonedBTSO, undoName);
 
             IsModify = true;

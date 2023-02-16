@@ -6,12 +6,13 @@ namespace CatBehaviour.Runtime
     /// <summary>
     /// 随机节点（会以指定的概率决定是否运行子节点，若概率命中，则返回子节点运行结果，否则返回失败）
     /// </summary>
-    [NodeInfo(Name = "随机节点",Desc = "会以指定的概率决定是否运行子节点，若概率命中，则返回子节点运行结果，否则返回失败",Order = 5)]
+    [NodeInfo(Name = "随机",Desc = "会以指定的概率决定是否运行子节点，若概率命中，则返回子节点运行结果，否则返回失败")]
     public class RandomNode : BaseDecoratorNode
     {
+        private static FieldInfo[] fieldInfos = typeof(RandomNode).GetFields(BindingFlags.Public | BindingFlags.Instance);
+
         /// <inheritdoc />
-        public override FieldInfo[] FieldInfos =>
-            typeof(RandomNode).GetFields(BindingFlags.Public | BindingFlags.Instance);
+        public override FieldInfo[] FieldInfos => fieldInfos;
         
         private Random random;
         

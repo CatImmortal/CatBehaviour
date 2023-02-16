@@ -37,15 +37,13 @@ namespace CatBehaviour.Editor
         {
             if (BT.BlackBoard.ParamDict.ContainsKey(newKey))
             {
-                //Debug.Log($"重命名黑板key失败，已存在同名key:{newKey}");
                 return false;
             }
             
             window.RecordObject($"RenameBlackBoard {oldKey} -> {newKey}");
             
-            //Debug.Log($"重命名黑板key成功，{oldKey} -> {newKey}");
-            param.Key = newKey;
-            //OnBlackBoardChaged?.Invoke();
+            BT.BlackBoard.RemoveParam(oldKey);
+            BT.BlackBoard.SetParam(newKey,param);
 
             return true;
         }

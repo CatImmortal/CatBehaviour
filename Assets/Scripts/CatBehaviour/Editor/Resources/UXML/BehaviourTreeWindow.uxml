@@ -17,6 +17,7 @@
                 </ui:DropdownField>
                 <uie:ObjectField name="ObjBTSO" style="align-items: stretch; justify-content: flex-start; transform-origin: center; translate: 0 0;">
                     <ui:Button text="保存" display-tooltip-when-elided="true" name="btnSave" />
+                    <ui:Button text="另存为" display-tooltip-when-elided="true" name="btnSaveAs" />
                     <ui:Button text="新建" display-tooltip-when-elided="true" name="btnNew" />
                 </uie:ObjectField>
             </uie:Toolbar>

@@ -189,6 +189,15 @@ namespace CatBehaviour.Runtime
             OnCanceled?.Invoke();
         }
 
+        /// <summary>
+        /// 重启行为树
+        /// </summary>
+        public void Restart()
+        {
+            Cancel();
+            RootNode.Start();
+        }
+        
         private void Reset()
         {
             Reset(RootNode);

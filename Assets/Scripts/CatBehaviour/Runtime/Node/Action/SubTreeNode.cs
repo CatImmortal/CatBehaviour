@@ -7,12 +7,13 @@ namespace CatBehaviour.Runtime
     /// <summary>
     /// 子树节点
     /// </summary>
-    [NodeInfo(Name = "子树节点",Icon = "Icon/Root",Order = 3)]
+    [NodeInfo(Name = "内置/子树",Icon = "Icon/Root")]
     public class SubTreeNode : BaseActionNode
     {
+        private static FieldInfo[] fieldInfos = typeof(SubTreeNode).GetFields(BindingFlags.Public | BindingFlags.Instance);
+
         /// <inheritdoc />
-        public override FieldInfo[] FieldInfos =>
-            typeof(SubTreeNode).GetFields(BindingFlags.Public | BindingFlags.Instance);
+        public override FieldInfo[] FieldInfos => fieldInfos;
         
         /// <summary>
         /// 子树名

@@ -5,12 +5,13 @@ namespace CatBehaviour.Runtime
     /// <summary>
     /// 延时节点
     /// </summary>
-    [NodeInfo(Name = "延时节点",Icon = "Icon/Delay",Order = 1)]
+    [NodeInfo(Name = "内置/延时",Icon = "Icon/Delay",Order = 1)]
     public class DelayNode : BaseActionNode
     {
+        private static FieldInfo[] fieldInfos = typeof(DelayNode).GetFields(BindingFlags.Public | BindingFlags.Instance);
+
         /// <inheritdoc />
-        public override FieldInfo[] FieldInfos =>
-            typeof(DelayNode).GetFields(BindingFlags.Public | BindingFlags.Instance);
+        public override FieldInfo[] FieldInfos => fieldInfos;
 
         /// <summary>
         /// 延时的时间

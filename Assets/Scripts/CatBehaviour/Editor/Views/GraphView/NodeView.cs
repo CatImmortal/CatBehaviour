@@ -38,10 +38,11 @@ namespace CatBehaviour.Editor
         /// <summary>
         /// 获取节点在节点图的名字
         /// </summary>
-        public static string GetNodeName(Type type)
+        public static string GetNodeDisplayName(Type type)
         {
             NodeInfoAttribute nodeInfo = type.GetCustomAttribute<NodeInfoAttribute>();
-            string name = nodeInfo.Name;
+            string[] parts = nodeInfo.Name.Split('/');
+            string name = parts[parts.Length - 1];
             return name;
         }
 
@@ -107,7 +108,7 @@ namespace CatBehaviour.Editor
         private void SetNameAndPos()
         {
             Type nodeType = RuntimeNode.GetType();
-            title = GetNodeName(nodeType);
+            title = GetNodeDisplayName(nodeType);
             SetPosition(new Rect(RuntimeNode.Position,GetPosition().size));
         }
 

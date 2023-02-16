@@ -38,6 +38,7 @@ namespace CatBehaviour.Runtime
                 {
                     //isCreate为true 则不存在时创建
                     param = new T();
+                    SetParam(key,param);
                 }
                 else
                 {

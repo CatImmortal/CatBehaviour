@@ -11,12 +11,13 @@ namespace CatBehaviour.Runtime
     /// <summary>
     /// 日志节点
     /// </summary>
-    [NodeInfo(Name = "日志节点",Icon = "Icon/Log",Order = 2)]
+    [NodeInfo(Name = "内置/日志",Icon = "Icon/Log",Order = 1)]
     public class LogNode : BaseActionNode
     {
+        private static FieldInfo[] fieldInfos = typeof(LogNode).GetFields(BindingFlags.Public | BindingFlags.Instance);
+
         /// <inheritdoc />
-        public override FieldInfo[] FieldInfos =>
-            typeof(LogNode).GetFields(BindingFlags.Public | BindingFlags.Instance);
+        public override FieldInfo[] FieldInfos => fieldInfos;
         
         /// <summary>
         /// 日志级别

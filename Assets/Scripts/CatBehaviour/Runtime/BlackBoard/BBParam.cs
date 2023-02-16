@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CatBehaviour.Runtime
@@ -93,6 +94,47 @@ namespace CatBehaviour.Runtime
     public class BBParamVector4 : BBParam<Vector4>
     {
 
+    }
+    
+    [Serializable]
+    public class BBParamBoolList : BBParam<List<bool>>
+    {
+        
+    }
+    
+    [Serializable]
+    public class BBParamIntList : BBParam<List<int>>
+    {
+        
+    }
+    
+    [Serializable]
+    public class BBParamFloatList : BBParam<List<float>>
+    {
+        
+    }
+    
+    [Serializable]
+    public class BBParamStringList : BBParam<List<string>>
+    {
+        
+    }
+    
+    [Serializable]
+    public class BBParamVector2List : BBParam<List<Vector2>>
+    {
+        
+    }
+    
+    [Serializable]
+    public class BBParamVector3List : BBParam<List<Vector3>>
+    {
+    }
+    
+    [Serializable]
+    public class BBParamVector4List : BBParam<List<Vector4>>
+    {
+        
     }
 
 }

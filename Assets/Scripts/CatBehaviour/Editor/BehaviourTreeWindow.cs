@@ -22,6 +22,7 @@ namespace CatBehaviour.Editor
         private DropdownField dropdownField;
         private ObjectField objField;
         private Button btnSave;
+        private Button btnSaveAs;
         private Button btnNew;
         
         private SplitView splitView;
@@ -45,6 +46,9 @@ namespace CatBehaviour.Editor
             OpenFromAssetPath(null);
         }
         
+        /// <summary>
+        /// 双击行为树SO打开窗口
+        /// </summary>
         [OnOpenAsset(1)]
         public static bool OnOpenAssets(int id, int line)
         {
@@ -77,12 +81,7 @@ namespace CatBehaviour.Editor
             window.RefreshFromDebugger(debugBT);
         }
 
-        public void CreateGUI()
-        {
 
-        }
-
-        
         private void OnEnable()
         {
             VisualElement root = rootVisualElement;
@@ -93,6 +92,7 @@ namespace CatBehaviour.Editor
             var styleSheet = Resources.Load<StyleSheet>("USS/BehaviourTreeWindow");
             root.styleSheets.Add(styleSheet);
             
+            //下拉列表
             dropdownField = rootVisualElement.Q<DropdownField>("dropdownBTSO");
             dropdownField.RegisterValueChangedCallback((evt =>
             {
@@ -118,7 +118,16 @@ namespace CatBehaviour.Editor
             objField = rootVisualElement.Q<ObjectField>("ObjBTSO");
             
             btnSave = root.Q<Button>("btnSave");
-            btnSave.clicked += Save;
+            btnSave.clicked += () =>
+            {
+                Save(false);
+            };
+            
+            btnSaveAs = root.Q<Button>("btnSaveAs");
+            btnSaveAs.clicked += () =>
+            {
+                Save(true);
+            };
             
             btnNew = root.Q<Button>("btnNew");
             btnNew.clicked += New;
@@ -155,10 +164,6 @@ namespace CatBehaviour.Editor
             bt.BlackBoard.Position = GraphView.BlackboardView.GetPosition();
         }
         
-        private void OnDestroy()
-        {
-            
-        }
 
 
         /// <summary>
@@ -171,7 +176,7 @@ namespace CatBehaviour.Editor
 
             if (isDebugMode)
             {
-                //调试状态下 删掉SO引用 保存和新建按钮
+                //调试状态下 删掉SO引用 保存 另存为和新建按钮
                 objField.RemoveFromHierarchy();
             }
         }
@@ -218,7 +223,7 @@ namespace CatBehaviour.Editor
                 objField.value = originBTSO;
             }
 
-            
+
             Refresh(bt);
         }
 
@@ -282,22 +287,23 @@ namespace CatBehaviour.Editor
         /// <summary>
         /// 保存行为树
         /// </summary>
-        private void Save()
+        private void Save(bool isSaveAs)
         {
-            if (originBTSO == null)
+            if (originBTSO == null || isSaveAs)
             {
-                var assetPath = EditorUtility.SaveFilePanelInProject("选择保存位置", "BehaviourTree","asset", "aaa");
-                if (string.IsNullOrEmpty(assetPath))
+                //是新建的 或者另存为
+                string path = EditorUtility.SaveFilePanelInProject("选择保存位置", "BehaviourTree", "asset", "");
+                if (string.IsNullOrEmpty(path))
                 {
                     Debug.Log("取消保存");
                     return;
                 }
 
-                AssetDatabase.DeleteAsset(assetPath);
+                AssetDatabase.DeleteAsset(path);
                 
-                this.assetPath = assetPath;
+                assetPath = path;
                 originBTSO = ClonedBTSO;
-                AssetDatabase.CreateAsset(originBTSO,assetPath);
+                AssetDatabase.CreateAsset(originBTSO,path);
             }
             else
             {

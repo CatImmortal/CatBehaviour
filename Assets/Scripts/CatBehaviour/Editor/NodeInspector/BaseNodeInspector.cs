@@ -45,20 +45,20 @@ namespace CatBehaviour.Editor
             {
                 if (type.IsAssignableFrom(fieldInfo.FieldType))
                 {
+                    //参数名
                     var nameAttr = fieldInfo.GetCustomAttribute<BBParamInfoAttribute>();
                     string name = null;
                     if (nameAttr != null)
                     {
                         name = nameAttr.Name;
                     }
-
                     if (!string.IsNullOrEmpty(name))
                     {
                         EditorGUILayout.LabelField($"{name}({BBParam.GetBBParamTypeName(fieldInfo.FieldType)})");
                     }
 
+                    //获取参数对象
                     var bbParam = (BBParam)fieldInfo.GetValue(Target);
-
                     if (BaseBBParamDrawer.BBParamDrawerDict.TryGetValue(bbParam.GetType(),out var drawer))
                     {
                         drawer.Target = bbParam;

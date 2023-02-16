@@ -5,12 +5,13 @@ namespace CatBehaviour.Runtime
     /// <summary>
     /// 重复节点，根据重复模式重复运行子节点，然后返回成功
     /// </summary>
-    [NodeInfo(Name = "重复节点",Desc = "根据重复模式重复运行子节点，然后返回成功",Icon = "Icon/Repeat",Order = 4)]
+    [NodeInfo(Name = "重复",Desc = "根据重复模式重复运行子节点，然后返回成功",Icon = "Icon/Repeat")]
     public class RepeatNode : BaseDecoratorNode
     {
+        private static FieldInfo[] fieldInfos = typeof(RepeatNode).GetFields(BindingFlags.Public | BindingFlags.Instance);
+
         /// <inheritdoc />
-        public override FieldInfo[] FieldInfos =>
-            typeof(RepeatNode).GetFields(BindingFlags.Public | BindingFlags.Instance);
+        public override FieldInfo[] FieldInfos => fieldInfos;
         
         /// <summary>
         /// 重复模式

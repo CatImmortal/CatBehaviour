@@ -6,12 +6,13 @@ namespace CatBehaviour.Runtime
     /// <summary>
     /// 随机序列节点（依次执行随机排序后的子节点，直到有子节点运行失败，则此节点运行失败，否则成功）
     /// </summary>
-    [NodeInfo(Name = "随机序列节点",Desc = "依次执行随机排序后的子节点，直到有子节点运行失败，则此节点运行失败，否则成功",Icon = "Icon/Sequence",Order = 4)]
+    [NodeInfo(Name = "随机序列",Desc = "依次执行随机排序后的子节点，直到有子节点运行失败，则此节点运行失败，否则成功",Icon = "Icon/Sequence",Order = 4)]
     public class RandomSequenceNode : SequenceNode
     {
+        private static FieldInfo[] fieldInfos = typeof(RandomSequenceNode).GetFields(BindingFlags.Public | BindingFlags.Instance);
+
         /// <inheritdoc />
-        public override FieldInfo[] FieldInfos =>
-            typeof(RandomSequenceNode).GetFields(BindingFlags.Public | BindingFlags.Instance);
+        public override FieldInfo[] FieldInfos => fieldInfos;
         
         private Random random;
         

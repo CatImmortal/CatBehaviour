@@ -78,7 +78,7 @@ namespace CatBehaviour.Editor
         private void AddNodeOptions<T>(List<SearchTreeEntry> entries)
         {
             var types = TypeCache.GetTypesDerivedFrom<T>().ToList();
-            
+            var titlePaths = new HashSet<string>();
             //将节点按照order排序
             types.Sort((x, y) =>
             {
@@ -122,8 +122,39 @@ namespace CatBehaviour.Editor
                    icon = emptyIcon;
                 }
                 
-                var guiContent = new GUIContent(NodeView.GetNodeName(type), icon);
-                entries.Add(new SearchTreeEntry(guiContent) { level = 2, userData = type });
+                
+                //根据节点路径计算level
+                string nodeName = nodeAttr.Name;
+                string[] parts = nodeAttr.Name.Split('/');
+                int level = 1;
+                if (parts.Length > 1)
+                {
+                    //存在路径
+                    level += 2;
+                    nodeName = parts[parts.Length - 1];
+                    string fullTitleAsPath = "";
+
+                    for (int i = 0; i < parts.Length - 1; i++)
+                    {
+                        //各级路径
+                        string title = parts[i];
+                        fullTitleAsPath += title;
+                        level = i + 2;
+
+                        if (!titlePaths.Contains(fullTitleAsPath))
+                        {
+                            //添加父路径
+                            entries.Add(new SearchTreeGroupEntry(new GUIContent(title))
+                            {
+                                level =  level,
+                            });
+                            titlePaths.Add(fullTitleAsPath);
+                        }
+                    }
+                }
+                
+                var guiContent = new GUIContent(nodeName, icon);
+                entries.Add(new SearchTreeEntry(guiContent) { level = level + 1, userData = type });
             }
         }
 
