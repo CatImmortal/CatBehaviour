@@ -15,10 +15,12 @@ MonoBehaviour:
   BT:
     RootNodeId: 4
     AllNodes:
-    - rid: 4537223915061903388
-    - rid: 4537223915061903389
-    - rid: 4537223915061903390
-    - rid: 4537223915061903391
+    - rid: 4459291991641161762
+    - rid: 4459291991641161763
+    - rid: 4459291991641161764
+    - rid: 4459291991641161765
+    - rid: 4459291991641161766
+    - rid: 4459291991641161767
     Rect:
       serializedVersion: 2
       x: 262
@@ -30,8 +32,11 @@ MonoBehaviour:
     - Comment: 111
       Color: {r: 0, g: 0, b: 0, a: 0.3}
       Position: {x: -12.139984, y: 451.76752}
-      NodeIds: 020000000100000003000000
-  BBParams: []
+      NodeIds: 0200000001000000030000000500000006000000
+  BBParams:
+  - rid: 4459291991641161768
+  - rid: 4459291991641161769
+  - rid: 4459291991641161770
   BlackBoardRect:
     serializedVersion: 2
     x: 10
@@ -41,14 +46,14 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 4537223915061903388
+    - rid: 4459291991641161762
       type: {class: SequenceNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 1
         Position: {x: 390, y: 246}
         ParentNodeId: 4
-        ChildIdList: 0200000003000000
-    - rid: 4537223915061903389
+        ChildIdList: 02000000050000000600000003000000
+    - rid: 4459291991641161763
       type: {class: DelayNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 2
@@ -56,8 +61,8 @@ MonoBehaviour:
         ParentNodeId: 1
         DelayTime:
           Key: 
-          Value: 10
-    - rid: 4537223915061903390
+          Value: 2
+    - rid: 4459291991641161764
       type: {class: LogNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 3
@@ -65,12 +70,45 @@ MonoBehaviour:
         ParentNodeId: 1
         Level: 0
         Log:
-          Key: 
+          Key: New String
           Value: 222
-    - rid: 4537223915061903391
+    - rid: 4459291991641161765
       type: {class: RootNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 4
         Position: {x: 464, y: 90}
         ParentNodeId: 0
         ChildId: 1
+    - rid: 4459291991641161766
+      type: {class: BBParamBoolAssignmentNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
+      data:
+        Id: 5
+        Position: {x: 316, y: 479}
+        ParentNodeId: 1
+        FakeBBParam:
+          Key: New Bool
+          Value: 1
+    - rid: 4459291991641161767
+      type: {class: BBParamStringAssignmentNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
+      data:
+        Id: 6
+        Position: {x: 464, y: 479}
+        ParentNodeId: 1
+        FakeBBParam:
+          Key: New String
+          Value: 456
+    - rid: 4459291991641161768
+      type: {class: BBParamBool, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
+      data:
+        Key: New Bool
+        Value: 0
+    - rid: 4459291991641161769
+      type: {class: BBParamFloat, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
+      data:
+        Key: New Float
+        Value: 0
+    - rid: 4459291991641161770
+      type: {class: BBParamString, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
+      data:
+        Key: New String
+        Value: 123

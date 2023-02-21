@@ -78,6 +78,16 @@ namespace CatBehaviour.Editor
         private void AddNodeOptions<T>(List<SearchTreeEntry> entries)
         {
             var types = TypeCache.GetTypesDerivedFrom<T>().ToList();
+            for (int i = types.Count - 1; i >= 0; i--)
+            {
+                var type = types[i];
+                if (type.IsAbstract)
+                {
+                    //跳过抽象类节点
+                    types.RemoveAt(i);
+                }
+            }
+            
             var titlePaths = new HashSet<string>();
             //将节点按照order排序
             types.Sort((x, y) =>

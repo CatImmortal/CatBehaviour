@@ -20,6 +20,8 @@ namespace CatBehaviour.Runtime
         [SerializeReference]
         public List<BBParam> BBParams = new List<BBParam>();
 
+        
+        
         /// <summary>
         /// 黑板位置与大小
         /// </summary>

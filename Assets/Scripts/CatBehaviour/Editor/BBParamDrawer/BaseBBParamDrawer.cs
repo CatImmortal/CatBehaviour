@@ -28,6 +28,7 @@ namespace CatBehaviour.Editor
 
         static BaseBBParamDrawer()
         {
+            //收集黑板参数Drawer对象
             BBParamDrawerDict.Clear();
             var types = TypeCache.GetTypesWithAttribute<BBParamDrawerAttribute>();
             foreach (Type type in types)

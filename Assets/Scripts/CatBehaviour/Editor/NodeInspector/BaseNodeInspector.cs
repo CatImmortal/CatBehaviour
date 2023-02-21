@@ -43,36 +43,39 @@ namespace CatBehaviour.Editor
             Type type = typeof(BBParam);
             foreach (FieldInfo fieldInfo in Target.FieldInfos)
             {
-                if (type.IsAssignableFrom(fieldInfo.FieldType))
+                if (!type.IsAssignableFrom(fieldInfo.FieldType))
                 {
-                    //参数名
-                    var nameAttr = fieldInfo.GetCustomAttribute<BBParamInfoAttribute>();
-                    string name = null;
-                    if (nameAttr != null)
-                    {
-                        name = nameAttr.Name;
-                    }
-                    if (!string.IsNullOrEmpty(name))
-                    {
-                        EditorGUILayout.LabelField($"{name}({BBParam.GetBBParamTypeName(fieldInfo.FieldType)})");
-                    }
-
-                    //获取参数对象
-                    var bbParam = (BBParam)fieldInfo.GetValue(Target);
-                    if (bbParam == null)
-                    {
-                        bbParam = (BBParam)Activator.CreateInstance(fieldInfo.FieldType);
-                        fieldInfo.SetValue(Target,bbParam);
-                    }
-                    
-                    if (BaseBBParamDrawer.BBParamDrawerDict.TryGetValue(fieldInfo.FieldType,out var drawer))
-                    {
-                        drawer.Target = bbParam;
-                        drawer.OnGUI(true,Target.Owner);
-                    }
-
-                    EditorGUILayout.Space();
+                    continue;
                 }
+                
+                //参数名
+                var nameAttr = fieldInfo.GetCustomAttribute<BBParamInfoAttribute>();
+                string name = null;
+                if (nameAttr != null)
+                {
+                    name = nameAttr.Name;
+                }
+                if (!string.IsNullOrEmpty(name))
+                {
+                    EditorGUILayout.LabelField($"{name}({BBParam.GetBBParamTypeName(fieldInfo.FieldType)})");
+                }
+
+                //获取参数对象
+                var bbParam = (BBParam)fieldInfo.GetValue(Target);
+                if (bbParam == null)
+                {
+                    bbParam = (BBParam)Activator.CreateInstance(fieldInfo.FieldType);
+                    fieldInfo.SetValue(Target,bbParam);
+                }
+                    
+                //获取对应的drawer
+                if (BaseBBParamDrawer.BBParamDrawerDict.TryGetValue(fieldInfo.FieldType,out var drawer))
+                {
+                    drawer.Target = bbParam;
+                    drawer.OnGUI(true,Target.Owner);
+                }
+
+                EditorGUILayout.Space();
             }
         }
     }

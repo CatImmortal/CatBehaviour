@@ -7,14 +7,22 @@ namespace CatBehaviour.Editor
     public static class BBParamDrawerHelper
     {
         /// <summary>
-        /// 绘制黑板Key的下拉选择菜单
+        /// 绘制指定Value类型的黑板Key的下拉选择菜单
         /// </summary>
         public static (int, string) DrawBBParamKeyPopup(BlackBoard blackBoard, Type paramType, string label,
             int curIndex, string curKey)
 
         {
             var keys = blackBoard.GetKeys(paramType);
+            return DrawBBParamKeyPopup(keys, label, curIndex, curKey);
+        }
 
+        /// <summary>
+        /// 绘制给定黑板Key的下拉选择菜单
+        /// </summary>
+        public static (int, string) DrawBBParamKeyPopup(string[] keys, string label,
+            int curIndex, string curKey)
+        {
             //修正索引 防止因为删除了前面的key导致顺序变化 最终索引到了错误的key
             for (int i = 0; i < keys.Length; i++)
             {
@@ -28,6 +36,7 @@ namespace CatBehaviour.Editor
             int newIndex = EditorGUILayout.Popup(label, curIndex, keys);
             if (newIndex == 0 || newIndex >= keys.Length)
             {
+                //选择了Null 或者无效索引 就将key置空
                 curIndex = 0;
                 curKey = null;
             }
