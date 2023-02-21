@@ -5,7 +5,7 @@ namespace CatBehaviour.Runtime
     /// <summary>
     /// 延时节点
     /// </summary>
-    [NodeInfo(Name = "内置/延时",Icon = "Icon/Delay",Order = 1)]
+    [NodeInfo(Name = "内置/延时",Icon = "Icon/Delay")]
     public class DelayNode : BaseActionNode
     {
         private static FieldInfo[] fieldInfos = typeof(DelayNode).GetFields(BindingFlags.Public | BindingFlags.Instance);

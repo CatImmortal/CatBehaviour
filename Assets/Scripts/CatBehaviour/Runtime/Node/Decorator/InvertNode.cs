@@ -3,7 +3,7 @@
     /// <summary>
     /// 反转节点（对子节点运行结果取反）
     /// </summary>
-    [NodeInfo(Name = "反转",Desc = "对子节点运行结果取反",Icon = "Icon/Invert",Order = 3)]
+    [NodeInfo(Name = "反转",Desc = "对子节点运行结果取反",Icon = "Icon/Invert")]
     public class InvertNode : BaseDecoratorNode
     {
         /// <inheritdoc />

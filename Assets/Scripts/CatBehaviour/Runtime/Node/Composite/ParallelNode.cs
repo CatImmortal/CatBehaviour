@@ -3,7 +3,7 @@
     /// <summary>
     /// 并行节点（同时运行所有节点，根据设置的并行条件决定此节点如何判断成功/失败）
     /// </summary>
-    [NodeInfo(Name = "并行",Desc = "同时运行所有节点，根据设置的并行条件决定此节点如何判断成功/失败",Icon = "Icon/Parallel",Order = 3)]
+    [NodeInfo(Name = "并行",Desc = "同时运行所有节点，根据设置的并行条件决定此节点如何判断成功/失败",Icon = "Icon/Parallel")]
     public class ParallelNode : BaseCompositeNode
     {
         /// <summary>

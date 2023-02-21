@@ -10,6 +10,5 @@ namespace CatBehaviour.Runtime
         public string Name;
         public string Desc;
         public string Icon;
-        public int Order = int.MaxValue;
     }
 }

@@ -6,7 +6,7 @@ namespace CatBehaviour.Runtime
     /// <summary>
     /// 随机选择节点（依次执行随机排序后的子节点，直到有子节点运行成功，则此节点运行成功，否则失败）
     /// </summary>
-    [NodeInfo(Name = "随机选择",Desc = "依次执行随机排序后的子节点，直到有子节点运行成功，则此节点运行成功，否则失败",Icon = "Icon/Selector",Order = 5)]
+    [NodeInfo(Name = "随机选择",Desc = "依次执行随机排序后的子节点，直到有子节点运行成功，则此节点运行成功，否则失败",Icon = "Icon/Selector")]
     public class RandomSelectorNode : SelectorNode
     {
         private static FieldInfo[] fieldInfos = typeof(RandomSelectorNode).GetFields(BindingFlags.Public | BindingFlags.Instance);

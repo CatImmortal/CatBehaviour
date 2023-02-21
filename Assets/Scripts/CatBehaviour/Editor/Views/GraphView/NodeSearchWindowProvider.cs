@@ -89,22 +89,16 @@ namespace CatBehaviour.Editor
             }
             
             var titlePaths = new HashSet<string>();
-            //将节点按照order排序
-            types.Sort((x, y) =>
+            types.OrderBy((type =>
             {
-                var xNodeAttr = x.GetCustomAttribute<NodeInfoAttribute>();
-                var yNodeAttr = y.GetCustomAttribute<NodeInfoAttribute>();
-
-                return xNodeAttr.Order.CompareTo(yNodeAttr.Order);
-            });
+                var attr = type.GetCustomAttribute<NodeInfoAttribute>();
+                return attr.Name;
+            }));
+            
+            
             
             foreach (Type type in types)
             {
-                if (type.IsAbstract)
-                {
-                    continue;
-                }
-
                 if (type == typeof(RootNode))
                 {
                     //跳过根节点
@@ -135,6 +129,10 @@ namespace CatBehaviour.Editor
                 
                 //根据节点路径计算level
                 string nodeName = nodeAttr.Name;
+                if (nodeName == "内置/重启行为树")
+                {
+                    int x = 1;
+                }
                 string[] parts = nodeAttr.Name.Split('/');
                 int level = 1;
                 if (parts.Length > 1)

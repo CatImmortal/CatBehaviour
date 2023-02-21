@@ -11,7 +11,7 @@ namespace CatBehaviour.Runtime
     /// <summary>
     /// 日志节点
     /// </summary>
-    [NodeInfo(Name = "内置/日志",Icon = "Icon/Log",Order = 1)]
+    [NodeInfo(Name = "内置/日志",Icon = "Icon/Log")]
     public class LogNode : BaseActionNode
     {
         private static FieldInfo[] fieldInfos = typeof(LogNode).GetFields(BindingFlags.Public | BindingFlags.Instance);
