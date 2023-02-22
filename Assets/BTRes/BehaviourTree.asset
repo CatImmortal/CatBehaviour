@@ -15,28 +15,30 @@ MonoBehaviour:
   BT:
     RootNodeId: 4
     AllNodes:
-    - rid: 4459291991641161846
-    - rid: 4459291991641161847
-    - rid: 4459291991641161848
-    - rid: 4459291991641161849
-    - rid: 4459291991641161850
+    - rid: 4459292013709230137
+    - rid: 4459292013709230138
+    - rid: 4459292013709230139
+    - rid: 4459292013709230140
+    - rid: 4459292013709230141
+    - rid: 4459292013709230142
     Rect:
       serializedVersion: 2
-      x: 262
-      y: 3
-      width: 0.7561437
-      height: 0.7561437
-    InspectorWidth: 538
+      x: 189
+      y: -115
+      width: 1
+      height: 1
+    InspectorWidth: 442
     CommentBlocks:
     - Comment: 111
       Color: {r: 0, g: 0, b: 0, a: 0.3}
       Position: {x: -12.139984, y: 451.76752}
-      NodeIds: 02000000010000000300000005000000
+      NodeIds: 0200000001000000030000000500000006000000
   BBParams:
-  - rid: 4459291991641161851
-  - rid: 4459291991641161852
-  - rid: 4459291991641161853
-  - rid: 4459291991641161854
+  - rid: 4459292013709230143
+  - rid: 4459292013709230144
+  - rid: 4459292013709230145
+  - rid: 4459292013709230146
+  - rid: 4459292013709230147
   BlackBoardRect:
     serializedVersion: 2
     x: 10
@@ -46,14 +48,14 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 4459291991641161846
+    - rid: 4459292013709230137
       type: {class: SequenceNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 1
         Position: {x: 390, y: 246}
         ParentNodeId: 4
-        ChildIdList: 020000000500000003000000
-    - rid: 4459291991641161847
+        ChildIdList: 02000000060000000500000003000000
+    - rid: 4459292013709230138
       type: {class: DelayNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 2
@@ -62,7 +64,7 @@ MonoBehaviour:
         DelayTime:
           Key: 
           Value: 2
-    - rid: 4459291991641161848
+    - rid: 4459292013709230139
       type: {class: LogNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 3
@@ -72,40 +74,56 @@ MonoBehaviour:
         Log:
           Key: New String
           Value: 222
-    - rid: 4459291991641161849
+    - rid: 4459292013709230140
       type: {class: RootNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 4
         Position: {x: 464, y: 90}
         ParentNodeId: 0
         ChildId: 1
-    - rid: 4459291991641161850
+    - rid: 4459292013709230141
       type: {class: BBParamStringAssignmentNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 5
-        Position: {x: 324, y: 479}
+        Position: {x: 443, y: 479}
         ParentNodeId: 1
         Key: New String
         OtherBBParam:
           Key: New String 0
           Value: Test
-    - rid: 4459291991641161851
+    - rid: 4459292013709230142
+      type: {class: BBParamIntConditionNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
+      data:
+        Id: 6
+        Position: {x: 188, y: 479}
+        ParentNodeId: 1
+        Key: New Int
+        Type: 4
+        OtherBBParam:
+          Key: 
+          Value: 1
+    - rid: 4459292013709230143
       type: {class: BBParamBool, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Key: New Bool
         Value: 0
-    - rid: 4459291991641161852
+    - rid: 4459292013709230144
       type: {class: BBParamFloat, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Key: New Float
         Value: 0
-    - rid: 4459291991641161853
+    - rid: 4459292013709230145
       type: {class: BBParamString, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Key: New String
         Value: 123
-    - rid: 4459291991641161854
+    - rid: 4459292013709230146
       type: {class: BBParamString, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Key: New String 0
         Value: 456
+    - rid: 4459292013709230147
+      type: {class: BBParamInt, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
+      data:
+        Key: New Int
+        Value: 0

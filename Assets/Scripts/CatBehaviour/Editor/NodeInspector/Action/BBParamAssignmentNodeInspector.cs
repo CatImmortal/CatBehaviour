@@ -5,7 +5,10 @@ using UnityEngine;
 
 namespace CatBehaviour.Editor
 {
-    public class BBParamAssignmentNodeInspector<T,V> : BaseNodeInspector where T: BBParam<V>,new()
+    /// <summary>
+    /// 黑板参数赋值节点Inspector基类
+    /// </summary>
+    public abstract class BBParamAssignmentNodeInspector<T,V> : BaseNodeInspector where T: BBParam<V>,new()
     {
         private int selectedKeyIndex = 0;
 
