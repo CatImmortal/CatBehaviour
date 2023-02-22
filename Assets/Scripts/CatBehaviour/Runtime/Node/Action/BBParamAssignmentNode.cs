@@ -7,14 +7,24 @@ namespace CatBehaviour.Runtime
     /// </summary>
     public abstract class BBParamAssignmentNode<T,V> : BaseActionNode where T: BBParam<V>,new()
     {
-        public T FakeBBParam;
+        public string Key;
 
+        public T OtherBBParam;
+        
         protected override void OnStart()
         {
-            if (FakeBBParam != null)
+            if (!string.IsNullOrEmpty(Key))
             {
-                var bbParam = Owner.BlackBoard.GetParam<T>(FakeBBParam.Key);
-                bbParam.Value = FakeBBParam.Value;
+                var bbParam = Owner.BlackBoard.GetParam<T>(Key);
+
+                if (!string.IsNullOrEmpty(OtherBBParam.Key))
+                {
+                    //需要从其他黑板参数获取值
+                    var otherBBParam = Owner.BlackBoard.GetParam<T>(OtherBBParam.Key);
+                    OtherBBParam.Value = otherBBParam.Value;
+                }
+
+                bbParam.Value = OtherBBParam.Value;
             }
 
             Finish(true);

@@ -71,7 +71,13 @@ namespace CatBehaviour.Editor
                     selectedKeyIndex = curIndex;
                     Target.Key = curKey;
                 }
-                OnGUI();
+
+                using (new EditorGUI.DisabledGroupScope(isInspector && !string.IsNullOrEmpty(Target.Key)))
+                {
+                    //在节点属性面板下 若Key不为空 则Disable掉值输入区域
+                    OnGUI();
+                }
+               
             }
         }
 
