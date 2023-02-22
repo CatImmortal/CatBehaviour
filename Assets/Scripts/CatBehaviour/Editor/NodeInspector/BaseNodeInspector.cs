@@ -72,7 +72,7 @@ namespace CatBehaviour.Editor
                 if (BaseBBParamDrawer.BBParamDrawerDict.TryGetValue(fieldInfo.FieldType,out var drawer))
                 {
                     drawer.Target = bbParam;
-                    drawer.OnGUI(true,Target.Owner);
+                    drawer.OnGUI(Target.Owner,true);
                 }
 
                 EditorGUILayout.Space();

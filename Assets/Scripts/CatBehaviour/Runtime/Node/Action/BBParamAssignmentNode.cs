@@ -11,9 +11,13 @@ namespace CatBehaviour.Runtime
 
         protected override void OnStart()
         {
-           var bbParam = Owner.BlackBoard.GetParam<T>(FakeBBParam.Key);
-           bbParam.Value = FakeBBParam.Value;
-           Finish(true);
+            if (FakeBBParam != null)
+            {
+                var bbParam = Owner.BlackBoard.GetParam<T>(FakeBBParam.Key);
+                bbParam.Value = FakeBBParam.Value;
+            }
+
+            Finish(true);
         }
 
         protected override void OnCancel()

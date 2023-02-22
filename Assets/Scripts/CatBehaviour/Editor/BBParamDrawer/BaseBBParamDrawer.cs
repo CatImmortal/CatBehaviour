@@ -58,7 +58,7 @@ namespace CatBehaviour.Editor
         /// <summary>
         /// 基于IMGUI绘制黑板值
         /// </summary>
-        public virtual void OnGUI(bool isInspector,BehaviourTree bt)
+        public virtual void OnGUI(BehaviourTree bt,bool isInspector)
         {
             using (new EditorGUILayout.HorizontalScope())
             {
@@ -71,7 +71,6 @@ namespace CatBehaviour.Editor
                     selectedKeyIndex = curIndex;
                     Target.Key = curKey;
                 }
-                
                 OnGUI();
             }
         }

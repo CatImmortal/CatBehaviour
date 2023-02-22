@@ -27,7 +27,8 @@ namespace CatBehaviour.Editor
 
             if (string.IsNullOrEmpty(curKey))
             {
-                //Key为空 返回
+                //Key为空
+                node.FakeBBParam = null;
                 return;
             }
 
@@ -50,7 +51,7 @@ namespace CatBehaviour.Editor
           
 
             drawer.Target = node.FakeBBParam;
-            drawer.OnGUI(false,Target.Owner);
+            drawer.OnGUI(null,false);
         }
     }
 
