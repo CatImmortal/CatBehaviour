@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1af296f33d54c1f854c0eb141f8a40d, type: 3}
+  m_Name: BehaviourTree
+  m_EditorClassIdentifier: 
+  BT:
+    RootNodeId: 1
+    AllNodes:
+    - rid: 4459292036899012638
+    Rect:
+      serializedVersion: 2
+      x: 150
+      y: 247
+      width: 0.49717674
+      height: 0.49717674
+    InspectorWidth: 420
+    CommentBlocks: []
+  BBParams:
+  - rid: 4459292036899012639
+  - rid: 4459292036899012640
+  - rid: 4459292036899012641
+  - rid: 4459292036899012642
+  - rid: 4459292036899012643
+  BlackBoardRect:
+    serializedVersion: 2
+    x: 11
+    y: 31
+    width: 365
+    height: 522
+  references:
+    version: 2
+    RefIds:
+    - rid: 4459292036899012638
+      type: {class: RootNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
+      data:
+        Id: 1
+        Position: {x: 500, y: 100}
+        ParentNodeId: 0
+        ChildId: 0
+    - rid: 4459292036899012639
+      type: {class: BBParamBoolList, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
+      data:
+        Key: New BoolList 0
+        Value: 0100
+    - rid: 4459292036899012640
+      type: {class: BBParamIntList, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
+      data:
+        Key: New IntList
+        Value: 000000000500000006000000
+    - rid: 4459292036899012641
+      type: {class: BBParamFloatList, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
+      data:
+        Key: New FloatList
+        Value:
+        - 3.4563
+        - 46.64
+        - 64.55
+    - rid: 4459292036899012642
+      type: {class: BBParamStringList, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
+      data:
+        Key: New StringList
+        Value:
+        - gdfsg
+        - fdasfasd
+        - fdasfasd
+    - rid: 4459292036899012643
+      type: {class: BBParamVector2List, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
+      data:
+        Key: New Vector2List
+        Value:
+        - {x: 0, y: 0}
+        - {x: 546, y: 0}
+        - {x: 654, y: 0}
+        - {x: 0, y: 654}

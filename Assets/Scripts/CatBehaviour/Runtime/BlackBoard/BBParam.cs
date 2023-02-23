@@ -95,7 +95,7 @@ namespace CatBehaviour.Runtime
     {
 
     }
-    
+
     [Serializable]
     public class BBParamBoolList : BBParam<List<bool>>
     {

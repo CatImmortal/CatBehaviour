@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using CatBehaviour.Runtime;
 using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -18,7 +19,13 @@ namespace CatBehaviour.Editor
         /// </summary>
         public static Dictionary<Type, BaseBBParamDrawer>
             BBParamDrawerDict = new Dictionary<Type, BaseBBParamDrawer>();
-        
+
+        /// <summary>
+        /// 黑板参数对象 -> 可重排序列表
+        /// </summary>
+        protected static Dictionary<BBParam, ReorderableList> reorderableListDict =
+            new Dictionary<BBParam, ReorderableList>();
+
         /// <summary>
         /// 要绘制的目标黑板参数
         /// </summary>
@@ -108,6 +115,7 @@ namespace CatBehaviour.Editor
                 RecordBBParam();
                 param.Value = newValue;
             }
+           
         }
 
         protected abstract T DrawValue(T value);
@@ -217,6 +225,112 @@ namespace CatBehaviour.Editor
         protected override bool IsDirty(Vector4 value, Vector4 newValue)
         {
             return value != newValue;
+        }
+    }
+
+    /// <summary>
+    /// 黑板List参数Drawer基类
+    /// </summary>
+    public abstract class BBParamListDrawer<T> : BaseBBParamDrawer<List<T>>
+    {
+        protected override List<T> DrawValue(List<T> value)
+        {
+            if (value == null)
+            {
+                value = new List<T>();
+                Target.ValueObj = value;
+            }
+            
+            if (!reorderableListDict.TryGetValue(Target,out var list))
+            {
+                list = new ReorderableList(value, typeof(T), true, false, true, true);
+                list.drawElementCallback += (rect, index, active, focused) =>
+                {
+                    value[index] = DrawElement(rect, value[index]);
+                };
+                reorderableListDict.Add(Target,list);
+            }
+            
+            list.DoLayoutList();
+            return value;
+        }
+
+        protected override bool IsDirty(List<T> value, List<T> newValue)
+        {
+            //列表判断不了是否Dirty 因为value和newValue都是同一个列表的引用
+            return false;
+        }
+
+        protected abstract T DrawElement(Rect rect, T element);
+    }
+
+    [BBParamDrawer(BBParamType = typeof(BBParamBoolList))]
+    public class BBParamBoolListDrawer : BBParamListDrawer<bool>
+    {
+        protected override bool DrawElement(Rect rect, bool element)
+        {
+            var newValue = EditorGUI.Toggle(rect,element);
+            return newValue;
+        }
+    }
+
+    [BBParamDrawer(BBParamType = typeof(BBParamIntList))]
+    public class BBParamIntListDrawer : BBParamListDrawer<int>
+    {
+        protected override int DrawElement(Rect rect, int element)
+        {
+            var newValue = EditorGUI.IntField(rect,element);
+            return newValue;
+        }
+    }
+    
+    [BBParamDrawer(BBParamType = typeof(BBParamFloatList))]
+    public class BBParamFloatListDrawer : BBParamListDrawer<float>
+    {
+        protected override float DrawElement(Rect rect, float element)
+        {
+            var newValue = EditorGUI.FloatField(rect,element);
+            return newValue;
+        }
+    }
+    
+    [BBParamDrawer(BBParamType = typeof(BBParamStringList))]
+    public class BBParamStringListDrawer : BBParamListDrawer<string>
+    {
+        protected override string DrawElement(Rect rect, string element)
+        {
+            var newValue = EditorGUI.TextField(rect,element);
+            return newValue;
+        }
+    }
+    
+    [BBParamDrawer(BBParamType = typeof(BBParamVector2List))]
+    public class BBParamVector2ListDrawer : BBParamListDrawer<Vector2>
+    {
+        protected override Vector2 DrawElement(Rect rect, Vector2 element)
+        {
+            var newValue = EditorGUI.Vector2Field(rect, string.Empty, element);
+            return newValue;
+        }
+    }
+    
+    [BBParamDrawer(BBParamType = typeof(BBParamVector3List))]
+    public class BBParamVector3ListDrawer : BBParamListDrawer<Vector3>
+    {
+        protected override Vector3 DrawElement(Rect rect, Vector3 element)
+        {
+            var newValue = EditorGUI.Vector2Field(rect, string.Empty, element);
+            return newValue;
+        }
+    }
+    
+    [BBParamDrawer(BBParamType = typeof(BBParamVector4List))]
+    public class BBParamVector4ListDrawer : BBParamListDrawer<Vector4>
+    {
+        protected override Vector4 DrawElement(Rect rect, Vector4 element)
+        {
+            var newValue = EditorGUI.Vector2Field(rect, string.Empty, element);
+            return newValue;
         }
     }
 }
