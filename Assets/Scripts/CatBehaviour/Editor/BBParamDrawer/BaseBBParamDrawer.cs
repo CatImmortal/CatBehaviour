@@ -319,7 +319,7 @@ namespace CatBehaviour.Editor
     {
         protected override Vector3 DrawElement(Rect rect, Vector3 element)
         {
-            var newValue = EditorGUI.Vector2Field(rect, string.Empty, element);
+            var newValue = EditorGUI.Vector3Field(rect, string.Empty, element);
             return newValue;
         }
     }
@@ -329,7 +329,7 @@ namespace CatBehaviour.Editor
     {
         protected override Vector4 DrawElement(Rect rect, Vector4 element)
         {
-            var newValue = EditorGUI.Vector2Field(rect, string.Empty, element);
+            var newValue = EditorGUI.Vector4Field(rect, string.Empty, element);
             return newValue;
         }
     }

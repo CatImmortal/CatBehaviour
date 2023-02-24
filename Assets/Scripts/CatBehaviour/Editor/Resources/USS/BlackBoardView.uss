@@ -58,3 +58,29 @@ BlackboardParamKeyView Image {
 	background-color: #ff0000;
 }
 
+.parameter-BoolList {
+	background-color: #30FFFF;
+}
+
+.parameter-FloatList {
+	background-color: #2080FF;
+}
+
+.parameter-IntList {
+	background-color: #325dff;
+}
+
+.parameter-StringList {
+	background-color: #80FF80;
+}
+
+.parameter-Vector2List {
+	background-color: #ff0000;
+}
+.parameter-Vector3List {
+	background-color: #ff0000;
+}
+.parameter-Vector4List {
+	background-color: #ff0000;
+}
+

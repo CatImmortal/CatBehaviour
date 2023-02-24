@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CatBehaviour.Runtime;
 using UnityEditor;
 using UnityEngine;
@@ -89,6 +90,42 @@ namespace CatBehaviour.Editor
     
     [NodeInspector(NodeType = typeof(BBParamVector4AssignmentNode))]
     public class BBParamVector4AssignmentNodeInspector : BBParamAssignmentNodeInspector<BBParamVector4, Vector4>
+    {
+        
+    }
+    
+    [NodeInspector(NodeType = typeof(BBParamBoolListAssignmentNode))]
+    public class BBParamBoolListAssignmentNodeInspector : BBParamAssignmentNodeInspector<BBParamBoolList, List<bool>>
+    {
+        
+    }
+    
+    [NodeInspector(NodeType = typeof(BBParamIntListAssignmentNode))]
+    public class BBParamIntListAssignmentNodeInspector : BBParamAssignmentNodeInspector<BBParamIntList, List<int>>
+    {
+        
+    }
+    
+    [NodeInspector(NodeType = typeof(BBParamFloatListAssignmentNode))]
+    public class BBParamFloatListAssignmentNodeInspector : BBParamAssignmentNodeInspector<BBParamFloatList, List<float>>
+    {
+        
+    }
+    
+    [NodeInspector(NodeType = typeof(BBParamVector2ListAssignmentNode))]
+    public class BBParamVector2ListAssignmentNodeInspector : BBParamAssignmentNodeInspector<BBParamVector2List, List<Vector2>>
+    {
+        
+    }
+    
+    [NodeInspector(NodeType = typeof(BBParamVector3ListAssignmentNode))]
+    public class BBParamVector3ListAssignmentNodeInspector : BBParamAssignmentNodeInspector<BBParamVector3List, List<Vector3>>
+    {
+        
+    }
+    
+    [NodeInspector(NodeType = typeof(BBParamVector4ListAssignmentNode))]
+    public class BBParamVector4ListAssignmentNodeInspector : BBParamAssignmentNodeInspector<BBParamVector4List, List<Vector4>>
     {
         
     }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace CatBehaviour.Runtime
 {
@@ -71,6 +72,42 @@ namespace CatBehaviour.Runtime
     
     [NodeInfo(Name = "内置/黑板参数赋值/黑板参数赋值(Vector4)")]
     public class BBParamVector4AssignmentNode : BBParamAssignmentNode<BBParamVector4,Vector4>
+    {
+        
+    }
+    
+    [NodeInfo(Name = "内置/黑板参数赋值/黑板参数赋值(BoolList)")]
+    public class BBParamBoolListAssignmentNode : BBParamAssignmentNode<BBParamBoolList,List<bool>>
+    {
+        
+    }
+    
+    [NodeInfo(Name = "内置/黑板参数赋值/黑板参数赋值(IntList)")]
+    public class BBParamIntListAssignmentNode : BBParamAssignmentNode<BBParamIntList,List<int>>
+    {
+        
+    }
+    
+    [NodeInfo(Name = "内置/黑板参数赋值/黑板参数赋值(FloatList)")]
+    public class BBParamFloatListAssignmentNode : BBParamAssignmentNode<BBParamFloatList,List<float>>
+    {
+        
+    }
+    
+    [NodeInfo(Name = "内置/黑板参数赋值/黑板参数赋值(Vector2List)")]
+    public class BBParamVector2ListAssignmentNode : BBParamAssignmentNode<BBParamVector2List,List<Vector2>>
+    {
+        
+    }
+    
+    [NodeInfo(Name = "内置/黑板参数赋值/黑板参数赋值(Vector3List)")]
+    public class BBParamVector3ListAssignmentNode : BBParamAssignmentNode<BBParamVector3List,List<Vector3>>
+    {
+        
+    }
+    
+    [NodeInfo(Name = "内置/黑板参数赋值/黑板参数赋值(Vector4List)")]
+    public class BBParamVector4ListAssignmentNode : BBParamAssignmentNode<BBParamVector4List,List<Vector4>>
     {
         
     }
