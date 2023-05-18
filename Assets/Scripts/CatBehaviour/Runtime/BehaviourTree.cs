@@ -172,6 +172,11 @@ namespace CatBehaviour.Runtime
             DebugName = DebugName.Replace('/', '\\');
 #endif
             
+            foreach (BaseNode node in AllNodes)
+            {
+                node.OnBehaviourTreeStart();
+            }
+            
             RootNode.Start();
         }
 

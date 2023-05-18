@@ -21,18 +21,25 @@ namespace CatBehaviour.Runtime
 
         [NonSerialized]
         public float Timer;
-        
+
+        private Action<float> updateCallback;
+
+        public DelayNode()
+        {
+            updateCallback = OnUpdate;
+        }
+
         /// <inheritdoc />
         protected override void OnStart()
         {
             Timer = 0;
-            UpdateManager.AddUpdateTimer(OnUpdate);
+            UpdateManager.AddUpdateTimer(updateCallback);
         }
 
         /// <inheritdoc />
         protected override void OnCancel()
         {
-            UpdateManager.RemoveUpdateTimer(OnUpdate);
+            UpdateManager.RemoveUpdateTimer(updateCallback);
         }
 
         private void OnUpdate(float deltaTime)
@@ -40,7 +47,7 @@ namespace CatBehaviour.Runtime
             Timer += deltaTime;
             if (Timer >= DelayTime.Value)
             {
-                UpdateManager.RemoveUpdateTimer(OnUpdate);
+                UpdateManager.RemoveUpdateTimer(updateCallback);
                 Finish(true);
             }
         }

@@ -129,10 +129,6 @@ namespace CatBehaviour.Editor
                 
                 //根据节点路径计算level
                 string nodeName = nodeAttr.Name;
-                if (nodeName == "内置/重启行为树")
-                {
-                    int x = 1;
-                }
                 string[] parts = nodeAttr.Name.Split('/');
                 int level = 1;
                 if (parts.Length > 1)

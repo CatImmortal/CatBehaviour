@@ -37,7 +37,7 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 重复次数
         /// </summary>
-        [BBParamInfo(Name = "重复次数")]
+        [BBParamInfo(Name = "重复次数,-1表示无限次")]
         public BBParamInt repeatCount;
         
         /// <summary>
@@ -66,7 +66,7 @@ namespace CatBehaviour.Runtime
             {
                 case RepeatMode.RepeatTimes:
                     repeatCounter++;
-                    if (repeatCounter >= repeatCount.Value)
+                    if (repeatCount.Value > 0 && repeatCounter >= repeatCount.Value)
                     {
                         Finish(true);
                     }

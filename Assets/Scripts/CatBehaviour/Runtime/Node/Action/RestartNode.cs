@@ -13,7 +13,6 @@ namespace CatBehaviour.Runtime
         protected override void OnStart()
         {
             Owner.Restart();
-            Finish(true);
         }
 
         protected override void OnCancel()

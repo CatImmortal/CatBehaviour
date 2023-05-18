@@ -107,9 +107,7 @@ namespace CatBehaviour.Runtime
         {
             
         }
-
-
-
+        
         /// <summary>
         /// 清空对自身Id和父子节点Id的记录
         /// </summary>
@@ -176,6 +174,14 @@ namespace CatBehaviour.Runtime
                     fieldInfo.SetValue(this,newBBParam);
                 }
             }
+        }
+        
+        /// <summary>
+        /// 开始运行行为树时调用
+        /// </summary>
+        public virtual void OnBehaviourTreeStart()
+        {
+            
         }
         
         /// <summary>
