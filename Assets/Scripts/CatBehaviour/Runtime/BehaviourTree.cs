@@ -19,16 +19,6 @@ namespace CatBehaviour.Runtime
     public class BehaviourTree
     {
         /// <summary>
-        /// 字符串序列化器
-        /// </summary>
-        public static IStringSerializer StringSerializer { get; set; }
-        
-        /// <summary>
-        /// 二进制序列化器
-        /// </summary>
-        public static IBinarySerializer BinarySerializer { get; set; }
-
-        /// <summary>
         /// 创建子树的处理回调
         /// </summary>
         public static CreateSubTreeCallback OnCreateSubTreeCallback;
@@ -299,56 +289,6 @@ namespace CatBehaviour.Runtime
             {
                 commentBlock.RebuildNodeReference(AllNodes);
             }
-        }
-        
-       
-        /// <summary>
-        /// 序列化为字符串
-        /// </summary>
-        public string SerializeToString()
-        {
-            if (StringSerializer == null)
-            {
-                throw new Exception("试图将行为树序列化为字符串，但未设置对应的序列化器");
-            }
-            
-            PreProcessSerialize();
-            string str = StringSerializer.Serialize(this);
-            return str;
-        }
-        
-        /// <summary>
-        /// 从字符串反序列化
-        /// </summary>
-        public static BehaviourTree Deserialize(string str)
-        {
-            var bt = StringSerializer.Deserialize(str);
-            bt.PostProcessDeserialize();
-            return bt;
-        }
-
-        /// <summary>
-        /// 序列化为二进制
-        /// </summary>
-        public byte[] SerializeToBinary()
-        {
-            if (BinarySerializer == null)
-            {
-                throw new Exception("试图将行为树序列化为二进制，但未设置对应的序列化器");
-            }   
-            PreProcessSerialize();
-            byte[] bytes = BinarySerializer.Serialize(this);
-            return bytes;
-        }
-
-        /// <summary>
-        /// 从二进制反序列化
-        /// </summary>
-        public static BehaviourTree Deserialize(byte[] bytes)
-        {
-            var bt = BinarySerializer.Deserialize(bytes);
-            bt.PostProcessDeserialize();
-            return bt;
         }
         
     }
