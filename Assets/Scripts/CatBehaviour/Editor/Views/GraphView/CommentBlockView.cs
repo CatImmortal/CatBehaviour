@@ -32,7 +32,7 @@ namespace CatBehaviour.Editor
             window.RecordObject($"Create CommentBlock");
             
             CommentBlock commentBlock = new CommentBlock("注释块",pos);
-            window.GraphView.BT.CommentBlocks.Add(commentBlock);
+            window.GraphView.BTSO.CommentBlocks.Add(commentBlock);
             
             CommentBlockView view = Create(commentBlock, window,null);
             
@@ -137,7 +137,7 @@ namespace CatBehaviour.Editor
         public void RemoveSelf()
         {
             window.RecordObject($"Remove CommentBlock");
-            window.GraphView.BT.CommentBlocks.Remove(commentBlock);
+            window.GraphView.BTSO.CommentBlocks.Remove(commentBlock);
             window.GraphView.CommentBlockViews.Remove(this);
         }
         

@@ -15,7 +15,9 @@ namespace CatBehaviour.Editor
     {
         public new class UxmlFactory : UxmlFactory<BehaviourTreeGraphView, UxmlTraits> { }
         
+        public BehaviourTreeSO BTSO;
         public BehaviourTree BT;
+        
         private BehaviourTreeWindow window;
         public BlackBoardView BlackboardView;
 
@@ -193,15 +195,16 @@ namespace CatBehaviour.Editor
         /// <summary>
         /// 刷新
         /// </summary>
-        public void Refresh(BehaviourTree bt)
+        public void Refresh(BehaviourTreeSO btSO, BehaviourTree bt)
         {
+            this.BTSO = btSO;
             BT = bt;
 
             //还原位置与大小
-            if (bt.Rect != default)
+            if (btSO.ViewportRect != default)
             {
-                viewTransform.position = bt.Rect.position;
-                viewTransform.scale = new Vector3(bt.Rect.size.x,bt.Rect.size.y,1);
+                viewTransform.position = btSO.ViewportRect.position;
+                viewTransform.scale = new Vector3(btSO.ViewportRect.size.x,btSO.ViewportRect.size.y,1);
             }
             
             BlackboardView.Refresh();
@@ -249,7 +252,7 @@ namespace CatBehaviour.Editor
             BuildConnect(nodeDict,BT.AllNodes);
             
             //创建注释块
-            CreateCommentBlock(nodeDict,BT.CommentBlocks);
+            CreateCommentBlock(nodeDict,BTSO.CommentBlocks);
         }
         
         /// <summary>

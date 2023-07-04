@@ -314,4 +314,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c264a324db87d24ea8b2d7aad1cd7d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BTSO: {fileID: 11400000, guid: 02125077d43cedd40811ca1e74b5dd49, type: 2}
+  BTSO: {fileID: 0}
+  bt:
+    RootNodeId: 0
+    AllNodes: []
+    Rect:
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    InspectorWidth: 0
+    CommentBlocks: []
+    isInit: 0
+  references:
+    version: 2
+    RefIds: []

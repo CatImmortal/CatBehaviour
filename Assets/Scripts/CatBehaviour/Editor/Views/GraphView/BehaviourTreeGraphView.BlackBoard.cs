@@ -14,7 +14,7 @@ namespace CatBehaviour.Editor
             
             BBParam param = (BBParam)Activator.CreateInstance(type);
             param.ValueObj = value;
-            window.ClonedBTSO.SetParam(key,param);
+            BT.BlackBoard.SetParam(key, param);
 
             OnBlackBoardChanged?.Invoke();
         }
@@ -25,8 +25,8 @@ namespace CatBehaviour.Editor
         public void RemoveBlackBoardParam(string key)
         {
             window.RecordObject($"RemoveBlackBoard {key}");
-            
-            window.ClonedBTSO.RemoveParam(key);
+            BT.BlackBoard.RemoveParam(key);
+
             OnBlackBoardChanged?.Invoke();
         }
 

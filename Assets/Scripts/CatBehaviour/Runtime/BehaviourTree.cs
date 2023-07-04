@@ -57,7 +57,6 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 行为树调试名
         /// </summary>
-        [NonSerialized]
         public string DebugName;
         
         /// <summary>
@@ -74,28 +73,12 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 节点列表
         /// </summary>
-        [SerializeReference]
         public List<BaseNode> AllNodes = new List<BaseNode>();
 
         /// <summary>
         /// 黑板
         /// </summary>
         public BlackBoard BlackBoard = new BlackBoard();
-
-        /// <summary>
-        /// 位置与缩放
-        /// </summary>
-        public Rect Rect;
-        
-        /// <summary>
-        /// 节点属性面板宽度
-        /// </summary>
-        public float InspectorWidth;
-
-        /// <summary>
-        /// 注释块列表
-        /// </summary>
-        public List<CommentBlock> CommentBlocks = new List<CommentBlock>();
 
         /// <summary>
         /// 是否已初始化
@@ -111,7 +94,7 @@ namespace CatBehaviour.Runtime
 
         public BehaviourTree()
         {
-            resetAction = Reset;
+            resetAction = ResetNode;
         }
         
         /// <summary>
@@ -150,7 +133,7 @@ namespace CatBehaviour.Runtime
             else
             {
                 //第二次被启动 重置所有节点运行状态为Free
-                Reset();
+                ResetAllNode();
             }
             
 #if UNITY_EDITOR
@@ -193,13 +176,13 @@ namespace CatBehaviour.Runtime
             RootNode.Start();
         }
         
-        private void Reset()
+        private void ResetAllNode()
         {
-            Reset(RootNode);
+            ResetNode(RootNode);
         }
 
         
-        private void Reset(BaseNode node)
+        private void ResetNode(BaseNode node)
         {
             node.CurState = BaseNode.State.Free;
             node.ForeachChild(resetAction);
@@ -242,7 +225,7 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 序列化前的预处理
         /// </summary>
-        public void PreProcessSerialize()
+        public void SerializePreProcess()
         {
             //为所有节点建立Id 并排序子节点
             for (int i = 0; i < AllNodes.Count; i++)
@@ -262,18 +245,12 @@ namespace CatBehaviour.Runtime
             {
                 node.RebuildId();
             }
-
-            //重建注释块包含的节点id
-            foreach (var commentBlock in CommentBlocks)
-            {
-                commentBlock.RebuildId();
-            }
         }
 
         /// <summary>
-        /// 反序列化后处理
+        /// 反序列化的后处理
         /// </summary>
-        public void PostProcessDeserialize()
+        public void DeserializePostProcess()
         {
             RootNode = (RootNode)GetNode(RootNodeId);
             
@@ -282,12 +259,6 @@ namespace CatBehaviour.Runtime
                 //重建对父子节点和Owner的引用
                 node.Owner = this;
                 node.RebuildNodeReference(AllNodes);  
-            }
-            
-            //重建对注释块包含的节点的引用
-            foreach (var commentBlock in CommentBlocks)
-            {
-                commentBlock.RebuildNodeReference(AllNodes);
             }
         }
         

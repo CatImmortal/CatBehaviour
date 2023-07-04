@@ -52,7 +52,7 @@ namespace CatBehaviour.Editor
         private void OnUndoRedoPerformed()
         {
             //Debug.Log("OnUndoRedoPerformed");
-            if (ClonedBTSO == null)
+            if (curBT == null)
             {
                 return;
             }
@@ -62,7 +62,7 @@ namespace CatBehaviour.Editor
             getUndoList(undoList, out int index);
             IsModify = index != -1;
             
-            Refresh(ClonedBTSO.BT);
+            Refresh(curBT);
         }
         
         /// <summary>
@@ -79,7 +79,8 @@ namespace CatBehaviour.Editor
             {
                 return;
             }
-            Undo.RecordObject(ClonedBTSO, undoName);
+            curBTSO.Serialize(curBT);
+            Undo.RecordObject(curBTSO, undoName);
 
             IsModify = true;
         }

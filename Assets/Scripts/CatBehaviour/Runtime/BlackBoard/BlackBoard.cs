@@ -7,17 +7,13 @@ namespace CatBehaviour.Runtime
     /// <summary>
     /// 黑板
     /// </summary>
+    [Serializable]
     public class BlackBoard
     {
         /// <summary>
         /// 参数字典
         /// </summary>
         public Dictionary<string, BBParam> ParamDict = new Dictionary<string, BBParam>();
-
-        /// <summary>
-        /// 位置与大小
-        /// </summary>
-        public Rect Position;
 
 #if UNITY_EDITOR
         /// <summary>

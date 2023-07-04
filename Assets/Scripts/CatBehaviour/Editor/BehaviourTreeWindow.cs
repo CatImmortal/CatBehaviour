@@ -30,9 +30,9 @@ namespace CatBehaviour.Editor
         public BehaviourTreeGraphView GraphView;
 
         private string assetPath;
-        private BehaviourTreeSO originBTSO;
-        public BehaviourTreeSO ClonedBTSO;
-        private BehaviourTree bt;
+
+        private BehaviourTreeSO curBTSO;
+        private BehaviourTree curBT;
         
         
         /// <summary>
@@ -62,7 +62,7 @@ namespace CatBehaviour.Editor
         }
 
         /// <summary>
-        /// 通过行为树SO路径打开窗口
+        /// 通过行为树SO资源路径打开窗口
         /// </summary>
         private static void OpenFromAssetPath(string assetPath)
         {
@@ -146,11 +146,10 @@ namespace CatBehaviour.Editor
                 dropdownField.SetValueWithoutNotify(assetPath.Replace('/','\\'));
                 objField.value = AssetDatabase.LoadAssetAtPath<BehaviourTreeSO>(assetPath);
             }
-            if (ClonedBTSO != null)
+            if (curBTSO != null)
             {
-                Refresh(ClonedBTSO.BT);
+                Refresh(curBTSO.Deserialize());
             }
-            
         }
         
         private void OnDisable()
@@ -159,9 +158,9 @@ namespace CatBehaviour.Editor
             ClearAllRecord();
             
             //记录一些信息 用于编译后的窗口还原
-            bt.InspectorWidth = splitView.Q("left").layout.width;
-            bt.Rect = new Rect(GraphView.viewTransform.position, GraphView.viewTransform.scale);
-            bt.BlackBoard.Position = GraphView.BlackboardView.GetPosition();
+            curBTSO.InspectorWidth = splitView.Q("left").layout.width;
+            curBTSO.ViewportRect = new Rect(GraphView.viewTransform.position, GraphView.viewTransform.scale);
+            curBTSO.BlackBoardRect = GraphView.BlackboardView.GetPosition();
         }
         
 
@@ -206,21 +205,18 @@ namespace CatBehaviour.Editor
         {
             this.assetPath = assetPath;
             BehaviourTree bt = null;
+            
+            //加载行为树SO 反序列化出行为树来
             if (!string.IsNullOrEmpty(assetPath))
             {
-
-                originBTSO = AssetDatabase.LoadAssetAtPath<BehaviourTreeSO>(assetPath);
-                if (originBTSO != null)
+                curBTSO = AssetDatabase.LoadAssetAtPath<BehaviourTreeSO>(assetPath);
+                if (curBTSO != null)
                 {
-                    //深拷贝一份用于编辑
-                    ClonedBTSO = Instantiate(originBTSO);
-                    bt = ClonedBTSO.BT;
+                    bt = curBTSO.Deserialize();
                 }
-
-                // int index = dropdownField.choices.IndexOf(assetPath.Replace('/', '\\'));
-                // dropdownField.index = index;
+                
                 dropdownField.SetValueWithoutNotify(assetPath.Replace('/','\\'));
-                objField.value = originBTSO;
+                objField.value = curBTSO;
             }
 
 
@@ -254,16 +250,15 @@ namespace CatBehaviour.Editor
                 };
                 bt.AllNodes.Add(bt.RootNode);
                 
-                ClonedBTSO = CreateInstance<BehaviourTreeSO>();
-                ClonedBTSO.BT = bt;
+                curBTSO = CreateInstance<BehaviourTreeSO>();
+                curBTSO.Serialize(bt);
             }
             
-            this.bt = bt;
-
+            curBT = bt;
             //设置节点属性面板的宽度
-            if (bt.InspectorWidth != 0)
+            if (curBTSO.InspectorWidth != 0)
             {
-                splitView.fixedPaneInitialDimension = bt.InspectorWidth;
+                splitView.fixedPaneInitialDimension = curBTSO.InspectorWidth;
             }
             else
             {
@@ -272,7 +267,7 @@ namespace CatBehaviour.Editor
 
             //GraphView刷新期间 不记录任何修改
             canRecord = false;
-            GraphView.Refresh(bt);
+            GraphView.Refresh(curBTSO,curBT);
             canRecord = true;
         }
         
@@ -289,7 +284,7 @@ namespace CatBehaviour.Editor
         /// </summary>
         private void Save(bool isSaveAs)
         {
-            if (originBTSO == null || isSaveAs)
+            if (string.IsNullOrEmpty(assetPath) || isSaveAs)
             {
                 //是新建的 或者另存为
                 string path = EditorUtility.SaveFilePanelInProject("选择保存位置", "BehaviourTree", "asset", "");
@@ -302,8 +297,11 @@ namespace CatBehaviour.Editor
                 AssetDatabase.DeleteAsset(path);
                 
                 assetPath = path;
-                originBTSO = ClonedBTSO;
-                AssetDatabase.CreateAsset(originBTSO,path);
+                curBTSO = CreateInstance<BehaviourTreeSO>();
+                curBTSO.Serialize(curBT);
+                
+                AssetDatabase.CreateAsset(curBTSO,path);
+                
             }
             else
             {
@@ -312,23 +310,21 @@ namespace CatBehaviour.Editor
                     return;
                 }
 
-                originBTSO.BT = ClonedBTSO.BT;
-                originBTSO.BBParams = ClonedBTSO.BBParams;
-                originBTSO.BlackBoardRect = ClonedBTSO.BlackBoardRect;
+                curBTSO.Serialize(curBT);
             }
             
             
             //记录属性面板宽度
-            bt.InspectorWidth = splitView.Q("left").layout.width;
+            curBTSO.InspectorWidth = splitView.Q("left").layout.width;
             
             //记录节点图位置
-            bt.Rect = new Rect(GraphView.viewTransform.position, GraphView.viewTransform.scale);
+            curBTSO.ViewportRect = new Rect(GraphView.viewTransform.position, GraphView.viewTransform.scale);
 
             //记录黑板位置
-            bt.BlackBoard.Position = GraphView.BlackboardView.GetPosition();
+            curBTSO.BlackBoardRect = GraphView.BlackboardView.GetPosition();
             
-            //保存原始SO
-            EditorUtility.SetDirty(originBTSO);
+            //保存SO
+            EditorUtility.SetDirty(curBTSO);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
@@ -345,8 +341,8 @@ namespace CatBehaviour.Editor
         private void New()
         {
             assetPath = null;
-            originBTSO = null;
-            bt = null;
+            curBTSO = null;
+            curBT = null;
             dropdownField.index = -1;
             objField.value = null;
             RefreshFromAssetPath(null);

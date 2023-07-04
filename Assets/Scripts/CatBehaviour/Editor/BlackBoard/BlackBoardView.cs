@@ -45,9 +45,9 @@ namespace CatBehaviour.Editor
         
         public override void Refresh()
         {
-            if (graphView.BT.BlackBoard.Position != default)
+            if (graphView.BTSO.BlackBoardRect != default)
             {
-                SetPosition(graphView.BT.BlackBoard.Position);
+                SetPosition(graphView.BTSO.BlackBoardRect);
             }
             UpdateContent();
         }
@@ -145,8 +145,7 @@ namespace CatBehaviour.Editor
             
             SetPosition(newPos);
             
-            graphView.BT.BlackBoard.Position = newPos;
-            window.ClonedBTSO.BlackBoardRect = newPos;
+            graphView.BTSO.BlackBoardRect = newPos;
         }
     }
 }
