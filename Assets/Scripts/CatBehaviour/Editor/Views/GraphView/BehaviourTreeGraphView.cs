@@ -197,7 +197,7 @@ namespace CatBehaviour.Editor
         /// </summary>
         public void Refresh(BehaviourTreeSO btSO, BehaviourTree bt)
         {
-            this.BTSO = btSO;
+            BTSO = btSO;
             BT = bt;
 
             //还原位置与大小

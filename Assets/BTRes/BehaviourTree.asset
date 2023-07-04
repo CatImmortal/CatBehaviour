@@ -25,17 +25,52 @@ MonoBehaviour:
     y: 30
     width: 250
     height: 250
+  RootNodeId: 1
   AllNodes:
-  - rid: 885630327081926666
-  BBParams: []
+  - rid: 885630327343284269
+  - rid: 885630327343284270
+  - rid: 885630327343284271
+  BBParams:
+  - rid: 885630327343284272
+  - rid: 885630327343284273
+  - rid: 885630327343284274
   CommentBlocks: []
   references:
     version: 2
     RefIds:
-    - rid: 885630327081926666
+    - rid: 885630327343284269
       type: {class: RootNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
       data:
         Id: 1
         Position: {x: 500, y: 100}
         ParentNodeId: 0
-        ChildId: 0
+        ChildId: 2
+    - rid: 885630327343284270
+      type: {class: ParallelNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
+      data:
+        Id: 2
+        Position: {x: 483, y: 228}
+        ParentNodeId: 1
+        ChildIdList: 03000000
+        Condition: 0
+    - rid: 885630327343284271
+      type: {class: CancelNode, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
+      data:
+        Id: 3
+        Position: {x: 437, y: 416}
+        ParentNodeId: 2
+    - rid: 885630327343284272
+      type: {class: BBParamBool, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
+      data:
+        Key: New Bool
+        Value: 0
+    - rid: 885630327343284273
+      type: {class: BBParamInt, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
+      data:
+        Key: New Int
+        Value: 0
+    - rid: 885630327343284274
+      type: {class: BBParamFloat, ns: CatBehaviour.Runtime, asm: CatBehaviour.Runtime}
+      data:
+        Key: New Float
+        Value: 0

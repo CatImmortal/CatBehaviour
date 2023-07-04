@@ -22,6 +22,11 @@ namespace CatBehaviour.Runtime
         /// 黑板位置与大小
         /// </summary>
         public Rect BlackBoardRect;
+
+        /// <summary>
+        /// 根节点ID
+        /// </summary>
+        public int RootNodeId;
         
         /// <summary>
         /// 节点列表
@@ -44,6 +49,7 @@ namespace CatBehaviour.Runtime
         {
             
             behaviourTree.SerializePreProcess();
+            RootNodeId = behaviourTree.RootNodeId;
             AllNodes = behaviourTree.AllNodes;
             
             //黑板参数
@@ -64,6 +70,7 @@ namespace CatBehaviour.Runtime
         public BehaviourTree Deserialize()
         {
             BehaviourTree behaviourTree = new BehaviourTree();
+            behaviourTree.RootNodeId = RootNodeId;
             behaviourTree.AllNodes = AllNodes;
             behaviourTree.DeserializePostProcess();
             
