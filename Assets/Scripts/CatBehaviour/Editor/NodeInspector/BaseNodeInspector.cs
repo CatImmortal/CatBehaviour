@@ -12,7 +12,8 @@ namespace CatBehaviour.Editor
     /// </summary>
     public class BaseNodeInspector
     {
-
+        public BehaviourTreeSO BTSO;
+        
         /// <summary>
         /// 要绘制的目标节点
         /// </summary>
@@ -72,7 +73,7 @@ namespace CatBehaviour.Editor
                 if (BaseBBParamDrawer.BBParamDrawerDict.TryGetValue(fieldInfo.FieldType,out var drawer))
                 {
                     drawer.Target = bbParam;
-                    drawer.OnGUI(Target.Owner,true);
+                    drawer.OnGUI(BTSO,true);
                 }
 
                 EditorGUILayout.Space();

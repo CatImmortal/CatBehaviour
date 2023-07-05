@@ -9,11 +9,11 @@ namespace CatBehaviour.Editor
         /// <summary>
         /// 绘制指定Value类型的黑板Key的下拉选择菜单
         /// </summary>
-        public static (int, string) DrawBBParamKeyPopup(BlackBoard blackBoard, Type paramType, string label,
+        public static (int, string) DrawBBParamKeyPopup(BehaviourTreeSO btSO, Type paramType, string label,
             int curIndex, string curKey)
 
         {
-            var keys = blackBoard.GetKeys(paramType);
+            var keys = btSO.GetParamKeys(paramType);
             return DrawBBParamKeyPopup(keys, label, curIndex, curKey);
         }
 

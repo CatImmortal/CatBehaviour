@@ -19,7 +19,7 @@ namespace CatBehaviour.Editor
 
             //选择要比较的黑板参数Key
             var (curIndex, curKey) =
-                BBParamDrawerHelper.DrawBBParamKeyPopup(Target.BlackBoard.GetKeys(typeof(T)), string.Empty,
+                BBParamDrawerHelper.DrawBBParamKeyPopup(BTSO.GetParamKeys(typeof(T)), string.Empty,
                     selectedKeyIndex, node.Key);
             selectedKeyIndex = curIndex;
             node.Key = curKey;
@@ -47,7 +47,7 @@ namespace CatBehaviour.Editor
                 node.OtherBBParam = new T();
             }
             drawer.Target = node.OtherBBParam;
-            drawer.OnGUI(Target.Owner,true);
+            drawer.OnGUI(BTSO,true);
             
             
         }

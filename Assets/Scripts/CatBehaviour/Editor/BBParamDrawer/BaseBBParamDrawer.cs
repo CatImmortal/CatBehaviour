@@ -65,7 +65,7 @@ namespace CatBehaviour.Editor
         /// <summary>
         /// 基于IMGUI绘制黑板值
         /// </summary>
-        public virtual void OnGUI(BehaviourTree bt,bool isInspector)
+        public virtual void OnGUI(BehaviourTreeSO btSO,bool isInspector)
         {
             using (new EditorGUILayout.HorizontalScope())
             {
@@ -73,7 +73,7 @@ namespace CatBehaviour.Editor
                 {
                     //在节点属性面板下 绘制选择黑板key下拉菜单
                     var (curIndex, curKey) =
-                        BBParamDrawerHelper.DrawBBParamKeyPopup(bt.BlackBoard,Target.GetType(), "黑板Key:",
+                        BBParamDrawerHelper.DrawBBParamKeyPopup(btSO,Target.GetType(), "黑板Key:",
                             selectedKeyIndex, Target.Key);
                     selectedKeyIndex = curIndex;
                     Target.Key = curKey;

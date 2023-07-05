@@ -88,7 +88,7 @@ namespace CatBehaviour.Editor
                 //修复commentBlock.Nodes未知原因被清空的问题
                 if (commentBlock.NodeIds.Count > 0 && commentBlock.Nodes.Count == 0)
                 {
-                    commentBlock.RebuildNodeReference(window.GraphView.BT.AllNodes);
+                    commentBlock.RebuildNodeReference(window.GraphView.BTSO.AllNodes);
                 }
                 
                 foreach (BaseNode node in commentBlock.Nodes)

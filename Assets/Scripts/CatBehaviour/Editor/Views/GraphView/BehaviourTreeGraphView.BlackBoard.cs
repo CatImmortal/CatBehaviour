@@ -14,8 +14,7 @@ namespace CatBehaviour.Editor
             
             BBParam param = (BBParam)Activator.CreateInstance(type);
             param.ValueObj = value;
-            BT.BlackBoard.SetParam(key, param);
-
+            BTSO.SetParam(key, param);
             OnBlackBoardChanged?.Invoke();
         }
 
@@ -25,7 +24,7 @@ namespace CatBehaviour.Editor
         public void RemoveBlackBoardParam(string key)
         {
             window.RecordObject($"RemoveBlackBoard {key}");
-            BT.BlackBoard.RemoveParam(key);
+            BTSO.RemoveParam(key);
 
             OnBlackBoardChanged?.Invoke();
         }
@@ -35,15 +34,15 @@ namespace CatBehaviour.Editor
         /// </summary>
         public bool RenameBlackBoardParam(string oldKey, string newKey, BBParam param)
         {
-            if (BT.BlackBoard.ParamDict.ContainsKey(newKey))
+            if (BTSO.ContainsParamKey(newKey))
             {
                 return false;
             }
             
             window.RecordObject($"RenameBlackBoard {oldKey} -> {newKey}");
             
-            BT.BlackBoard.RemoveParam(oldKey);
-            BT.BlackBoard.SetParam(newKey,param);
+            BTSO.RemoveParam(oldKey);
+            BTSO.SetParam(newKey,param);
 
             return true;
         }

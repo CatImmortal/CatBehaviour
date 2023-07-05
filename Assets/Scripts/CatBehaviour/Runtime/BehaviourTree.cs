@@ -188,25 +188,7 @@ namespace CatBehaviour.Runtime
             node.ForeachChild(resetAction);
         }
 
-        /// <summary>
-        /// 创建行为树节点
-        /// </summary>
-        public BaseNode CreateNode(Type nodeType)
-        {
-            BaseNode node = (BaseNode)Activator.CreateInstance(nodeType);
-            node.Owner = this;
-            AllNodes.Add(node);
-            return node;
-        }
-
-        /// <summary>
-        /// 删除行为树节点
-        /// </summary>
-        public void RemoveNode(BaseNode node)
-        {
-            node.Owner = null;
-            AllNodes.Remove(node);
-        }
+        
         
         /// <summary>
         /// 获取行为树节点

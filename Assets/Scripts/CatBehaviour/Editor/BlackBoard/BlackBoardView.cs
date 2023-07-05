@@ -101,7 +101,7 @@ namespace CatBehaviour.Editor
         {
             string uniqueKey = key;
             int i = 0;
-            var keys = graphView.BT.BlackBoard.ParamDict.Keys;
+            var keys = graphView.BTSO.GetAllParamKey();
             while (keys.Any(e => e == key))
             {
                 key = uniqueKey + " " + i++;
@@ -117,17 +117,13 @@ namespace CatBehaviour.Editor
         {
             content.Clear();
 
-            var keyList = graphView.BT.BlackBoard.ParamDict.Keys.ToList();
-            keyList.Sort();
-
-            foreach (string key in keyList)
+            foreach (BBParam param in graphView.BTSO.BBParams)
             {
-                BBParam value = graphView.BT.BlackBoard.ParamDict[key];
-                Type type = value.GetType();
+                Type type = param.GetType();
                 string typeName = BBParam.GetBBParamTypeName(type);
-                var keyView = new BlackboardParamKeyView(graphView, value, key, typeName);
+                var keyView = new BlackboardParamKeyView(graphView, param, param.Key, typeName);
                 var valueView = new BlackboardParamValueView();
-                valueView.DrawValue(value);
+                valueView.DrawValue(param);
                 var row = new BlackboardRow(keyView,valueView);
                 row.expanded = true;
 

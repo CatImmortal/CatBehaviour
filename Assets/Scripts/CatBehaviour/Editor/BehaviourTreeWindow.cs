@@ -31,8 +31,8 @@ namespace CatBehaviour.Editor
 
         private string assetPath;
 
+        private BehaviourTreeSO originBTSO;
         private BehaviourTreeSO curBTSO;
-        private BehaviourTree curBT;
         
         
         /// <summary>
@@ -148,7 +148,7 @@ namespace CatBehaviour.Editor
             }
             if (curBTSO != null)
             {
-                Refresh(curBTSO.Deserialize());
+                Refresh(curBTSO);
             }
         }
         
@@ -204,23 +204,23 @@ namespace CatBehaviour.Editor
         private void RefreshFromAssetPath(string assetPath)
         {
             this.assetPath = assetPath;
-            BehaviourTree bt = null;
-            
-            //加载行为树SO 反序列化出行为树来
+
+            //加载行为树SO
             if (!string.IsNullOrEmpty(assetPath))
             {
-                curBTSO = AssetDatabase.LoadAssetAtPath<BehaviourTreeSO>(assetPath);
-                if (curBTSO != null)
+                originBTSO = AssetDatabase.LoadAssetAtPath<BehaviourTreeSO>(assetPath);
+                if (originBTSO != null)
                 {
-                    bt = curBTSO.Deserialize();
+                    //深拷贝一份用于编辑
+                    curBTSO = Instantiate(originBTSO);
                 }
                 
                 dropdownField.SetValueWithoutNotify(assetPath.Replace('/','\\'));
-                objField.value = curBTSO;
+                objField.value = originBTSO;
             }
 
 
-            Refresh(bt);
+            Refresh(curBTSO);
         }
 
         /// <summary>
@@ -230,19 +230,23 @@ namespace CatBehaviour.Editor
         {
             int index = dropdownField.choices.IndexOf(debugBT.DebugName.Replace('/','\\'));
             dropdownField.index = index;
-            
-            Refresh(debugBT);
+
+            //将debugBT转换为btSO
+            var btSO = CreateInstance<BehaviourTreeSO>();
+            btSO.Serialize(debugBT);
+                
+            Refresh(btSO);
         }
         
         /// <summary>
         /// 刷新
         /// </summary>
-        private void Refresh(BehaviourTree bt)
+        private void Refresh(BehaviourTreeSO btSO)
         {
-            //若传入的行为树为空则创建个默认的
-            if (bt == null)
+            //若传入的行为树SO为空则创建个默认的
+            if (btSO == null)
             {
-                bt = new BehaviourTree();
+                var bt = new BehaviourTree();
                 bt.RootNode = new RootNode
                 {
                     Position = new Vector2(GraphView.contentContainer.layout.position.x + 500, GraphView.contentContainer.layout.position.y + 100),
@@ -250,11 +254,17 @@ namespace CatBehaviour.Editor
                 };
                 bt.AllNodes.Add(bt.RootNode);
                 
-                curBTSO = CreateInstance<BehaviourTreeSO>();
-                curBTSO.Serialize(bt);
+                btSO = CreateInstance<BehaviourTreeSO>();
+                btSO.Serialize(bt);
             }
-            
-            curBT = bt;
+            else
+            {
+                //重建节点引用
+                btSO.Deserialize();
+            }
+
+            curBTSO = btSO;
+
             //设置节点属性面板的宽度
             if (curBTSO.InspectorWidth != 0)
             {
@@ -267,7 +277,7 @@ namespace CatBehaviour.Editor
 
             //GraphView刷新期间 不记录任何修改
             canRecord = false;
-            GraphView.Refresh(curBTSO,curBT);
+            GraphView.Refresh(curBTSO);
             canRecord = true;
         }
         
@@ -276,7 +286,7 @@ namespace CatBehaviour.Editor
         /// </summary>
         public void OnNodeClick(NodeView nodeView)
         {
-            NodeInspector.DrawInspector(nodeView);
+            NodeInspector.DrawInspector(curBTSO, nodeView);
         }
         
         /// <summary>
@@ -284,7 +294,7 @@ namespace CatBehaviour.Editor
         /// </summary>
         private void Save(bool isSaveAs)
         {
-            if (string.IsNullOrEmpty(assetPath) || isSaveAs)
+            if (originBTSO == null || isSaveAs)
             {
                 //是新建的 或者另存为
                 string path = EditorUtility.SaveFilePanelInProject("选择保存位置", "BehaviourTree", "asset", "");
@@ -297,11 +307,7 @@ namespace CatBehaviour.Editor
                 AssetDatabase.DeleteAsset(path);
                 
                 assetPath = path;
-                curBTSO = CreateInstance<BehaviourTreeSO>();
-                curBTSO.Serialize(curBT);
-                
                 AssetDatabase.CreateAsset(curBTSO,path);
-                
             }
             else
             {
@@ -309,22 +315,23 @@ namespace CatBehaviour.Editor
                 {
                     return;
                 }
-
-                curBTSO.Serialize(curBT);
+                
+                originBTSO.AllNodes = curBTSO.AllNodes;
+                originBTSO.BBParams = curBTSO.BBParams;
+                originBTSO.CommentBlocks = curBTSO.CommentBlocks;
             }
             
-            
             //记录属性面板宽度
-            curBTSO.InspectorWidth = splitView.Q("left").layout.width;
+            originBTSO.InspectorWidth = splitView.Q("left").layout.width;
             
             //记录节点图位置
-            curBTSO.ViewportRect = new Rect(GraphView.viewTransform.position, GraphView.viewTransform.scale);
+            originBTSO.ViewportRect = new Rect(GraphView.viewTransform.position, GraphView.viewTransform.scale);
 
             //记录黑板位置
-            curBTSO.BlackBoardRect = GraphView.BlackboardView.GetPosition();
+            originBTSO.BlackBoardRect = GraphView.BlackboardView.GetPosition();
             
-            //保存SO
-            EditorUtility.SetDirty(curBTSO);
+            originBTSO.BuildNodeId();
+            EditorUtility.SetDirty(originBTSO);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
@@ -342,7 +349,7 @@ namespace CatBehaviour.Editor
         {
             assetPath = null;
             curBTSO = null;
-            curBT = null;
+            originBTSO = null;
             dropdownField.index = -1;
             objField.value = null;
             RefreshFromAssetPath(null);

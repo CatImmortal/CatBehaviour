@@ -42,7 +42,7 @@ namespace CatBehaviour.Editor
         /// <summary>
         /// 绘制节点检查器面板
         /// </summary>
-        public void DrawInspector(NodeView nodeView)
+        public void DrawInspector(BehaviourTreeSO btSO, NodeView nodeView)
         {
             CurSelectNodeView = nodeView;
             
@@ -55,6 +55,8 @@ namespace CatBehaviour.Editor
             {
                 nodeInspector = nodeInspectorDict[nodeType];
             }
+
+            nodeInspector.BTSO = btSO;
             nodeInspector.Target = nodeView.RuntimeNode;
             
             //绘制节点属性面板

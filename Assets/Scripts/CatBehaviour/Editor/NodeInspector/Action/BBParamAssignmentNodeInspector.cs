@@ -21,7 +21,7 @@ namespace CatBehaviour.Editor
             //选择要赋值的黑板参数Key
 
             var (curIndex, curKey) =
-                BBParamDrawerHelper.DrawBBParamKeyPopup(Target.BlackBoard.GetKeys(typeof(T)), "要赋值的黑板Key:",
+                BBParamDrawerHelper.DrawBBParamKeyPopup(BTSO.GetParamKeys(typeof(T)), "要赋值的黑板Key:",
                     selectedKeyIndex, node.Key);
             selectedKeyIndex = curIndex;
             node.Key = curKey;
@@ -48,7 +48,7 @@ namespace CatBehaviour.Editor
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("数据源:");
             drawer.Target = node.OtherBBParam;
-            drawer.OnGUI(Target.Owner,true);
+            drawer.OnGUI(BTSO,true);
         }
     }
 

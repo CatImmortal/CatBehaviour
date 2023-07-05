@@ -53,7 +53,7 @@ namespace CatBehaviour.Editor
         {
             window.RecordObject($"Create {type.Name} Node");
             
-            BaseNode runtimeNode = window.GraphView.BT.CreateNode(type);
+            BaseNode runtimeNode = window.GraphView.BTSO.CreateNode(type);
             runtimeNode.Position = pos;
 
             NodeView nodeView = new NodeView();
@@ -369,7 +369,7 @@ namespace CatBehaviour.Editor
         {
             window.RecordObject($"RemoveNode {this}");
             
-            window.GraphView.BT.RemoveNode(RuntimeNode);
+            window.GraphView.BTSO.RemoveNode(RuntimeNode);
         }
 
         public override string ToString()

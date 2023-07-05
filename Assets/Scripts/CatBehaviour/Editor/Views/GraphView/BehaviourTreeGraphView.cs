@@ -16,8 +16,7 @@ namespace CatBehaviour.Editor
         public new class UxmlFactory : UxmlFactory<BehaviourTreeGraphView, UxmlTraits> { }
         
         public BehaviourTreeSO BTSO;
-        public BehaviourTree BT;
-        
+
         private BehaviourTreeWindow window;
         public BlackBoardView BlackboardView;
 
@@ -195,10 +194,9 @@ namespace CatBehaviour.Editor
         /// <summary>
         /// 刷新
         /// </summary>
-        public void Refresh(BehaviourTreeSO btSO, BehaviourTree bt)
+        public void Refresh(BehaviourTreeSO btSO)
         {
             BTSO = btSO;
-            BT = bt;
 
             //还原位置与大小
             if (btSO.ViewportRect != default)
@@ -246,10 +244,10 @@ namespace CatBehaviour.Editor
             CommentBlockViews.Clear();
             
             //创建节点
-            CreateGraphNode(nodeDict,BT.AllNodes);
+            CreateGraphNode(nodeDict,BTSO.AllNodes);
             
             //根据父子关系连线
-            BuildConnect(nodeDict,BT.AllNodes);
+            BuildConnect(nodeDict,BTSO.AllNodes);
             
             //创建注释块
             CreateCommentBlock(nodeDict,BTSO.CommentBlocks);

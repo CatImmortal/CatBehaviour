@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CatBehaviour.Runtime
 {
     /// <summary>
-    /// 基于Unity ScriptableObject的序列化数据提供者
+    /// 基于Unity ScriptableObject的行为树序列化数据提供者
     /// </summary>
     public class BehaviourTreeSO : ScriptableObject, IBehaviourTreeSerializeDataProvider
     {
@@ -39,12 +40,12 @@ namespace CatBehaviour.Runtime
         /// </summary>
         [SerializeReference] 
         public List<BBParam> BBParams = new List<BBParam>();
-        
+
         /// <summary>
         /// 注释块列表
         /// </summary>
         public List<CommentBlock> CommentBlocks = new List<CommentBlock>();
-        
+
         public void Serialize(BehaviourTree behaviourTree)
         {
             
@@ -60,7 +61,6 @@ namespace CatBehaviour.Runtime
             }
             
             //重建注释块包含的节点id
-            CommentBlocks.Clear();
             foreach (var commentBlock in CommentBlocks)
             {
                 commentBlock.RebuildId();
@@ -89,7 +89,142 @@ namespace CatBehaviour.Runtime
 
             return behaviourTree;
         }
+        
+#if UNITY_EDITOR
+        
+        /// <summary>
+        /// 创建行为树节点
+        /// </summary>
+        public BaseNode CreateNode(Type nodeType)
+        {
+            BaseNode node = (BaseNode)Activator.CreateInstance(nodeType);
+            AllNodes.Add(node);
+            return node;
+        }
 
+        /// <summary>
+        /// 删除行为树节点
+        /// </summary>
+        public void RemoveNode(BaseNode node)
+        {
+            AllNodes.Remove(node);
+        }
 
+        /// <summary>
+        /// 构建节点Id
+        /// </summary>
+        public void BuildNodeId()
+        {
+            //为所有节点建立Id 并排序子节点
+            for (int i = 0; i < AllNodes.Count; i++)
+            {
+                int id = i + 1;
+                BaseNode node = AllNodes[i];
+                node.Id = id;   
+                node.SortChild();
+            }
+            
+            foreach (BaseNode node in AllNodes)
+            {
+                node.RebuildId();
+            }
+            
+            foreach (var commentBlock in CommentBlocks)
+            {
+                commentBlock.RebuildId();
+            }
+        }
+
+        /// <summary>
+        /// 获取所有黑板参数key
+        /// </summary>
+        public List<string> GetAllParamKey()
+        {
+            List<string> keyList = new List<string>();
+            foreach (var param in BBParams)
+            {
+                keyList.Add(param.Key);
+            }
+
+            return keyList;
+        }
+
+        /// <summary>
+        /// 根据类型获取黑板参数key数组
+        /// </summary>
+        public string[] GetParamKeys(Type type)
+        {
+            List<string> keyList = new List<string>();
+            
+            for (int i = 0; i < BBParams.Count; i++)
+            {
+                var param = BBParams[i];
+                if (param.GetType() == type)
+                {
+                    keyList.Add(param.Key);
+                }
+            }
+            
+            keyList.Sort();
+            keyList.Insert(0,"Null");
+
+            return keyList.ToArray();
+        }
+
+        /// <summary>
+        /// 是否包含黑板参数Key
+        /// </summary>
+        public bool ContainsParamKey(string key)
+        {
+            for (int i = 0; i < BBParams.Count; i++)
+            {
+                if (BBParams[i].Key == key)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        
+        /// <summary>
+        /// 设置黑板参数
+        /// </summary>
+        public void SetParam(string key, BBParam param)
+        {
+            if (param == null)
+            {
+                return;
+            }
+
+            param.Key = key;
+            
+            for (int i = 0; i < BBParams.Count; i++)
+            {
+                if (BBParams[i].Key == key)
+                {
+                    BBParams[i] = param;
+                    return;
+                }
+            }
+            
+            BBParams.Add(param);
+        }
+        
+        /// <summary>
+        /// 移除黑板参数
+        /// </summary>
+        public void RemoveParam(string key)
+        {
+            for (int i = BBParams.Count - 1; i >= 0; i--)
+            {
+                if (BBParams[i].Key == key)
+                {
+                    BBParams.RemoveAt(i);
+                    return;
+                }
+            }
+        }
+#endif
     }
 }

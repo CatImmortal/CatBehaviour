@@ -110,10 +110,9 @@ namespace CatBehaviour.Editor
             foreach (JsonElement jsonElement in copyPasteData.CopiedNodes)
             {
                 BaseNode node = JsonSerializer.DeserializeNode(jsonElement);
-                node.Owner = BT;
                 node.Position += new Vector2(100, 100);  //被复制的节点 位置要做一点偏移量
                 
-                BT.AllNodes.Add(node);
+                BTSO.AllNodes.Add(node);
                 allNodes.Add(node);
             }
             //恢复父子节点的引用
