@@ -90,6 +90,16 @@ namespace CatBehaviour.Runtime
             return behaviourTree;
         }
         
+        /// <summary>
+        /// 复制行为树
+        /// </summary>
+        public BehaviourTree CloneBehaviourTree()
+        {
+            var instance = Instantiate(this);
+            var bt = instance.Deserialize();
+            return bt;
+        }
+        
 #if UNITY_EDITOR
         
         /// <summary>
