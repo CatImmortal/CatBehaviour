@@ -59,12 +59,6 @@ namespace CatBehaviour.Runtime
             {
                 BBParams.Add(pair.Value);
             }
-            
-            //重建注释块包含的节点id
-            foreach (var commentBlock in CommentBlocks)
-            {
-                commentBlock.RebuildId();
-            }
         }
 
         public BehaviourTree Deserialize()
