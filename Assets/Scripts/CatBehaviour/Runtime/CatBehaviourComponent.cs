@@ -7,7 +7,7 @@ namespace CatBehaviour.Runtime
     {
         private void Update()
         {
-            BehaviourTree.OnUpdate(Time.deltaTime);
+            UpdateManager.OnUpdate(Time.deltaTime);
         }
     }
 }

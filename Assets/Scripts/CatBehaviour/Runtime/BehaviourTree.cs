@@ -18,6 +18,13 @@ namespace CatBehaviour.Runtime
     [Serializable]
     public class BehaviourTree
     {
+        static BehaviourTree()
+        {
+            GameObject go = new GameObject();
+            go.AddComponent<CatBehaviourComponent>();
+            go.hideFlags = HideFlags.HideInHierarchy;
+        }
+        
         /// <summary>
         /// 创建子树的处理回调
         /// </summary>
@@ -86,11 +93,6 @@ namespace CatBehaviour.Runtime
         private bool isInit;
         
         private Action<BaseNode> resetAction;
-
-        public static void OnUpdate(float deltaTime)
-        {
-            UpdateManager.OnUpdate(deltaTime);
-        }
 
         public BehaviourTree()
         {

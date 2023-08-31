@@ -57,8 +57,6 @@
                 child.Cancel();
             }
         }
-
-        
         
         /// <inheritdoc />
         protected override void OnChildFinished(BaseNode child, bool success)

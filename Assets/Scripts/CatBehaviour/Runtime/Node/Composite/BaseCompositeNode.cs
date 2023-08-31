@@ -66,6 +66,20 @@ namespace CatBehaviour.Runtime
                 action?.Invoke(child);
             }
         }
+        
+        /// <inheritdoc />
+        public override void SortChild()
+        {
+            Children.Sort((a, b) =>
+            {
+                if (Math.Abs(a.Position.x - b.Position.x) > float.Epsilon)
+                {
+                    return a.Position.x.CompareTo(b.Position.x);
+                }
+
+                return a.Id.CompareTo(b.Id);
+            });
+        }
 
         /// <inheritdoc />
         public override void ClearId()
@@ -102,20 +116,6 @@ namespace CatBehaviour.Runtime
                 BaseNode child = allNodes[childId - 1];
                 AddChild(child);
             }
-        }
-
-        /// <inheritdoc />
-        public override void SortChild()
-        {
-            Children.Sort((a, b) =>
-            {
-                if (Math.Abs(a.Position.x - b.Position.x) > float.Epsilon)
-                {
-                    return a.Position.x.CompareTo(b.Position.x);
-                }
-
-                return a.Id.CompareTo(b.Id);
-            });
         }
     }
 }

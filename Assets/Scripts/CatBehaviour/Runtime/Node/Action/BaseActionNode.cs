@@ -9,8 +9,6 @@ namespace CatBehaviour.Runtime
     [ChildCapacityInfo(Capacity = ChildCapacity.None)]
     public abstract class BaseActionNode : BaseNode
     {
-
-        
         /// <inheritdoc />
         public sealed override void AddChild(BaseNode child)
         {

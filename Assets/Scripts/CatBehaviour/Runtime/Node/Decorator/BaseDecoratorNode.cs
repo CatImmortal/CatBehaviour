@@ -109,6 +109,7 @@ namespace CatBehaviour.Runtime
             Child.Cancel();
         }
         
+        /// <inheritdoc />
         protected override void OnChildFinished(BaseNode child, bool success)
         {
             Finish(success);

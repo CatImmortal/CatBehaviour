@@ -40,6 +40,7 @@ namespace CatBehaviour.Runtime
         [BBParamInfo(Name = "日志信息")]
         public BBParamString Log;
         
+        /// <inheritdoc />
         protected override void OnStart()
         {
             switch (Level)
@@ -60,6 +61,7 @@ namespace CatBehaviour.Runtime
             Finish(true);
         }
 
+        /// <inheritdoc />
         protected override void OnCancel()
         {
 
