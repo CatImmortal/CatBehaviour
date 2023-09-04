@@ -91,14 +91,7 @@ namespace CatBehaviour.Runtime
         /// 是否已初始化
         /// </summary>
         private bool isInit;
-        
-        private Action<BaseNode> resetAction;
 
-        public BehaviourTree()
-        {
-            resetAction = ResetNode;
-        }
-        
         /// <summary>
         /// 初始化行为树
         /// </summary>
@@ -180,17 +173,11 @@ namespace CatBehaviour.Runtime
         
         private void ResetAllNode()
         {
-            ResetNode(RootNode);
+            foreach (var node in AllNodes)
+            {
+                node.CurState = BaseNode.State.Free;
+            }
         }
-
-        
-        private void ResetNode(BaseNode node)
-        {
-            node.CurState = BaseNode.State.Free;
-            node.ForeachChild(resetAction);
-        }
-
-        
         
         /// <summary>
         /// 获取行为树节点
