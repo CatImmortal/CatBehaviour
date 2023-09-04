@@ -64,7 +64,7 @@ namespace CatBehaviour.Editor
         /// <summary>
         /// 通过行为树SO资源路径打开窗口
         /// </summary>
-        private static void OpenFromAssetPath(string assetPath)
+        public static void OpenFromAssetPath(string assetPath)
         {
             BehaviourTreeWindow window = CreateWindow<BehaviourTreeWindow>("行为树窗口");
             window.Init(false);
@@ -308,6 +308,7 @@ namespace CatBehaviour.Editor
                 
                 assetPath = path;
                 AssetDatabase.CreateAsset(curBTSO,path);
+                originBTSO = curBTSO;
             }
             else
             {
