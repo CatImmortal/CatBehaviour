@@ -18,17 +18,17 @@ namespace CatBehaviour.Runtime
     [Serializable]
     public class BehaviourTree
     {
+        /// <summary>
+        /// 创建子树的处理回调
+        /// </summary>
+        public static CreateSubTreeCallback OnCreateSubTreeCallback;
+        
         static BehaviourTree()
         {
             GameObject go = new GameObject();
             go.AddComponent<CatBehaviourComponent>();
             go.hideFlags = HideFlags.HideInHierarchy;
         }
-        
-        /// <summary>
-        /// 创建子树的处理回调
-        /// </summary>
-        public static CreateSubTreeCallback OnCreateSubTreeCallback;
         
         /// <summary>
         /// 行为树运行结束回调
