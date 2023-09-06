@@ -175,15 +175,7 @@ namespace CatBehaviour.Runtime
                 }
             }
         }
-        
-        /// <summary>
-        /// 开始运行行为树时调用
-        /// </summary>
-        public virtual void OnBehaviourTreeStart()
-        {
-            
-        }
-        
+
         /// <summary>
         /// 开始运行节点
         /// </summary>
@@ -230,6 +222,14 @@ namespace CatBehaviour.Runtime
             OnChildFinished(child,success);   
         }
 
+        /// <summary>
+        /// 开始运行行为树时调用
+        /// </summary>
+        public virtual void OnBehaviourTreeStart()
+        {
+            
+        }
+        
         /// <summary>
         /// 开始运行节点时调用
         /// </summary>

@@ -74,7 +74,6 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 根节点
         /// </summary>
-        [NonSerialized] 
         public RootNode RootNode;
         
         /// <summary>
@@ -102,7 +101,6 @@ namespace CatBehaviour.Runtime
             {
                 node.RebuildBBParamReference();
             }
-            
         }
 
         /// <summary>
@@ -182,7 +180,7 @@ namespace CatBehaviour.Runtime
         /// <summary>
         /// 获取行为树节点
         /// </summary>
-        public BaseNode GetNode(int nodeId)
+        private BaseNode GetNode(int nodeId)
         {
             if (nodeId == 0)
             {
