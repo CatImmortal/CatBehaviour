@@ -23,7 +23,9 @@ namespace CatBehaviour.Runtime
         Multi,
     }
     
-    [AttributeUsage(AttributeTargets.Class)]
+    /// <summary>
+    /// 子节点容量信息特性
+    /// </summary>
     public class ChildCapacityInfoAttribute : Attribute
     {
         public ChildCapacity Capacity;
