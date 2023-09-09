@@ -39,7 +39,6 @@ namespace CatBehaviour.Editor
         /// <summary>
         /// 构建右键菜单
         /// </summary>
-        /// <param name="evt"></param>
         private void BuildContextualMenu(ContextualMenuPopulateEvent evt)
         {
             evt.menu.RemoveItemAt(0);

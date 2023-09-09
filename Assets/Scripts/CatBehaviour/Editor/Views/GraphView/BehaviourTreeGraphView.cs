@@ -58,7 +58,7 @@ namespace CatBehaviour.Editor
                 {
                     if (element is NodeView nodeView)
                     {
-                        nodeView.SetPosAndRecord(nodeView.GetPosition());
+                        nodeView.SetPos(nodeView.GetPosition());
                     }
                     // else if (element is BlackBoardView blackBoardView)
                     // {
@@ -69,7 +69,7 @@ namespace CatBehaviour.Editor
                         //同步注释块内的节点位置 否则因为移动注释块导致的节点位置变化是不被记录的
                         foreach (var innerNodeView in commentBlockView.NodeViews)
                         {
-                            innerNodeView.SetPosAndRecord(innerNodeView.GetPosition());
+                            innerNodeView.SetPos(innerNodeView.GetPosition());
                         }
                     }
                 }

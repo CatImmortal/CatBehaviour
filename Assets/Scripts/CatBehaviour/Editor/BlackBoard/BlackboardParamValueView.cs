@@ -17,7 +17,6 @@ namespace CatBehaviour.Editor
             
             if (BaseBBParamDrawer.BBParamDrawerDict.TryGetValue(bbParam.GetType(),out var drawer))
             {
-                drawer.CreateGUI(contentContainer,false,null);
                 IMGUIContainer imguiContainer = new IMGUIContainer(){};
                 imguiContainer.onGUIHandler =  (() =>
                 {

@@ -15,7 +15,6 @@ namespace CatBehaviour.Editor
     /// </summary>
     public class BlackBoardView : PinnedElementView
     {
-        
         public BlackBoardView()
         {
             styleSheets.Add(Resources.Load<StyleSheet>("USS/BlackBoardView"));
@@ -133,9 +132,9 @@ namespace CatBehaviour.Editor
         }
         
         /// <summary>
-        /// 设置位置并记录
+        /// 设置位置
         /// </summary>
-        public void SetPosAndRecord(Rect newPos)
+        public void SetPos(Rect newPos)
         {
             window.RecordObject($"SetPosition BlackBoard");
             

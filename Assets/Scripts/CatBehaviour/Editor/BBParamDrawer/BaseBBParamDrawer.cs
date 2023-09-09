@@ -45,22 +45,6 @@ namespace CatBehaviour.Editor
                 BBParamDrawerDict.Add(attr.BBParamType,bbParamDrawer);
             }
         }
-        
-        /// <summary>
-        /// 基于UIElements绘制黑板值
-        /// </summary>
-        public virtual void CreateGUI(VisualElement contentContainer,bool isInspector,BehaviourTree bt)
-        {
-
-        }
-
-        /// <summary>
-        /// 基于UIElements绘制黑板值
-        /// </summary>
-        protected virtual void CreateGUI(VisualElement contentContainer)
-        {
-            
-        }
 
         /// <summary>
         /// 基于IMGUI绘制黑板值

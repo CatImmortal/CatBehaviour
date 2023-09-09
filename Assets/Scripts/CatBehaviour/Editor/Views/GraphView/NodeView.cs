@@ -282,9 +282,9 @@ namespace CatBehaviour.Editor
         
         
         /// <summary>
-        /// 设置位置并记录
+        /// 设置位置
         /// </summary>
-        public void SetPosAndRecord(Rect newPos)
+        public void SetPos(Rect newPos)
         {
             window.RecordObject($"SetPosition {this}");
             
