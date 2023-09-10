@@ -62,7 +62,7 @@ namespace CatBehaviour.Editor
                     }
                     // else if (element is BlackBoardView blackBoardView)
                     // {
-                    //     blackBoardView.SetPosAndRecord(blackBoardView.GetPosition());
+                    //     blackBoardView.SetPos(blackBoardView.GetPosition());
                     // }
                     else if (element is CommentBlockView commentBlockView)
                     {
@@ -131,7 +131,8 @@ namespace CatBehaviour.Editor
                         var parentNode = (NodeView) edge.output.node;
                         var childNode = (NodeView) edge.input.node;
                         parentNode.RemoveChild(childNode);
-                    }else if (element is CommentBlockView commentBlockView)
+                    }
+                    else if (element is CommentBlockView commentBlockView)
                     {
                         //Debug.Log($"删除注释块 {commentBlockView.title}");
                         commentBlockView.RemoveSelf();

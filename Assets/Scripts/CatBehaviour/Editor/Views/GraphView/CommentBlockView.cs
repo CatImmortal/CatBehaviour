@@ -122,16 +122,6 @@ namespace CatBehaviour.Editor
         }
 
         /// <summary>
-        /// 将节点从注释块分离
-        /// </summary>
-        public void RemoveNode(NodeView nodeView)
-        {
-            commentBlock.Nodes.Remove(nodeView.RuntimeNode);
-            NodeViews.Remove(nodeView);
-            RemoveElement(nodeView);
-        }
-        
-        /// <summary>
         /// 删除注释块
         /// </summary>
         public void RemoveSelf()
