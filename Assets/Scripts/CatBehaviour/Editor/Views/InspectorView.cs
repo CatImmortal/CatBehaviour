@@ -60,7 +60,6 @@ namespace CatBehaviour.Editor
             nodeInspector.Target = nodeView.RuntimeNode;
             
             //绘制节点属性面板
-            nodeInspector.CreateGUI(contentContainer);
             IMGUIContainer imguiContainer = new IMGUIContainer(){};
             imguiContainer.onGUIHandler = nodeInspector.OnGUI;
             Add(imguiContainer);

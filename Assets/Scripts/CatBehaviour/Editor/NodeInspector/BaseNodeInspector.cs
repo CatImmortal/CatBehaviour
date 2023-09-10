@@ -18,14 +18,6 @@ namespace CatBehaviour.Editor
         /// 要绘制的目标节点
         /// </summary>
         public BaseNode Target;
-        
-        /// <summary>
-        /// 基于UIElements绘制节点属性面板
-        /// </summary>
-        public virtual void CreateGUI(VisualElement contentContainer)
-        {
-
-        }
 
         /// <summary>
         /// 基于IMGUI绘制节点属性面板
