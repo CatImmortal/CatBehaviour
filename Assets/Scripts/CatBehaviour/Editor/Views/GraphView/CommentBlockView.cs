@@ -152,6 +152,8 @@ namespace CatBehaviour.Editor
                     NodeViews.Add(nodeView);
                 }
             }
+            
+            window.BuildNodeId();
         }
 
         /// <summary>
@@ -160,7 +162,11 @@ namespace CatBehaviour.Editor
         protected override void OnElementsRemoved(IEnumerable<GraphElement> elements)
         {
             window.RecordObject($"Remove Node");
-            
+            if (window.IsRefreshing)
+            {
+                //因为刷新graph view导致的节点删除 不处理后续逻辑
+                return;
+            }
             base.OnElementsRemoved(elements);
             foreach (GraphElement element in elements)
             {
@@ -170,6 +176,8 @@ namespace CatBehaviour.Editor
                     NodeViews.Remove(nodeView);
                 }
             }
+            
+            window.BuildNodeId();
         }
     }
 }

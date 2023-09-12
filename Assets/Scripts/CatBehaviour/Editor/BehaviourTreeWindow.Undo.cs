@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace CatBehaviour.Editor
 {
@@ -14,10 +15,7 @@ namespace CatBehaviour.Editor
         private static GetUndoListDelegate getUndoList = (GetUndoListDelegate)Delegate.CreateDelegate(typeof(GetUndoListDelegate), getUndoListMethod);
         private static List<string> undoList = new List<string>();
         
-        /// <summary>
-        /// 是否允许记录修改
-        /// </summary>
-        private bool canRecord;
+        public bool IsRefreshing;
         
         /// <summary>
         /// 是否被修改过
@@ -75,7 +73,7 @@ namespace CatBehaviour.Editor
                 return;
             }
 
-            if (!canRecord)
+            if (IsRefreshing)
             {
                 return;
             }

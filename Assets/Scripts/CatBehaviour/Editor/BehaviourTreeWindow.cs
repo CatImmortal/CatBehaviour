@@ -243,6 +243,8 @@ namespace CatBehaviour.Editor
         /// </summary>
         private void Refresh(BehaviourTreeSO btSO)
         {
+            IsRefreshing = true;
+            
             //若传入的行为树SO为空则创建个默认的
             if (btSO == null)
             {
@@ -274,11 +276,10 @@ namespace CatBehaviour.Editor
             {
                 splitView.fixedPaneInitialDimension = 420;
             }
-
-            //GraphView刷新期间 不记录任何修改
-            canRecord = false;
             GraphView.Refresh(curBTSO);
-            canRecord = true;
+            
+            
+            IsRefreshing = false;
         }
         
         /// <summary>
