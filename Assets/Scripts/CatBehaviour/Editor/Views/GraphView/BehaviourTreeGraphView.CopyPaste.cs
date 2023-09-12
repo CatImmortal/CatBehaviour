@@ -32,14 +32,15 @@ namespace CatBehaviour.Editor
                     graphNodeSet.Add(graphNode);
                 }
             }
-           
-                
+
+            foreach (var node in BTSO.AllNodes)
+            {
+                //先置空所有节点的id，防止把未选中但具有父子关系的节点也当成了要复制的节点
+                node.ClearId();
+            }
+
             foreach (var graphNode in graphNodes)
             {
-                //清空ID和父子关系
-                graphNode.RuntimeNode.ClearId();
-                graphNode.RuntimeNode.ClearNodeReference();
-
                 //记录位置
                 graphNode.RuntimeNode.Position = graphNode.GetPosition().position;
 
@@ -48,30 +49,6 @@ namespace CatBehaviour.Editor
                 graphNode.RuntimeNode.Id = allNodes.Count;
             }
 
-            foreach (var graphNode in graphNodes)
-            {
-                if (graphNode.inputContainer.childCount == 0)
-                {
-                    continue;
-                }
-                
-                Port inputPort = (Port)graphNode.inputContainer[0];
-                Edge inputEdge = inputPort.connections.FirstOrDefault();
-                if (inputEdge == null)
-                {
-                    continue;
-                }
-                
-                //将自身添加的父节点的子节点里
-                var parent = (NodeView)inputEdge.output.node;
-                if (graphNodeSet.Contains(parent))
-                {
-                    //父节点要被包含在 被复制的节点集合 里，才添加
-                    //否则视为此节点不具有父节点 防止把没选中的节点也复制了
-                    parent.RuntimeNode.AddChild(graphNode.RuntimeNode);
-                }
-            }
-            
             //记录父子节点ID
             foreach (BaseNode node in allNodes)
             {

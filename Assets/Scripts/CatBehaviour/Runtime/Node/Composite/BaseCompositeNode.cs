@@ -113,6 +113,10 @@ namespace CatBehaviour.Runtime
             Children.Clear();
             foreach (int childId in ChildIdList)
             {
+                if (childId == 0)
+                {
+                    continue;
+                }
                 BaseNode child = allNodes[childId - 1];
                 AddChild(child);
             }
