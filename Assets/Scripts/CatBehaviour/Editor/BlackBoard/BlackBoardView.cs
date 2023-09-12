@@ -130,17 +130,5 @@ namespace CatBehaviour.Editor
             }
             
         }
-        
-        /// <summary>
-        /// 设置位置
-        /// </summary>
-        public void SetPos(Rect newPos)
-        {
-            window.RecordObject($"SetPosition BlackBoard");
-            
-            SetPosition(newPos);
-            
-            graphView.BTSO.BlackBoardRect = newPos;
-        }
     }
 }
