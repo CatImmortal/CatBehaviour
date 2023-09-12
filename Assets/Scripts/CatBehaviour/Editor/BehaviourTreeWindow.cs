@@ -138,7 +138,7 @@ namespace CatBehaviour.Editor
             GraphView.Init(this);
 
             Undo.undoRedoPerformed += OnUndoRedoPerformed;
-
+            ClearAllRecord();
             
             //还原数据 防止编译后窗口数据丢失
             if (!string.IsNullOrEmpty(assetPath))
