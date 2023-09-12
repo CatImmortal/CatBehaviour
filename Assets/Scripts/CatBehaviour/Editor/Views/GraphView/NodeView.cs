@@ -323,6 +323,8 @@ namespace CatBehaviour.Editor
             RuntimeNode.AddChild(child.RuntimeNode);
             var edge = outputPort.ConnectTo(child.inputPort);
             window.GraphView.AddElement(edge);
+            
+            window.BuildNodeId();
         }
 
         /// <summary>
@@ -338,6 +340,8 @@ namespace CatBehaviour.Editor
             outputPort.Disconnect(edge);
             
             window.GraphView.RemoveElement(edge);
+            
+            window.BuildNodeId();
         }
 
         /// <summary>
@@ -360,6 +364,8 @@ namespace CatBehaviour.Editor
                 //断开output断开的所有连接
                 outputPort.DisconnectAll();
             }
+            
+            window.BuildNodeId();
         }
 
         /// <summary>

@@ -65,11 +65,6 @@ namespace CatBehaviour.Runtime
         public BlackBoard BlackBoard => Owner.BlackBoard;
 
         /// <summary>
-        /// 父节点ID
-        /// </summary>
-        public int ParentNodeId;
-
-        /// <summary>
         /// 父节点
         /// </summary>
         [NonSerialized]
@@ -109,39 +104,20 @@ namespace CatBehaviour.Runtime
         }
         
         /// <summary>
-        /// 清空对自身Id和父子节点Id的记录
+        /// 清空对自身Id和子节点Id的记录
         /// </summary>
         public virtual void ClearId()
         {
             Id = 0;
-            ParentNodeId = 0;
-        }
-        
-        /// <summary>
-        /// 重建对父子节点的Id记录
-        /// </summary>
-        public virtual void RebuildId()
-        {
-            if (ParentNode != null)
-            {
-                ParentNodeId = ParentNode.Id;
-            }
-            else
-            {
-                ParentNodeId = 0;
-            }
         }
 
         /// <summary>
-        /// 清空对父子节点的引用
+        /// 重建对子节点的Id记录
         /// </summary>
-        public virtual void ClearNodeReference()
-        {
-            ParentNode = null;
-        }
+        public abstract void RebuildId();
 
         /// <summary>
-        /// 重建对父子节点的引用
+        /// 重建对子节点的引用
         /// </summary>
         public abstract void RebuildNodeReference(List<BaseNode> allNodes);
         

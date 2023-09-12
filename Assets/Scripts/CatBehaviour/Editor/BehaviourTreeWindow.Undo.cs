@@ -79,10 +79,15 @@ namespace CatBehaviour.Editor
             {
                 return;
             }
-            
+
             Undo.RecordObject(curBTSO, undoName);
 
             IsModify = true;
+        }
+
+        public void BuildNodeId()
+        {
+            curBTSO.BuildNodeId();
         }
 
         /// <summary>

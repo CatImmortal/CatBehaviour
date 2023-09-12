@@ -91,20 +91,11 @@ namespace CatBehaviour.Runtime
         /// <inheritdoc />
         public override void RebuildId()
         {
-            base.RebuildId();
-            
             ChildIdList.Clear();
             foreach (var child in Children)
             {
                 ChildIdList.Add(child.Id);
             }
-        }
-        
-        /// <inheritdoc />
-        public override void ClearNodeReference()
-        {
-            base.ClearNodeReference();
-            Children.Clear();
         }
 
         /// <inheritdoc />

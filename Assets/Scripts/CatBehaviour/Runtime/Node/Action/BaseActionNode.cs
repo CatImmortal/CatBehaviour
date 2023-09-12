@@ -42,13 +42,6 @@ namespace CatBehaviour.Runtime
         /// <inheritdoc />
         public sealed override void RebuildId()
         {
-            base.RebuildId();
-        }
-
-        /// <inheritdoc />
-        public sealed override void ClearNodeReference()
-        {
-            base.ClearNodeReference();
         }
 
         /// <inheritdoc />

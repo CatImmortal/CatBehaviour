@@ -44,8 +44,7 @@ namespace CatBehaviour.Runtime
             {
                 return;
             }
-
-            ChildId = 0;
+            
             child.ParentNode = null;
             Child = null;
         }
@@ -62,6 +61,7 @@ namespace CatBehaviour.Runtime
             action?.Invoke(Child);
         }
 
+        /// <inheritdoc />
         public override void ClearId()
         {
             base.ClearId();
@@ -71,19 +71,14 @@ namespace CatBehaviour.Runtime
         /// <inheritdoc />
         public override void RebuildId()
         {
-            base.RebuildId();
-            
             if (Child != null)
             {
                 ChildId = Child.Id;
             }
-        }
-
-        /// <inheritdoc />
-        public override void ClearNodeReference()
-        {
-            base.ClearNodeReference();
-            Child = null;
+            else
+            {
+                ChildId = 0;
+            }
         }
 
         /// <inheritdoc />
