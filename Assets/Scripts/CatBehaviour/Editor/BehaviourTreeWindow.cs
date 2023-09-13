@@ -154,6 +154,11 @@ namespace CatBehaviour.Editor
         
         private void OnDisable()
         {
+            if (curBTSO == null)
+            {
+                return;
+            }
+            
             Undo.undoRedoPerformed -= OnUndoRedoPerformed;
             ClearAllRecord();
             
@@ -261,8 +266,11 @@ namespace CatBehaviour.Editor
             }
             else
             {
-                //重建节点引用
-                btSO.Deserialize();
+                if (!IsDebugMode)
+                {
+                    //重建节点引用
+                    btSO.Deserialize();
+                }
             }
 
             curBTSO = btSO;
