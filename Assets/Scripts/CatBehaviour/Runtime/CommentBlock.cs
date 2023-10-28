@@ -56,11 +56,6 @@ namespace CatBehaviour.Runtime
         /// </summary>
         public void RebuildId()
         {
-            if (Nodes.Count == 0)
-            {
-                return;
-            }
-            
             NodeIds.Clear();
             foreach (BaseNode node in Nodes)
             {
